@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: store-service
+  flyway:
+    enabled: false
+  datasource:
+    url: ${DB_URL:jdbc:oracle:thin:@//localhost:1521/XEPDB1}
+    username: ${DB_USERNAME:STORE}
+    password: ${DB_PASSWORD:123}
+
+server:
+  port: 8081
+  shutdown: graceful
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "*"
+  info:
+    git:
+      mode: full
+
+#logging:
+#  level:
+#    org:
+#      testcontainers: DEBUG
+#    com:
+#      github:
+#        dockerjava: DEBUG
