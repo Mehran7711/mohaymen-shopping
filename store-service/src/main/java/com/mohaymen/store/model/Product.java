@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * Author: Mehran
@@ -18,6 +20,7 @@ import lombok.Setter;
 @Table(name = "products")
 @Getter
 @Setter
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
@@ -25,6 +28,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_id_generator")
     @SequenceGenerator(name = "product_id_generator", sequenceName = "product_id_seq")
     private Long id;
+
+    @Version
+    private Long version;
 
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Product code is required") private String code;

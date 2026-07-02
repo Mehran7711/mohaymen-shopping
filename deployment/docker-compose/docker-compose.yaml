@@ -38,10 +38,55 @@ services:
         limits:
           memory: 700m
 
+  zookeeper:
+    image: docker.arvancloud.ir/confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  Kafka:
+    image: docker.arvancloud.ir/confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+
+
 volumes:
   oracle-data:
 
 
+#  docker compose down -v
+#  docker compose up -d
 #  docker compose down --remove-orphans
 #  docker network prune -f
 #  docker compose up -d
+
+##### create topic
+#  docker exec -it mohaymen-shopping-Kafka-1 \
+#  kafka-topics --create \
+#  --topic test \
+#  --bootstrap-server localhost:9092 \
+#  --partitions 1 \
+#  --replication-factor 1
+
+
+##### start consumer
+#  docker exec -it mohaymen-shopping-Kafka-1 \
+#  kafka-console-consumer \
+#  --topic test \
+#  --bootstrap-server localhost:9092 \
+#  --from-beginning
+
+
+##### start producer
+#  docker exec -it mohaymen-shopping-Kafka-1 \
+#  kafka-console-producer \
+#  --topic test \
+#  --bootstrap-server localhost:9092

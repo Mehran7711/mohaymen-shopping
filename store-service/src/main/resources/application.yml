@@ -28,6 +28,8 @@ management:
 store:
   web:
     pageSize: 10
+  timeToLiveSeconds: 3600
+  maxEntries: 100
 #logging:
 #  level:
 #    org:
