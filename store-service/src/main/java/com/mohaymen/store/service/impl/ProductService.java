@@ -7,6 +7,9 @@ import com.mohaymen.store.web.mapper.ProductMapper;
 import com.mohaymen.store.web.response.PageResult;
 import com.mohaymen.store.web.response.ProductDto;
 import java.util.Optional;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
+@Slf4j
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final ApplicationProperties properties;
@@ -49,6 +53,8 @@ public class ProductService implements IProductService {
     }
 
     public Optional<ProductDto> getProductByCode(String code) {
+        log.info("🔍 Cache MISS for code: {}", code);
+        log.info("📖 Fetching from database...");
         return productRepository.findByCode(code).map(productMapper::toDto);
     }
 }

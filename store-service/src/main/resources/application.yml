@@ -1,4 +1,25 @@
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 123  # optional
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000  # 10 minutes (in milliseconds)
+      cache-null-values: true
+      use-key-prefix: true
+      key-prefix: "myapp:"
+
+
   application:
     name: store-service
   flyway:
@@ -30,10 +51,10 @@ store:
     pageSize: 10
   timeToLiveSeconds: 3600
   maxEntries: 100
-#logging:
-#  level:
-#    org:
-#      testcontainers: DEBUG
-#    com:
-#      github:
-#        dockerjava: DEBUG
+
+logging:
+  level:
+    org.springframework.cache: DEBUG
+    org.springframework.cache.interceptor: TRACE
+    org.springframework.data.redis.cache: DEBUG
+    com.mohaymen.store: DEBUG
