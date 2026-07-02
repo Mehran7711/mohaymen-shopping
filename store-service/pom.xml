@@ -30,6 +30,8 @@
     <java.version>21</java.version>
     <spotless-maven-plugin.version>3.7.0</spotless-maven-plugin.version>
     <mapstruct-version>1.6.3</mapstruct-version>
+    <jib-maven-plugin.image>docker.rhaco.ir/library/openjdk:21-jdk</jib-maven-plugin.image>
+    <jib-maven-plugin.version>3.4.6</jib-maven-plugin.version>
   </properties>
   <dependencies>
     <dependency>
@@ -257,6 +259,29 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>${jib-maven-plugin.version}</version>
+        <configuration>
+          <from>
+            <image>${jib-maven-plugin.image}</image>
+          </from>
+          <to>
+            <image>store-service:1.0</image>
+          </to>
+          <container>
+            <mainClass>com.mohaymen.store.StoreServiceApplication</mainClass>
+          </container>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.google.cloud.tools</groupId>
+            <artifactId>jib-spring-boot-extension-maven</artifactId>
+            <version>0.1.0</version>
+          </dependency>
+        </dependencies>
+      </plugin> <!--  mvn compile jib:dockerBuild  -->
     </plugins>
   </build>
 

@@ -5,7 +5,7 @@ spring:
     enabled: true
     locations: classpath:db/migration
   datasource:
-    url: ${DB_URL:jdbc:oracle:thin:@//localhost:1521/XEPDB1}
+    url: ${DB_URL:jdbc:oracle:thin:@//localhost:1521/XE}
     username: ${DB_USERNAME:STORE}
     password: ${DB_PASSWORD:123}
     driver-class-name: oracle.jdbc.OracleDriver

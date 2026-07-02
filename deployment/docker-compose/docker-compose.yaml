@@ -1,0 +1,47 @@
+name: 'mohaymen-shopping'
+services:
+
+  store-db:
+    image: gvenzl/oracle-xe
+    container_name: store-db
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    environment:
+      ORACLE_PASSWORD: oracle
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+      - ./db/init:/container-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "sqlplus -s system/oracle@//localhost:1521/XEPDB1 <<< 'SELECT 1 FROM DUAL;' || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 120s
+
+  store-service:
+    image: store-service:1.0
+    container_name: store-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DB_URL=jdbc:oracle:thin:@//store-db:1521/XE
+      - DB_USERNAME=STORE
+      - DB_PASSWORD=123
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    depends_on:
+      store-db:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+volumes:
+  oracle-data:
+
+
+#  docker compose down --remove-orphans
+#  docker network prune -f
+#  docker compose up -d
