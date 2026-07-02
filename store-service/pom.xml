@@ -29,6 +29,7 @@
   <properties>
     <java.version>21</java.version>
     <spotless-maven-plugin.version>3.7.0</spotless-maven-plugin.version>
+    <mapstruct-version>1.6.3</mapstruct-version>
   </properties>
   <dependencies>
     <dependency>
@@ -94,9 +95,38 @@
       <artifactId>testcontainers-oracle-free</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-database-oracle</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-flyway</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+      <version>${mapstruct-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct-processor</artifactId>
+      <version>${mapstruct-version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -139,6 +169,15 @@
                 <path>
                   <groupId>org.springframework.boot</groupId>
                   <artifactId>spring-boot-configuration-processor</artifactId>
+                </path>
+                <path>
+                  <groupId>org.projectlombok</groupId>
+                  <artifactId>lombok</artifactId>
+                </path>
+                <path>
+                  <groupId>org.mapstruct</groupId>
+                  <artifactId>mapstruct-processor</artifactId>
+                  <version>${mapstruct-version}</version>
                 </path>
               </annotationProcessorPaths>
             </configuration>

@@ -8,8 +8,7 @@ import org.testcontainers.oracle.OracleContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration(proxyBeanMethods = false)
-@SuppressWarnings("resource")
-class TestcontainersConfiguration {
+public  class TestcontainersConfiguration {
 
     @Bean
     @ServiceConnection
@@ -17,6 +16,14 @@ class TestcontainersConfiguration {
         DockerImageName image = DockerImageName.parse("docker.arvancloud.ir/gvenzl/oracle-xe")
                 .asCompatibleSubstituteFor("gvenzl/oracle-free");
 
-        return new OracleContainer(image).withStartupTimeout(Duration.ofMinutes(5));
+        OracleContainer container = new OracleContainer(image).withStartupTimeout(Duration.ofMinutes(5));
+
+        container.start();
+
+        System.out.println("JDBC URL  : " + container.getJdbcUrl());
+        System.out.println("Username  : " + container.getUsername());
+        System.out.println("Password  : " + container.getPassword());
+
+        return container;
     }
 }
