@@ -6,6 +6,7 @@ import com.mohaymen.store.web.ApplicationProperties;
 import com.mohaymen.store.web.mapper.ProductMapper;
 import com.mohaymen.store.web.response.PageResult;
 import com.mohaymen.store.web.response.ProductDto;
+
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,7 @@ public class ProductService implements IProductService {
                 productsPage.hasPrevious());
     }
 
+    @Cacheable(value = "products", key = "#code")
     public Optional<ProductDto> getProductByCode(String code) {
         log.info("🔍 Cache MISS for code: {}", code);
         log.info("📖 Fetching from database...");

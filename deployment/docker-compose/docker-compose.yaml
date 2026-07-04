@@ -20,19 +20,26 @@ services:
       start_period: 120s
 
   store-service:
-    image: store-service:1.0
+    build:
+      context: ../../store-service
+      dockerfile: Dockerfile
+    image: store-service:2.0
     container_name: store-service
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - DB_URL=jdbc:oracle:thin:@//store-db:1521/XE
       - DB_USERNAME=STORE
       - DB_PASSWORD=123
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     ports:
       - "8081:8081"
     restart: unless-stopped
     depends_on:
       store-db:
         condition: service_healthy
+      redis:
+        condition: service_started
     deploy:
       resources:
         limits:
@@ -61,12 +68,16 @@ services:
     container_name: redis-cache
     ports:
       - "6379:6379"
-    environment:
-      - REDIS_PASSWORD=123
-    command: redis-server --requirepass 123
+    command: redis-server --appendonly yes
     volumes:
       - redis-data:/data
     restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]  # No password needed
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
 
 volumes:
@@ -74,6 +85,7 @@ volumes:
   redis-data:
 
 #  docker build -t store-service:1.0 .
+#  docker compose up -d --build  form recreate image and update changes on image
 
 #  docker compose down -v
 #  docker compose up -d

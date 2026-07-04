@@ -1,15 +1,33 @@
-FROM docker.arvancloud.ir/eclipse-temurin:21-jre
+# ==========================
+# Stage 1 - Build
+# ==========================
+FROM docker.arvancloud.ir/maven:3.9.9-eclipse-temurin-21 AS builder
 
-# Application directory
 WORKDIR /app
 
-# Copy the Spring Boot application
-COPY target/store-service-0.0.1-SNAPSHOT.jar app.jar
+# Copy pom.xml first (improves Docker cache)
+COPY pom.xml .
 
-# Expose application port
+# Download dependencies
+RUN mvn dependency:go-offline
+
+# Copy source code
+COPY src ./src
+
+# Build the application
+RUN mvn clean package -DskipTests
+
+# ==========================
+# Stage 2 - Runtime
+# ==========================
+FROM docker.arvancloud.ir/eclipse-temurin:21-jre
+
+WORKDIR /app
+
+COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8081
 
-# Optional JVM options
 ENV JAVA_OPTS=""
 
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

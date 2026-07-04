@@ -25,7 +25,7 @@ public class RedisTestRunner implements CommandLineRunner {
             // Check Redis info
             System.out.println("✅ Redis is up and running!");
         } catch (Exception e) {
-            System.err.println("❌ Redis connection failed: " + e.getMessage());
+            System.err.println("❌ Redis connection failed!!: " + e.getMessage());
         }
     }
 }
