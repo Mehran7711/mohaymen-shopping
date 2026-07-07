@@ -177,3 +177,16 @@ VALUES (
            'https://images.example.com/sander1.jpg',
            58.00
        );
+
+INSERT INTO product_inventory (product_id, version, quantity, reserved_quantity)
+SELECT
+    id,
+    0,
+    100,
+    0
+FROM products
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM product_inventory pi
+    WHERE pi.product_id = products.id
+);

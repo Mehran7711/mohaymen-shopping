@@ -1,6 +1,7 @@
 package com.mohaymen.store.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -11,6 +12,11 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_item")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class OrderItem {
 
     @Id

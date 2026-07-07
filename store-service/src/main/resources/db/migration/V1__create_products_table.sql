@@ -33,6 +33,7 @@ CREATE TABLE products (
 
 CREATE TABLE product_inventory (
                                    product_id NUMBER(19) NOT NULL,
+                                   version NUMBER(19) DEFAULT 0 NOT NULL,
                                    quantity NUMBER(19) NOT NULL,
                                    reserved_quantity NUMBER(19) DEFAULT 0 NOT NULL,
                                    updated_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,

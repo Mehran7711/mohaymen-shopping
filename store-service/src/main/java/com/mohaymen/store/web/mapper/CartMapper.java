@@ -1,7 +1,7 @@
 package com.mohaymen.store.web.mapper;
 
 import com.mohaymen.store.model.Order;
-import com.mohaymen.store.web.response.OrderDto;
+import com.mohaymen.store.web.response.OrderResponse;
 import org.mapstruct.Mapper;
 
 /**
@@ -11,7 +11,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface CartMapper {
 
-    OrderDto toDto(Order order);
+    OrderResponse toDto(Order order);
 
-    Order toEntity(OrderDto dto);
+    Order toEntity(OrderResponse dto);
 }

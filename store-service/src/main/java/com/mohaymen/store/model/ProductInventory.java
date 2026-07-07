@@ -5,10 +5,13 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 /**
@@ -21,18 +24,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProductInventory {
 
     @Id
+    @Column(name = "product_id")
     private Long productId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Version
+    private Long version;
+
+    @Column(nullable = false)
     private Long quantity;
 
-    private Long reservedQuantity;
+    @Column(name = "reserved_quantity", nullable = false)
+    private Long reservedQuantity = 0L;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }

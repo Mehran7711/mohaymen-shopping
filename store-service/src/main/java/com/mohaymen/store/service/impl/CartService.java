@@ -2,30 +2,20 @@ package com.mohaymen.store.service.impl;
 
 import com.mohaymen.store.model.*;
 import com.mohaymen.store.repository.CartRepository;
-import com.mohaymen.store.repository.OrderRepository;
 import com.mohaymen.store.repository.ProductRepository;
 import com.mohaymen.store.service.ICartService;
-import com.mohaymen.store.service.IOrderService;
 import com.mohaymen.store.web.ApplicationProperties;
 import com.mohaymen.store.web.mapper.CartMapper;
-import com.mohaymen.store.web.mapper.OrderMapper;
 import com.mohaymen.store.web.request.CartItemRequest;
-import com.mohaymen.store.web.request.SaveCartRequest;
 import com.mohaymen.store.web.response.CartItemResponse;
 import com.mohaymen.store.web.response.CartResponse;
-import com.mohaymen.store.web.response.OrderDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Author: Mehran

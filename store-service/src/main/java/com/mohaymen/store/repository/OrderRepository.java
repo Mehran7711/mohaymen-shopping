@@ -11,4 +11,5 @@ import java.util.Optional;
  * Created on: 7/1/26
  */
 public interface OrderRepository extends JpaRepository<Order, Long> {
+    Order findByCustomerId(Long customerId);
 }

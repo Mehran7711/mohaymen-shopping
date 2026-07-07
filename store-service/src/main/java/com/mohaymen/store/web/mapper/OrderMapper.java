@@ -1,10 +1,11 @@
 package com.mohaymen.store.web.mapper;
 
 import com.mohaymen.store.model.Order;
-import com.mohaymen.store.model.Product;
-import com.mohaymen.store.web.response.OrderDto;
-import com.mohaymen.store.web.response.ProductDto;
+import com.mohaymen.store.model.OrderItem;
+import com.mohaymen.store.web.response.OrderItemResponse;
+import com.mohaymen.store.web.response.OrderResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Author: Mehran
@@ -13,7 +14,11 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
 
-    OrderDto toDto(Order order);
+    OrderResponse toDto(Order order);
 
-    Order toEntity(OrderDto dto);
+    Order toEntity(OrderResponse dto);
+
+    @Mapping(target = "productId", source = "product.id")
+    @Mapping(target = "productName", source = "product.name")
+    OrderItemResponse toOrderItemDto(OrderItem item);
 }
