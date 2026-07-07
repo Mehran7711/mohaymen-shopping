@@ -9,6 +9,7 @@ import com.mohaymen.store.web.response.ProductDto;
 
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -23,18 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
  * Created on: 7/1/26
  */
 @Service
-@Transactional
+@AllArgsConstructor
 @Slf4j
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final ApplicationProperties properties;
     private final ProductMapper productMapper;
 
-    ProductService(ProductRepository productRepository, ApplicationProperties properties, ProductMapper productMapper) {
-        this.productRepository = productRepository;
-        this.properties = properties;
-        this.productMapper = productMapper;
-    }
 
     public PageResult<ProductDto> getProducts(int pageNo) {
         Sort sort = Sort.by("name").ascending();

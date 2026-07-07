@@ -1,17 +1,21 @@
 -- Create sequence
 CREATE SEQUENCE product_id_seq
     START WITH 1
-    INCREMENT BY 1
-    NOCACHE 
-    NOCYCLE;
+    INCREMENT BY 1;
 
 CREATE SEQUENCE order_id_seq
     START WITH 1
-    INCREMENT BY 1
-    NOCACHE
-    NOCYCLE;
+    INCREMENT BY 1;
 
 CREATE SEQUENCE order_item_id_seq START WITH 1 INCREMENT BY 1;
+
+CREATE SEQUENCE cart_id_seq
+    START WITH 1
+    INCREMENT BY 1;
+
+CREATE SEQUENCE cart_item_id_seq
+    START WITH 1
+    INCREMENT BY 1;
 
 
 -- Create table
@@ -73,5 +77,48 @@ CREATE TABLE order_item (
                             CONSTRAINT fk_order_item_product
                                 FOREIGN KEY (product_id)
                                     REFERENCES products(id)
+);
+
+CREATE TABLE cart (
+                      id NUMBER(19) DEFAULT cart_id_seq.NEXTVAL NOT NULL,
+                      version NUMBER(19) DEFAULT 0 NOT NULL,
+
+                      customer_id NUMBER(19) NOT NULL,
+
+                      total_amount NUMBER(19,2) DEFAULT 0 NOT NULL,
+
+                      created_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
+                      updated_at TIMESTAMP,
+
+                      CONSTRAINT pk_cart PRIMARY KEY (id),
+
+                      CONSTRAINT uk_cart_customer UNIQUE (customer_id)
+);
+
+CREATE TABLE cart_item (
+                           id NUMBER(19) DEFAULT cart_item_id_seq.NEXTVAL NOT NULL,
+                           version NUMBER(19) DEFAULT 0 NOT NULL,
+
+                           cart_id NUMBER(19) NOT NULL,
+                           product_id NUMBER(19) NOT NULL,
+
+                           quantity NUMBER(19) NOT NULL,
+
+                           unit_price NUMBER(19,2) NOT NULL,
+                           total_price NUMBER(19,2) NOT NULL,
+
+                           created_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
+
+                           CONSTRAINT pk_cart_item PRIMARY KEY (id),
+
+                           CONSTRAINT fk_cart_item_cart
+                               FOREIGN KEY (cart_id)
+                                   REFERENCES cart(id),
+
+                           CONSTRAINT fk_cart_item_product
+                               FOREIGN KEY (product_id)
+                                   REFERENCES products(id),
+
+                           CONSTRAINT uk_cart_item UNIQUE(cart_id, product_id)
 );
 

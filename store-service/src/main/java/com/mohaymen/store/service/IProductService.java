@@ -7,7 +7,5 @@ import org.springframework.cache.annotation.Cacheable;
 
 public interface IProductService {
     PageResult<ProductDto> getProducts(int pageNo);
-
-
     Optional<ProductDto> getProductByCode(String code);
 }
