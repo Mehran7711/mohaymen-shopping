@@ -11,21 +11,7 @@
   <groupId>com.mohaymen</groupId>
   <artifactId>store-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name />
-  <description />
-  <url />
-  <licenses>
-    <license />
-  </licenses>
-  <developers>
-    <developer />
-  </developers>
-  <scm>
-    <connection />
-    <developerConnection />
-    <tag />
-    <url />
-  </scm>
+
   <properties>
     <java.version>21</java.version>
     <spotless-maven-plugin.version>3.7.0</spotless-maven-plugin.version>
@@ -34,6 +20,11 @@
     <jib-maven-plugin.version>3.4.6</jib-maven-plugin.version>
   </properties>
   <dependencies>
+    <dependency>
+      <groupId>com.mohaymen</groupId>
+      <artifactId>store-events</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -161,6 +152,10 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
     </dependency>
 
   </dependencies>

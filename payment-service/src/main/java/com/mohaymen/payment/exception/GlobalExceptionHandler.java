@@ -1,6 +1,5 @@
 package com.mohaymen.payment.exception;
 
-
 import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;

@@ -1,24 +1,27 @@
 package com.mohaymen.store.service.impl;
 
+import com.mohaymen.events.KafkaTopics;
+import com.mohaymen.events.OrderCreatedEvent;
 import com.mohaymen.store.model.*;
 import com.mohaymen.store.repository.CartRepository;
 import com.mohaymen.store.repository.OrderRepository;
 import com.mohaymen.store.repository.ProductInventoryRepository;
+import com.mohaymen.store.service.IKafkaProducerService;
 import com.mohaymen.store.service.IOrderService;
 import com.mohaymen.store.web.ApplicationProperties;
 import com.mohaymen.store.web.mapper.OrderMapper;
 import com.mohaymen.store.web.response.OrderResponse;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * Author: Mehran
@@ -33,6 +36,7 @@ public class OrderService implements IOrderService {
     private final OrderMapper orderMapper;
     private CartRepository cartRepository;
     private ProductInventoryRepository inventoryRepository;
+    private IKafkaProducerService kafkaProducerService;
 
     private String generateOrderNumber() {
         return "ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
@@ -60,9 +64,37 @@ public class OrderService implements IOrderService {
 
         orderRepository.save(order);
 
+        //TODO using Outbox Pattern later
+        TransactionSynchronizationManager.registerSynchronization(
+                new TransactionSynchronization() {
+
+                    @Override
+                    public void afterCommit() {
+
+                        publishOrderCreated(order);
+                    }
+                });
+        publishOrderCreated(order);
+
         clearCart(cart);
 
         return orderMapper.toDto(order);
+    }
+
+    private void publishOrderCreated(Order order) {
+
+        OrderCreatedEvent event =
+                new OrderCreatedEvent(
+                        order.getId(),
+                        order.getOrderNumber(),
+                        order.getCustomerId(),
+                        order.getTotalAmount()
+                );
+
+        kafkaProducerService.publish(
+                KafkaTopics.ORDER_CREATED,
+                event
+        );
     }
 
     @Override
@@ -71,9 +103,7 @@ public class OrderService implements IOrderService {
     }
 
     private Cart loadCart(Long customerId) {
-        return cartRepository.findByCustomerId(customerId)
-                .orElseThrow(() ->
-                        new RuntimeException("Cart not found"));
+        return cartRepository.findByCustomerId(customerId).orElseThrow(() -> new RuntimeException("Cart not found"));
     }
 
     private void clearCart(Cart cart) {
@@ -88,19 +118,16 @@ public class OrderService implements IOrderService {
                 .product(item.getProduct())
                 .quantity(item.getQuantity())
                 .unitPrice(item.getUnitPrice())
-                .totalPrice(item.getUnitPrice()
-                        .multiply(
-                                BigDecimal.valueOf(
-                                        item.getQuantity())))
+                .totalPrice(item.getUnitPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .build();
-
 
         order.getItems().add(orderItem);
         return orderItem;
     }
 
     private void reserveInventory(CartItem item) {
-        ProductInventory inventory = inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
+        ProductInventory inventory =
+                inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
         long available = inventory.getQuantity() - inventory.getReservedQuantity();
 
         if (available < item.getQuantity()) {

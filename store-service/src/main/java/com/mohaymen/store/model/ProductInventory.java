@@ -1,24 +1,16 @@
 package com.mohaymen.store.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
 
-
 /**
  * Author: Mehran
  * Created on: 7/4/26
  */
-
 @Entity
 @Table(name = "product_inventory")
 @Getter

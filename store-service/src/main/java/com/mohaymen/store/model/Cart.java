@@ -1,22 +1,20 @@
 package com.mohaymen.store.model;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Author: Mehran
  * Created on: 7/7/26
  */
-
 @Entity
 @Table(name = "cart")
 @Getter
@@ -26,10 +24,7 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_seq")
-    @SequenceGenerator(
-            name = "cart_seq",
-            sequenceName = "cart_id_seq",
-            allocationSize = 1)
+    @SequenceGenerator(name = "cart_seq", sequenceName = "cart_id_seq", allocationSize = 1)
     private Long id;
 
     @Version
@@ -49,10 +44,7 @@ public class Cart {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(
-            mappedBy = "cart",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();
 
     public void addItem(CartItem item) {

@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Author: Mehran
  * Created on: 7/7/26
  */
-
 @Service
 @RequiredArgsConstructor
 public class InventoryService implements IInventoryService {
@@ -22,9 +21,9 @@ public class InventoryService implements IInventoryService {
     @Transactional(readOnly = true)
     public ProductInventory getInventory(Long productId) {
 
-        return inventoryRepository.findByProductId(productId)
-                .orElseThrow(() ->
-                        new RuntimeException("Inventory not found"));
+        return inventoryRepository
+                .findByProductId(productId)
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
     }
 
     @Override
@@ -32,8 +31,7 @@ public class InventoryService implements IInventoryService {
 
         ProductInventory inventory = inventoryRepository
                 .lockByProductId(productId)
-                .orElseThrow(() ->
-                        new RuntimeException("Inventory not found"));
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
 
         inventory.setQuantity(inventory.getQuantity() + quantity);
     }
@@ -43,8 +41,7 @@ public class InventoryService implements IInventoryService {
 
         ProductInventory inventory = inventoryRepository
                 .lockByProductId(productId)
-                .orElseThrow(() ->
-                        new RuntimeException("Inventory not found"));
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
 
         long available = inventory.getQuantity() - inventory.getReservedQuantity();
 
@@ -60,8 +57,7 @@ public class InventoryService implements IInventoryService {
 
         ProductInventory inventory = inventoryRepository
                 .lockByProductId(productId)
-                .orElseThrow(() ->
-                        new RuntimeException("Inventory not found"));
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
 
         long reserved = inventory.getReservedQuantity();
 
@@ -77,8 +73,7 @@ public class InventoryService implements IInventoryService {
 
         ProductInventory inventory = inventoryRepository
                 .lockByProductId(productId)
-                .orElseThrow(() ->
-                        new RuntimeException("Inventory not found"));
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
 
         if (inventory.getReservedQuantity() < quantity) {
             throw new RuntimeException("Reserved quantity is too low");

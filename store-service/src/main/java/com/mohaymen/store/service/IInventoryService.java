@@ -6,7 +6,6 @@ import com.mohaymen.store.model.ProductInventory;
  * Author: Mehran
  * Created on: 7/7/26
  */
-
 public interface IInventoryService {
 
     ProductInventory getInventory(Long productId);
