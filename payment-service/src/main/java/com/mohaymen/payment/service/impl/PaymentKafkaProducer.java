@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
  * Author: Mehran
  * Created on: 7/8/26
  */
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -22,10 +21,6 @@ public class PaymentKafkaProducer implements IPaymentKafkaProducer {
 
         kafkaTemplate.send(topic, event);
 
-        log.info(
-                "Published event {} to {}",
-                event,
-                topic
-        );
+        log.info("Published event {} to {}", event, topic);
     }
 }

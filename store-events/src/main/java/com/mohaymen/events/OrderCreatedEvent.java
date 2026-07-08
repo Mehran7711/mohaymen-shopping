@@ -1,17 +1,9 @@
 package com.mohaymen.events;
 
 import java.math.BigDecimal;
-
-/**
- * Author: Mehran
- * Created on: 7/8/26
- */
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-
-import java.math.BigDecimal;
 
 @Getter
 @SuperBuilder
@@ -26,11 +18,7 @@ public class OrderCreatedEvent extends BaseEvent {
 
     private BigDecimal amount;
 
-    public OrderCreatedEvent(
-            Long orderId,
-            String orderNumber,
-            Long customerId,
-            BigDecimal amount) {
+    public OrderCreatedEvent(Long orderId, String orderNumber, Long customerId, BigDecimal amount) {
 
         super(EventType.ORDER_CREATED);
 

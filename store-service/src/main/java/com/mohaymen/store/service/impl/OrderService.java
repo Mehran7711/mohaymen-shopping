@@ -11,11 +11,9 @@ import com.mohaymen.store.service.IOrderService;
 import com.mohaymen.store.web.ApplicationProperties;
 import com.mohaymen.store.web.mapper.OrderMapper;
 import com.mohaymen.store.web.response.OrderResponse;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -64,16 +62,15 @@ public class OrderService implements IOrderService {
 
         orderRepository.save(order);
 
-        //TODO using Outbox Pattern later
-        TransactionSynchronizationManager.registerSynchronization(
-                new TransactionSynchronization() {
+        // TODO using Outbox Pattern later
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
 
-                    @Override
-                    public void afterCommit() {
+            @Override
+            public void afterCommit() {
 
-                        publishOrderCreated(order);
-                    }
-                });
+                publishOrderCreated(order);
+            }
+        });
         publishOrderCreated(order);
 
         clearCart(cart);
@@ -83,18 +80,10 @@ public class OrderService implements IOrderService {
 
     private void publishOrderCreated(Order order) {
 
-        OrderCreatedEvent event =
-                new OrderCreatedEvent(
-                        order.getId(),
-                        order.getOrderNumber(),
-                        order.getCustomerId(),
-                        order.getTotalAmount()
-                );
+        OrderCreatedEvent event = new OrderCreatedEvent(
+                order.getId(), order.getOrderNumber(), order.getCustomerId(), order.getTotalAmount());
 
-        kafkaProducerService.publish(
-                KafkaTopics.ORDER_CREATED,
-                event
-        );
+        kafkaProducerService.publish(KafkaTopics.ORDER_CREATED, event);
     }
 
     @Override

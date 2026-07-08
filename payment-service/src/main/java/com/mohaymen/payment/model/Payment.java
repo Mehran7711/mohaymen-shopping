@@ -1,10 +1,9 @@
 package com.mohaymen.payment.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import lombok.*;
 
 /**
  * Author: Mehran
@@ -21,10 +20,7 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_seq")
-    @SequenceGenerator(
-            name = "payment_seq",
-            sequenceName = "payment_id_seq",
-            allocationSize = 1)
+    @SequenceGenerator(name = "payment_seq", sequenceName = "payment_id_seq", allocationSize = 1)
     private Long id;
 
     @Version

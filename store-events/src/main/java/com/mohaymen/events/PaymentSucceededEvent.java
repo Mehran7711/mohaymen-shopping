@@ -1,16 +1,9 @@
 package com.mohaymen.events;
 
 import java.math.BigDecimal;
-
-/**
- * Author: Mehran
- * Created on: 7/8/26
- */
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-
 
 @Getter
 @SuperBuilder
@@ -23,10 +16,7 @@ public class PaymentSucceededEvent extends BaseEvent {
 
     private BigDecimal amount;
 
-    public PaymentSucceededEvent(
-            Long orderId,
-            String transactionId,
-            BigDecimal amount) {
+    public PaymentSucceededEvent(Long orderId, String transactionId, BigDecimal amount) {
 
         super(EventType.PAYMENT_SUCCEEDED);
 

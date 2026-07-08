@@ -17,12 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
  * Author: Mehran
  * Created on: 7/8/26
  */
-
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class OrderPaymentService implements IOrderPaymentService {
-
 
     private final OrderRepository orderRepository;
 
@@ -40,7 +38,8 @@ public class OrderPaymentService implements IOrderPaymentService {
         order.setStatus(OrderStatus.CONFIRMED);
 
         for (OrderItem item : order.getItems()) {
-            ProductInventory inventory = inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
+            ProductInventory inventory =
+                    inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
             inventory.setQuantity(inventory.getQuantity() - item.getQuantity());
             inventory.setReservedQuantity(inventory.getReservedQuantity() - item.getQuantity());
         }
@@ -58,7 +57,8 @@ public class OrderPaymentService implements IOrderPaymentService {
         order.setStatus(OrderStatus.CANCELED);
 
         for (OrderItem item : order.getItems()) {
-            ProductInventory inventory = inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
+            ProductInventory inventory =
+                    inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
             inventory.setReservedQuantity(inventory.getReservedQuantity() - item.getQuantity());
         }
     }

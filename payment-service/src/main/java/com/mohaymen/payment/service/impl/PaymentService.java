@@ -10,17 +10,15 @@ import com.mohaymen.payment.repository.PaymentRepository;
 import com.mohaymen.payment.service.IPaymentKafkaProducer;
 import com.mohaymen.payment.service.IPaymentService;
 import com.mohaymen.payment.web.response.PaymentResult;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 /**
  * Author: Mehran
  * Created on: 7/8/26
  */
-
 @Service
 @RequiredArgsConstructor
 public class PaymentService implements IPaymentService {
@@ -35,18 +33,10 @@ public class PaymentService implements IPaymentService {
 
         if (success) {
 
-            return new PaymentResult(
-                    true,
-                    UUID.randomUUID().toString(),
-                    null
-            );
+            return new PaymentResult(true, UUID.randomUUID().toString(), null);
         }
 
-        return new PaymentResult(
-                false,
-                null,
-                "Insufficient funds"
-        );
+        return new PaymentResult(false, null, "Insufficient funds");
     }
 
     @Override
@@ -56,14 +46,13 @@ public class PaymentService implements IPaymentService {
             return;
         }
 
-        Payment payment =
-                Payment.builder()
-                        .orderId(event.getOrderId())
-                        .orderNumber(event.getOrderNumber())
-                        .customerId(event.getCustomerId())
-                        .amount(event.getAmount())
-                        .status(PaymentStatus.INITIATED)
-                        .build();
+        Payment payment = Payment.builder()
+                .orderId(event.getOrderId())
+                .orderNumber(event.getOrderNumber())
+                .customerId(event.getCustomerId())
+                .amount(event.getAmount())
+                .status(PaymentStatus.INITIATED)
+                .build();
 
         paymentRepository.save(payment);
 
@@ -74,13 +63,9 @@ public class PaymentService implements IPaymentService {
             payment.setStatus(PaymentStatus.COMPLETED);
             payment.setTransactionId(result.transactionId());
             paymentRepository.save(payment);
-            producer.publish(KafkaTopics.PAYMENT_SUCCEEDED,
-                    new PaymentSucceededEvent(
-                            event.getOrderId(),
-                            result.transactionId(),
-                            event.getAmount()
-                    )
-            );
+            producer.publish(
+                    KafkaTopics.PAYMENT_SUCCEEDED,
+                    new PaymentSucceededEvent(event.getOrderId(), result.transactionId(), event.getAmount()));
 
         } else {
             payment.setStatus(PaymentStatus.FAILED);
