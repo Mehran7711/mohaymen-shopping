@@ -32,7 +32,6 @@ public class PaymentService implements IPaymentService {
         boolean success = Math.random() > 0.3;
 
         if (success) {
-
             return new PaymentResult(true, UUID.randomUUID().toString(), null);
         }
 
