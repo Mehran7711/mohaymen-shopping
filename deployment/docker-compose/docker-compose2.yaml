@@ -1,0 +1,117 @@
+name: 'mohaymen-shopping'
+services:
+
+  store-db:
+    image: gvenzl/oracle-xe
+    container_name: store-db
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    environment:
+      ORACLE_PASSWORD: oracle
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+      - ./db/init:/container-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "sqlplus -s system/oracle@//localhost:1521/XEPDB1 <<< 'SELECT 1 FROM DUAL;' || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 120s
+
+  store-service:
+    build:
+      context: ../../store-service
+      dockerfile: Dockerfile
+    image: store-service:2.0
+    container_name: store-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DB_URL=jdbc:oracle:thin:@//store-db:1521/XE
+      - DB_USERNAME=STORE
+      - DB_PASSWORD=123
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    depends_on:
+      store-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  zookeeper:
+    image: docker.arvancloud.ir/confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  Kafka:
+    image: docker.arvancloud.ir/confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  redis:
+    image: docker.arvancloud.ir/redis:7-alpine
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]  # No password needed
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+
+volumes:
+  oracle-data:
+  redis-data:
+
+#  docker build -t store-service:1.0 .
+#  docker compose up -d --build  form recreate image and update changes on image
+
+#  docker compose down -v
+#  docker compose up -d
+#  docker compose down --remove-orphans
+#  docker network prune -f
+#  docker compose up -d
+
+##### create topic
+#  docker exec -it mohaymen-shopping-Kafka-1 \
+#  kafka-topics --create \
+#  --topic test \
+#  --bootstrap-server localhost:9092 \
+#  --partitions 1 \
+#  --replication-factor 1
+
+
+##### start consumer
+#  docker exec -it mohaymen-shopping-Kafka-1 \
+#  kafka-console-consumer \
+#  --topic test \
+#  --bootstrap-server localhost:9092 \
+#  --from-beginning
+
+
+##### start producer
+#  docker exec -it mohaymen-shopping-Kafka-1 \
+#  kafka-console-producer \
+#  --topic test \
+#  --bootstrap-server localhost:9092
