@@ -13,63 +13,62 @@ services:
       - oracle-data:/opt/oracle/oradata
       - ./db/init:/container-entrypoint-initdb.d
     healthcheck:
-      test: [ "CMD-SHELL", "sqlplus -s system/oracle@//localhost:1521/XE <<< 'SELECT 1 FROM DUAL;' || exit 1" ]
+      test: [ "CMD-SHELL", "sqlplus -s system/oracle@//localhost:1521/XEPDB1 <<< 'SELECT 1 FROM DUAL;' || exit 1" ]
       interval: 10s
       timeout: 10s
       retries: 30
       start_period: 120s
 
-#  store-service:
-#    build:
-#      context: ../..
-#      dockerfile: ../../Dockerfile.store-service
-#    image: store-service:2.0
-#    container_name: store-service
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=dev
-#      - DB_URL=jdbc:oracle:thin:@//store-db:1521/XE
-#      - DB_USERNAME=STORE
-#      - DB_PASSWORD=123
-#      - REDIS_HOST=redis
-#      - REDIS_PORT=6379
-#    ports:
-#      - "8081:8081"
-#    restart: unless-stopped
-#    depends_on:
-#      store-db:
-#        condition: service_healthy
-#      redis:
-#        condition: service_started
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 700m
-#
-#  payment-service:
-#    build:
-#      context: ../..
-#      dockerfile: ../../Dockerfile.payment-service
-#    image: payment-service:2.0
-#    container_name: payment-service
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=dev
-#      - DB_URL=jdbc:oracle:thin:@//store-db:1521/XE
-#      - DB_USERNAME=payment
-#      - DB_PASSWORD=123
-#      - REDIS_HOST=redis
-#      - REDIS_PORT=6379
-#    ports:
-#      - "8081:8081"
-#    restart: unless-stopped
-#    depends_on:
-#      store-db:
-#        condition: service_healthy
-#      redis:
-#        condition: service_started
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 700m
+  store-service:
+    build:
+      context: ../..
+      dockerfile: store-service/Dockerfile
+    image: store-service:2.0
+    container_name: store-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DB_URL=jdbc:oracle:thin:@//store-db:1521/XE
+      - DB_USERNAME=STORE
+      - DB_PASSWORD=123
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    depends_on:
+      store-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+  payment-service:
+    build:
+      context: ../..
+      dockerfile: payment-service/Dockerfile
+    image: payment-service:2.0
+    container_name: payment-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DB_URL=jdbc:oracle:thin:@//store-db:1521/XE
+      - DB_USERNAME=PAYMENT
+      - DB_PASSWORD=123
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "8082:8082"
+    restart: unless-stopped
+    depends_on:
+      store-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 700m
 
   zookeeper:
     image: docker.arvancloud.ir/confluentinc/cp-zookeeper:7.5.0
@@ -86,7 +85,7 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://Kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   redis:

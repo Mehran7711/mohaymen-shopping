@@ -47,8 +47,7 @@ public class ProductService implements IProductService {
 
     @Cacheable(value = "products", key = "#code")
     public Optional<ProductDto> getProductByCode(String code) {
-        log.info("🔍 Cache MISS for code: {}", code);
-        log.info("📖 Fetching from database...");
+        log.info("Fetching from database...");
         return productRepository.findByCode(code).map(productMapper::toDto);
     }
 }

@@ -8,12 +8,13 @@ import com.mohaymen.store.repository.OrderRepository;
 import com.mohaymen.store.repository.ProductInventoryRepository;
 import com.mohaymen.store.service.IKafkaProducerService;
 import com.mohaymen.store.service.IOrderService;
-import com.mohaymen.store.web.ApplicationProperties;
 import com.mohaymen.store.web.mapper.OrderMapper;
 import com.mohaymen.store.web.response.OrderResponse;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @AllArgsConstructor
 public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
-    private final ApplicationProperties properties;
     private final OrderMapper orderMapper;
     private CartRepository cartRepository;
     private ProductInventoryRepository inventoryRepository;
@@ -67,13 +67,14 @@ public class OrderService implements IOrderService {
 
             @Override
             public void afterCommit() {
+                log.info("Order has been updated-> going to publish order: {} ", order.getId());
 
                 publishOrderCreated(order);
             }
         });
-        publishOrderCreated(order);
 
         clearCart(cart);
+        log.info("cart has been cleared. order: {} ", order.getId());
 
         return orderMapper.toDto(order);
     }
