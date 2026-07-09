@@ -8,17 +8,13 @@ import com.mohaymen.store.service.IOrderService;
 import com.mohaymen.store.web.ApplicationProperties;
 import com.mohaymen.store.web.mapper.OrderMapper;
 import com.mohaymen.store.web.response.OrderResponse;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Author: Mehran
@@ -71,9 +67,7 @@ public class OrderService implements IOrderService {
     }
 
     private Cart loadCart(Long customerId) {
-        return cartRepository.findByCustomerId(customerId)
-                .orElseThrow(() ->
-                        new RuntimeException("Cart not found"));
+        return cartRepository.findByCustomerId(customerId).orElseThrow(() -> new RuntimeException("Cart not found"));
     }
 
     private void clearCart(Cart cart) {
@@ -88,19 +82,16 @@ public class OrderService implements IOrderService {
                 .product(item.getProduct())
                 .quantity(item.getQuantity())
                 .unitPrice(item.getUnitPrice())
-                .totalPrice(item.getUnitPrice()
-                        .multiply(
-                                BigDecimal.valueOf(
-                                        item.getQuantity())))
+                .totalPrice(item.getUnitPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .build();
-
 
         order.getItems().add(orderItem);
         return orderItem;
     }
 
     private void reserveInventory(CartItem item) {
-        ProductInventory inventory = inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
+        ProductInventory inventory =
+                inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
         long available = inventory.getQuantity() - inventory.getReservedQuantity();
 
         if (available < item.getQuantity()) {

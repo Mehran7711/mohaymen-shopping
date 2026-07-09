@@ -2,25 +2,24 @@ package com.mohaymen.store.repository;
 
 import com.mohaymen.store.model.ProductInventory;
 import jakarta.persistence.LockModeType;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 /**
  * Author: Mehran
  * Created on: 7/7/26
  */
-
 @Repository
 public interface ProductInventoryRepository extends JpaRepository<ProductInventory, Long> {
 
     Optional<ProductInventory> findByProductId(Long productId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("""
+    @Query(
+            """
                 select pi
                 from ProductInventory pi
                 where pi.productId = :productId

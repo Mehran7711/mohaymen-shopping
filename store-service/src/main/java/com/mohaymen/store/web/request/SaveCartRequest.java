@@ -1,15 +1,13 @@
 package com.mohaymen.store.web.request;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 /**
  * Author: Mehran
  * Created on: 7/7/26
  */
-
 @Getter
 @Setter
 public class SaveCartRequest {

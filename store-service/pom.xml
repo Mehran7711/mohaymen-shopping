@@ -150,8 +150,14 @@
     </dependency>
 
     <dependency>
+      <groupId>com.mohaymen</groupId>
+      <artifactId>store-events</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-cache</artifactId>
+      <artifactId>spring-boot-starter-kafka</artifactId>
     </dependency>
 
     <dependency>

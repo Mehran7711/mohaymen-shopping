@@ -1,18 +1,16 @@
 package com.mohaymen.store.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.*;
 
 /**
  * Author: Mehran
  * Created on: 7/4/26
  */
-
 @Entity
 @Table(name = "orders")
 @Getter

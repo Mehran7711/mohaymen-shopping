@@ -1,79 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0  https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.mohaymen</groupId>
-    <artifactId>mohaymen-shopping</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>mohaymen-shopping</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0  https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.mohaymen</groupId>
+  <artifactId>mohaymen-shopping</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>mohaymen-shopping</name>
 
-    <modules>
-        <module>store-service</module>
-        <module>payment-service</module>
-    </modules>
+  <modules>
+    <module>store-service</module>
+    <module>payment-service</module>
+    <module>store-events</module>
+  </modules>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>21</java.version>
-        <maven.compiler.release>${java.version}</maven.compiler.release>
-        <spotless-maven-plugin.version>3.7.0</spotless-maven-plugin.version>
-    </properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>21</java.version>
+    <maven.compiler.release>${java.version}</maven.compiler.release>
+    <spotless-maven-plugin.version>3.7.0</spotless-maven-plugin.version>
+    <spring-kafka.version>4.1.0</spring-kafka.version>
+  </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.diffplug.spotless</groupId>
-                <artifactId>spotless-maven-plugin</artifactId>
-                <version>${spotless-maven-plugin.version}</version>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+      <version>${spring-kafka.version}</version>
+    </dependency>
+  </dependencies>
 
-                <configuration>
-                    <java>
-                        <!-- Ensures consistent import ordering -->
-                        <importOrder>
-                            <order>java,javax,org,com</order>
-                        </importOrder>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless-maven-plugin.version}</version>
 
-                        <!-- Removes unused imports automatically -->
-                        <removeUnusedImports/>
+        <configuration>
+          <java>
+            <!-- Ensures consistent import ordering -->
+            <importOrder>
+              <order>java,javax,org,com</order>
+            </importOrder>
 
-                        <!-- Modern Java formatter (recommended) -->
-                        <palantirJavaFormat>
-                            <version>2.74.0</version>
-                        </palantirJavaFormat>
+            <!-- Removes unused imports automatically -->
+            <removeUnusedImports />
 
-                        <!-- Optional but useful -->
-                        <formatAnnotations/>
-                    </java>
+            <!-- Modern Java formatter (recommended) -->
+            <palantirJavaFormat>
+              <version>2.74.0</version>
+            </palantirJavaFormat>
 
-                    <!-- Optional: also format Maven POM -->
-                    <pom>
-                        <sortPom>
-                            <expandEmptyElements>false</expandEmptyElements>
-                            <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
-                        </sortPom>
-                    </pom>
-                </configuration>
+            <!-- Optional but useful -->
+            <formatAnnotations />
+          </java>
 
-                <executions>
-                    <execution>
-                        <id>spotless-check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <phase>verify</phase>
-                    </execution>
+          <!-- Optional: also format Maven POM -->
+          <pom>
+            <sortPom>
+              <expandEmptyElements>false</expandEmptyElements>
+              <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+            </sortPom>
+          </pom>
+        </configuration>
 
-                    <execution>
-                        <id>spotless-apply</id>
-                        <goals>
-                            <goal>apply</goal>
-                        </goals>
-                        <phase>none</phase>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+        <executions>
+          <execution>
+            <id>spotless-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+
+          <execution>
+            <id>spotless-apply</id>
+            <goals>
+              <goal>apply</goal>
+            </goals>
+            <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
