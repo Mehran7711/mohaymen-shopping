@@ -69,7 +69,8 @@ public class PaymentService implements IPaymentService {
             payment.setTransactionId(result.transactionId());
             paymentRepository.save(payment);
             producer.publish(
-                    KafkaTopics.PAYMENT_SUCCEEDED, event.getOrderId().toString(),
+                    KafkaTopics.PAYMENT_SUCCEEDED,
+                    event.getOrderId().toString(),
                     new PaymentSucceededEvent(
                             event.getOrderId(), result.transactionId(), event.getAmount(), event.getScenario()));
 

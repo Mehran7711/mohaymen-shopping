@@ -104,8 +104,17 @@ services:
       retries: 5
       start_period: 5s
 
+  redisinsight:
+    image: docker.arvancloud.ir/redis/redisinsight:latest
+    container_name: redisinsight
+    ports:
+      - "5540:5540"
+    restart: unless-stopped
+    depends_on:
+      - redis
+
   kafdrop:
-    image: obsidiandynamics/kafdrop:latest
+    image: docker.arvancloud.ir/obsidiandynamics/kafdrop:latest
     container_name: kafdrop
     restart: unless-stopped
     ports:
@@ -156,8 +165,12 @@ volumes:
 #  --topic test \
 #  --bootstrap-server localhost:9092
 
-#  Kafka GUI
+#  Kafka GUI localhost:9000
 #  docker run -d --rm -p 9000:9000   --network mohaymen-shopping_default  -e KAFKA_BROKERCONNECT=mohaymen-shopping-Kafka-1:9092     obsidiandynamics/kafdrop
+
+#  redis GUI http://localhost:5540
+#  docker run -d   --name redisinsight   -p 5540:5540   redis/redisinsight:latest
+
 
 #  docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
 

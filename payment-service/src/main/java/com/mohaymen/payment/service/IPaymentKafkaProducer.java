@@ -13,6 +13,5 @@ public interface IPaymentKafkaProducer {
     });
     * */
 
-
     void publish(String topic, String key, Object event);
 }

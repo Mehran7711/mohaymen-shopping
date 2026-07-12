@@ -64,7 +64,6 @@ public class OrderPaymentService implements IOrderPaymentService {
 
             order.setStatus(OrderStatus.REFUND_PENDING);
 
-
             kafkaProducerService.publish(
                     KafkaTopics.REFUND_REQUESTED,
                     event.getOrderId().toString(),
@@ -74,7 +73,6 @@ public class OrderPaymentService implements IOrderPaymentService {
                             event.getAmount(),
                             ex.getMessage(),
                             event.getScenario()));
-
         }
     }
 
@@ -105,7 +103,8 @@ public class OrderPaymentService implements IOrderPaymentService {
         }
         order.setStatus(OrderStatus.REFUNDED);
         for (OrderItem item : order.getItems()) {
-            ProductInventory inventory = inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
+            ProductInventory inventory =
+                    inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
             inventory.setReservedQuantity(inventory.getReservedQuantity() - item.getQuantity());
         }
     }

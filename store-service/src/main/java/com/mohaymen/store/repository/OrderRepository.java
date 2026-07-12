@@ -2,10 +2,9 @@ package com.mohaymen.store.repository;
 
 import com.mohaymen.store.model.Order;
 import com.mohaymen.store.model.OrderStatus;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Author: Mehran

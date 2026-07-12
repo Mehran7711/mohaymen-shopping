@@ -5,11 +5,11 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
 /**
  * Author: Mehran
  * Created on: 7/8/26
  */
-
 @Getter
 @SuperBuilder
 @NoArgsConstructor
