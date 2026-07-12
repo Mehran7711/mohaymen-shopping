@@ -33,18 +33,18 @@ public class CompensateService implements ICompensateService {
     @Transactional
     public void releaseExpiredReservations() {
 
-//        log.info("Starting compensation service...");
-//        LocalDateTime threshold = LocalDateTime.now().minusMinutes(15);
-//
-//        List<Order> expiredOrders = orderRepository.findByStatusAndCreatedAtBefore(OrderStatus.AWAITING_PAYMENT, threshold);
-//
-//        for (Order order : expiredOrders) {
-//            order.setStatus(OrderStatus.CANCELED);
-//
-//            for (OrderItem item : order.getItems()) {
-//                ProductInventory inventory = inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
-//                inventory.setReservedQuantity(inventory.getReservedQuantity() - item.getQuantity());
-//            }
-//        }
+        log.info("Starting compensation service...");
+        LocalDateTime threshold = LocalDateTime.now().minusMinutes(15);
+
+        List<Order> expiredOrders = orderRepository.findByStatusAndCreatedAtBefore(OrderStatus.AWAITING_PAYMENT, threshold);
+
+        for (Order order : expiredOrders) {
+            order.setStatus(OrderStatus.CANCELED);
+
+            for (OrderItem item : order.getItems()) {
+                ProductInventory inventory = inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
+                inventory.setReservedQuantity(inventory.getReservedQuantity() - item.getQuantity());
+            }
+        }
     }
 }
