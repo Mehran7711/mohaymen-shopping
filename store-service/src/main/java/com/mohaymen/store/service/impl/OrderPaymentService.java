@@ -67,6 +67,7 @@ public class OrderPaymentService implements IOrderPaymentService {
 
             kafkaProducerService.publish(
                     KafkaTopics.REFUND_REQUESTED,
+                    event.getOrderId().toString(),
                     new RefundRequestedEvent(
                             event.getOrderId(),
                             event.getTransactionId(),

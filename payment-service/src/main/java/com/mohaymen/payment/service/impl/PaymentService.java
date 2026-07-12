@@ -69,7 +69,7 @@ public class PaymentService implements IPaymentService {
             payment.setTransactionId(result.transactionId());
             paymentRepository.save(payment);
             producer.publish(
-                    KafkaTopics.PAYMENT_SUCCEEDED,
+                    KafkaTopics.PAYMENT_SUCCEEDED, event.getOrderId().toString(),
                     new PaymentSucceededEvent(
                             event.getOrderId(), result.transactionId(), event.getAmount(), event.getScenario()));
 
@@ -79,6 +79,7 @@ public class PaymentService implements IPaymentService {
             paymentRepository.save(payment);
             producer.publish(
                     KafkaTopics.PAYMENT_FAILED,
+                    event.getOrderId().toString(),
                     new PaymentFailedEvent(event.getOrderId(), result.reason(), event.getScenario()));
         }
     }
@@ -98,6 +99,7 @@ public class PaymentService implements IPaymentService {
             payment.setStatus(PaymentStatus.REFUNDED);
             producer.publish(
                     KafkaTopics.REFUND_COMPLETED,
+                    event.getOrderId().toString(),
                     new RefundCompletedEvent(event.getOrderId(), result.transactionId(), event.getScenario()));
         }
     }

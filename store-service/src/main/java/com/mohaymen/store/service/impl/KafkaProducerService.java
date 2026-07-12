@@ -17,16 +17,17 @@ public class KafkaProducerService implements IKafkaProducerService {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void publish(String topic, Object event) {
+    public void publish(String topic, String key, Object event) {
 
-        kafkaTemplate.send(topic, event).whenComplete((result, ex) -> {
+        kafkaTemplate.send(topic, key, event).whenComplete((result, ex) -> {
             if (ex != null) {
                 log.error("Failed to publish event to topic {}", topic, ex);
             } else {
                 log.info(
-                        "Event published to topic={} offset={}",
+                        "Event published to topic={} offset={} key={}",
                         topic,
-                        result.getRecordMetadata().offset());
+                        result.getRecordMetadata().offset(),
+                        key);
             }
         });
     }

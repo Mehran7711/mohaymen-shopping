@@ -1,14 +1,14 @@
 package com.mohaymen.events;
 
-/**
- * Author: Mehran
- * Created on: 7/8/26
- */
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+/**
+ * Author: Mehran
+ * Created on: 7/8/26
+ */
 
 @Getter
 @SuperBuilder
