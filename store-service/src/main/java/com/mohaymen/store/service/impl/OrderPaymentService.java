@@ -32,6 +32,7 @@ public class OrderPaymentService implements IOrderPaymentService {
     private final OrderRepository orderRepository;
     private final ProductInventoryRepository inventoryRepository;
     private final IKafkaProducerService kafkaProducerService;
+    private final InventoryService inventoryService;
 
     @Override
     public void handlePaymentSuccess(PaymentSucceededEvent event) {
@@ -51,17 +52,12 @@ public class OrderPaymentService implements IOrderPaymentService {
             order.setStatus(OrderStatus.CONFIRMED);
 
             for (OrderItem item : order.getItems()) {
-                ProductInventory inventory =
-                        inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
-                inventory.setQuantity(inventory.getQuantity() - item.getQuantity());
-                inventory.setReservedQuantity(inventory.getReservedQuantity() - item.getQuantity());
+                inventoryService.deductStock(item.getProduct(), item.getQuantity());
             }
         } catch (Exception ex) {
 
             log.error("ORDER_FAILED_ {}", ex.getMessage());
-
             Order order = orderRepository.findById(event.getOrderId()).orElseThrow();
-
             order.setStatus(OrderStatus.REFUND_PENDING);
 
             kafkaProducerService.publish(

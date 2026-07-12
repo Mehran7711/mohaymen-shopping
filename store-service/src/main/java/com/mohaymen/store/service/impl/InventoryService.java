@@ -1,9 +1,11 @@
 package com.mohaymen.store.service.impl;
 
+import com.mohaymen.store.model.Product;
 import com.mohaymen.store.model.ProductInventory;
 import com.mohaymen.store.repository.ProductInventoryRepository;
 import com.mohaymen.store.service.IInventoryService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.function.Supplier;
  * Author: Mehran
  * Created on: 7/7/26
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InventoryService implements IInventoryService {
@@ -36,8 +39,8 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public void reserveStock(Long productId, long quantity) {
-        ProductInventory inventory = inventoryRepository.lockByProductId(productId).orElseThrow(() -> new RuntimeException("Inventory not found"));
+    public void reserveStock(Product product, long quantity) {
+        ProductInventory inventory = inventoryRepository.lockByProductId(product.getId()).orElseThrow(() -> new RuntimeException("Inventory not found"));
         long available = inventory.getQuantity() - inventory.getReservedQuantity();
         if (available < quantity) {
             throw new RuntimeException("Insufficient stock");
@@ -46,9 +49,9 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public void releaseReservation(Long productId, long quantity) {
+    public void releaseReservation(Product product, long quantity) {
 
-        ProductInventory inventory = inventoryRepository.lockByProductId(productId).orElseThrow(() -> new RuntimeException("Inventory not found"));
+        ProductInventory inventory = inventoryRepository.lockByProductId(product.getId()).orElseThrow(() -> new RuntimeException("Inventory not found"));
         long reserved = inventory.getReservedQuantity();
         if (reserved < quantity) {
             throw new RuntimeException("Invalid reservation release");
@@ -57,11 +60,9 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public void deductStock(Long productId, long quantity) {
+    public void deductStock(Product product, long quantity) {
 
-        ProductInventory inventory = inventoryRepository
-                .lockByProductId(productId)
-                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+        ProductInventory inventory = inventoryRepository.lockByProductId(product.getId()).orElseThrow(() -> new RuntimeException("Inventory not found"));
 
         if (inventory.getReservedQuantity() < quantity) {
             throw new RuntimeException("Reserved quantity is too low");
@@ -79,11 +80,10 @@ public class InventoryService implements IInventoryService {
     }
 
 //    @Override
-//    public void reserveStock(Long productId, long quantity) {
+//    public void reserveStock(Product product, long quantity) {
 //
-//
-//        executeWithLock(productId, () -> {
-//            ProductInventory inventory = inventoryRepository.findById(productId).orElseThrow(() -> new RuntimeException("Inventory not found"));
+//        executeWithLock(product.getId(), () -> {
+//            ProductInventory inventory = inventoryRepository.findById(product.getId()).orElseThrow(() -> new RuntimeException("Inventory not found"));
 //
 //            long available = inventory.getQuantity() - inventory.getReservedQuantity();
 //

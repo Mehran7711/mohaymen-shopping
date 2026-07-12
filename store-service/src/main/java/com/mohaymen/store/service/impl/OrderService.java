@@ -6,14 +6,18 @@ import com.mohaymen.store.model.*;
 import com.mohaymen.store.repository.CartRepository;
 import com.mohaymen.store.repository.OrderRepository;
 import com.mohaymen.store.repository.ProductInventoryRepository;
+import com.mohaymen.store.service.IInventoryService;
 import com.mohaymen.store.service.IKafkaProducerService;
 import com.mohaymen.store.service.IOrderService;
 import com.mohaymen.store.web.mapper.OrderMapper;
 import com.mohaymen.store.web.response.OrderResponse;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,13 +30,14 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 @Service
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-    private CartRepository cartRepository;
-    private ProductInventoryRepository inventoryRepository;
-    private IKafkaProducerService kafkaProducerService;
+    private final CartRepository cartRepository;
+    private final ProductInventoryRepository inventoryRepository;
+    private final IKafkaProducerService kafkaProducerService;
+    private final IInventoryService inventoryService;
 
     private String generateOrderNumber() {
         return "ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
@@ -50,14 +55,12 @@ public class OrderService implements IOrderService {
         BigDecimal total = BigDecimal.ZERO;
 
         for (CartItem item : cart.getItems()) {
-            reserveInventory(item);
+            inventoryService.reserveStock(item.getProduct(), item.getQuantity());
             OrderItem orderItem = createOrderItem(order, item);
-            order.getItems().add(orderItem);
             total = total.add(orderItem.getTotalPrice());
         }
 
         order.setTotalAmount(total);
-
         orderRepository.save(order);
 
         // TODO using Outbox Pattern later
@@ -113,19 +116,6 @@ public class OrderService implements IOrderService {
 
         order.getItems().add(orderItem);
         return orderItem;
-    }
-
-    private void reserveInventory(CartItem item) {
-        ProductInventory inventory =
-                inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
-        long available = inventory.getQuantity() - inventory.getReservedQuantity();
-
-        if (available < item.getQuantity()) {
-            throw new RuntimeException(item.getProduct().getName() + " has insufficient stock");
-        }
-        inventory.setReservedQuantity(inventory.getReservedQuantity() + item.getQuantity());
-
-        inventoryRepository.save(inventory);
     }
 
     private Order createOrder(Long customerId) {

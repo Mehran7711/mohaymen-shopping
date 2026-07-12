@@ -1,5 +1,6 @@
 package com.mohaymen.store.service;
 
+import com.mohaymen.store.model.Product;
 import com.mohaymen.store.model.ProductInventory;
 
 /**
@@ -12,11 +13,11 @@ public interface IInventoryService {
 
     void addStock(Long productId, long quantity);
 
-    void reserveStock(Long productId, long quantity);
+    void reserveStock(Product product, long quantity);
 
-    void releaseReservation(Long productId, long quantity);
+    void releaseReservation(Product product, long quantity);
 
-    void deductStock(Long productId, long quantity);
+    void deductStock(Product product, long quantity);
 
     long getAvailableStock(Long productId);
 }
