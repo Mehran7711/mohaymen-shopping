@@ -16,9 +16,9 @@ public class PaymentSucceededEvent extends BaseEvent {
 
     private BigDecimal amount;
 
-    public PaymentSucceededEvent(Long orderId, String transactionId, BigDecimal amount) {
+    public PaymentSucceededEvent(Long orderId, String transactionId, BigDecimal amount, String scenario) {
 
-        super(EventType.PAYMENT_SUCCEEDED);
+        super(EventType.PAYMENT_SUCCEEDED, scenario);
 
         this.orderId = orderId;
         this.transactionId = transactionId;

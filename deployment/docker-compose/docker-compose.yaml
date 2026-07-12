@@ -140,3 +140,11 @@ volumes:
 #  kafka-console-producer \
 #  --topic test \
 #  --bootstrap-server localhost:9092
+
+#  Kafka GUI
+#  docker run -d --rm -p 9000:9000   --network mohaymen-shopping_default  -e KAFKA_BROKERCONNECT=mohaymen-shopping-Kafka-1:9092     obsidiandynamics/kafdrop
+
+#  docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
+
+#  container network
+#  docker inspect <conyainer-name> | grep NetworkMode

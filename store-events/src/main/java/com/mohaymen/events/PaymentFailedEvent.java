@@ -17,9 +17,9 @@ public class PaymentFailedEvent extends BaseEvent {
 
     private String reason;
 
-    public PaymentFailedEvent(Long orderId, String reason) {
+    public PaymentFailedEvent(Long orderId, String reason, String scenario) {
 
-        super(EventType.PAYMENT_FAILED);
+        super(EventType.PAYMENT_FAILED, scenario);
 
         this.orderId = orderId;
         this.reason = reason;

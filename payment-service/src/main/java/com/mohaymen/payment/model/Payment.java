@@ -51,7 +51,6 @@ public class Payment {
         updatedAt = LocalDateTime.now();
     }
 
-
     @PreUpdate
     public void preUpdate() {
         updatedAt = LocalDateTime.now();

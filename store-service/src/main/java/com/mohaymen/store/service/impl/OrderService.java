@@ -10,11 +10,9 @@ import com.mohaymen.store.service.IKafkaProducerService;
 import com.mohaymen.store.service.IOrderService;
 import com.mohaymen.store.web.mapper.OrderMapper;
 import com.mohaymen.store.web.response.OrderResponse;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,7 +39,7 @@ public class OrderService implements IOrderService {
     }
 
     @Transactional
-    public OrderResponse checkout(Long customerId) {
+    public OrderResponse checkout(Long customerId, String scenario) {
 
         Cart cart = loadCart(customerId);
 
@@ -69,7 +67,8 @@ public class OrderService implements IOrderService {
             public void afterCommit() {
                 log.info("Order has been updated-> going to publish order: {} ", order.getId());
 
-                publishOrderCreated(order);
+                publishOrderCreated(order, scenario);
+                order.setStatus(OrderStatus.AWAITING_PAYMENT);
             }
         });
 
@@ -79,10 +78,10 @@ public class OrderService implements IOrderService {
         return orderMapper.toDto(order);
     }
 
-    private void publishOrderCreated(Order order) {
+    private void publishOrderCreated(Order order, String scenario) {
 
         OrderCreatedEvent event = new OrderCreatedEvent(
-                order.getId(), order.getOrderNumber(), order.getCustomerId(), order.getTotalAmount());
+                order.getId(), order.getOrderNumber(), order.getCustomerId(), order.getTotalAmount(), scenario);
 
         kafkaProducerService.publish(KafkaTopics.ORDER_CREATED, event);
     }

@@ -18,9 +18,9 @@ public class OrderCreatedEvent extends BaseEvent {
 
     private BigDecimal amount;
 
-    public OrderCreatedEvent(Long orderId, String orderNumber, Long customerId, BigDecimal amount) {
+    public OrderCreatedEvent(Long orderId, String orderNumber, Long customerId, BigDecimal amount, String scenario) {
 
-        super(EventType.ORDER_CREATED);
+        super(EventType.ORDER_CREATED, scenario);
 
         this.orderId = orderId;
         this.orderNumber = orderNumber;

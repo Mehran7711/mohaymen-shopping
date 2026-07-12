@@ -16,14 +16,14 @@ import lombok.experimental.SuperBuilder;
 public abstract class BaseEvent {
 
     private String eventId;
-
     private LocalDateTime createdAt;
-
     private String eventType;
+    private String scenario;
 
-    protected BaseEvent(String eventType) {
+    protected BaseEvent(String eventType, String scenario) {
         this.eventId = UUID.randomUUID().toString();
         this.createdAt = LocalDateTime.now();
         this.eventType = eventType;
+        this.scenario = scenario;
     }
 }
