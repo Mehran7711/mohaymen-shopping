@@ -7,6 +7,8 @@ import com.mohaymen.store.web.response.OrderResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 /**
  * Author: Mehran
  * Created on: 7/1/26
@@ -15,6 +17,7 @@ import org.mapstruct.Mapping;
 public interface OrderMapper {
 
     OrderResponse toDto(Order order);
+    List<OrderResponse> toDto(List<Order> orders);
 
     Order toEntity(OrderResponse dto);
 

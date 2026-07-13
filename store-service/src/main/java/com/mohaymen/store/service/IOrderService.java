@@ -1,10 +1,13 @@
 package com.mohaymen.store.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mohaymen.store.model.Order;
 import com.mohaymen.store.web.response.OrderResponse;
 
-public interface IOrderService {
-    OrderResponse checkout(Long customerId, String scenario);
+import java.util.List;
 
-    Order getOrder(Long customerId);
+public interface IOrderService {
+    OrderResponse checkout(Long customerId, String scenario) throws JsonProcessingException;
+
+    List<Order> getOrder(Long customerId);
 }

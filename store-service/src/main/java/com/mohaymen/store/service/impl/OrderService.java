@@ -1,19 +1,24 @@
 package com.mohaymen.store.service.impl;
 
+import tools.jackson.databind.ObjectMapper;
+import com.mohaymen.events.EventType;
 import com.mohaymen.events.KafkaTopics;
 import com.mohaymen.events.OrderCreatedEvent;
 import com.mohaymen.store.model.*;
 import com.mohaymen.store.repository.CartRepository;
 import com.mohaymen.store.repository.OrderRepository;
-import com.mohaymen.store.repository.ProductInventoryRepository;
+import com.mohaymen.store.repository.OutboxRepository;
 import com.mohaymen.store.service.IInventoryService;
 import com.mohaymen.store.service.IKafkaProducerService;
 import com.mohaymen.store.service.IOrderService;
 import com.mohaymen.store.web.mapper.OrderMapper;
 import com.mohaymen.store.web.response.OrderResponse;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,13 +37,65 @@ public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final CartRepository cartRepository;
-    private final ProductInventoryRepository inventoryRepository;
+    private final ObjectMapper objectMapper;
     private final IKafkaProducerService kafkaProducerService;
     private final IInventoryService inventoryService;
+    private final OutboxRepository outboxRepository;
 
     private String generateOrderNumber() {
         return "ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
     }
+
+//    @Transactional
+//    public OrderResponse checkout(Long customerId, String scenario) {
+//
+//        Cart cart = loadCart(customerId);
+//
+//        validateCart(cart);
+//
+//        Order order = createOrder(customerId);
+//
+//        BigDecimal total = BigDecimal.ZERO;
+//
+//        for (CartItem item : cart.getItems()) {
+//            inventoryService.reserveStock(item.getProduct(), item.getQuantity());
+//            OrderItem orderItem = createOrderItem(order, item);
+//            total = total.add(orderItem.getTotalPrice());
+//        }
+//
+//        order.setTotalAmount(total);
+//        orderRepository.save(order);
+//
+//        OrderCreatedEvent event = new OrderCreatedEvent(
+//                order.getId(),
+//                order.getOrderNumber(),
+//                order.getCustomerId(),
+//                order.getTotalAmount(),
+//                scenario);
+//
+//        String payload =
+//                objectMapper.writeValueAsString(event);
+//
+//        OutboxEvent outbox =
+//                OutboxEvent.builder()
+//                        .aggregateId(order.getId())
+//                        .aggregateType("ORDER")
+//                        .eventType(EventType.ORDER_CREATED)
+//                        .topic(KafkaTopics.ORDER_CREATED)
+//                        .payload(payload)
+//                        .status(OutboxStatus.NEW)
+//                        .retryCount(0)
+//                        .createdAt(LocalDateTime.now())
+//                        .build();
+//
+//        outboxRepository.save(outbox);
+//
+//        clearCart(cart);
+//        log.info("cart has been cleared. order: {} ", order.getId());
+//
+//        return orderMapper.toDto(order);
+//    }
+
 
     @Transactional
     public OrderResponse checkout(Long customerId, String scenario) {
@@ -88,7 +145,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Order getOrder(Long customerId) {
+    public List<Order> getOrder(Long customerId) {
         return orderRepository.findByCustomerId(customerId);
     }
 

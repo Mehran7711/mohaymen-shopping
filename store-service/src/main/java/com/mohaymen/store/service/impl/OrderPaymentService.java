@@ -6,10 +6,7 @@ import com.mohaymen.events.PaymentScenario;
 import com.mohaymen.events.PaymentSucceededEvent;
 import com.mohaymen.events.refund.RefundCompletedEvent;
 import com.mohaymen.events.refund.RefundRequestedEvent;
-import com.mohaymen.store.model.Order;
-import com.mohaymen.store.model.OrderItem;
-import com.mohaymen.store.model.OrderStatus;
-import com.mohaymen.store.model.ProductInventory;
+import com.mohaymen.store.model.*;
 import com.mohaymen.store.repository.OrderRepository;
 import com.mohaymen.store.repository.ProductInventoryRepository;
 import com.mohaymen.store.service.IKafkaProducerService;
@@ -91,6 +88,21 @@ public class OrderPaymentService implements IOrderPaymentService {
     }
 
     @Override
+    public void compensateOrder(OutboxEvent outbox) {
+
+        Order order = orderRepository.findById(outbox.getAggregateId()).orElseThrow();
+        if (order.getStatus() != OrderStatus.PENDING) {
+            return;
+        }
+        order.setStatus(OrderStatus.CANCELED);
+
+        for (OrderItem item : order.getItems()) {
+            ProductInventory inventory = inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
+            inventory.setReservedQuantity(inventory.getReservedQuantity() - item.getQuantity());
+        }
+    }
+
+    @Override
     public void refundCompleted(RefundCompletedEvent event) {
         Order order = orderRepository.findById(event.getOrderId()).orElseThrow();
 
@@ -99,8 +111,7 @@ public class OrderPaymentService implements IOrderPaymentService {
         }
         order.setStatus(OrderStatus.REFUNDED);
         for (OrderItem item : order.getItems()) {
-            ProductInventory inventory =
-                    inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
+            ProductInventory inventory = inventoryRepository.findById(item.getProduct().getId()).orElseThrow();
             inventory.setReservedQuantity(inventory.getReservedQuantity() - item.getQuantity());
         }
     }
