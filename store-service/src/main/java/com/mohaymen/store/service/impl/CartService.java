@@ -9,10 +9,8 @@ import com.mohaymen.store.web.mapper.CartMapper;
 import com.mohaymen.store.web.request.CartItemRequest;
 import com.mohaymen.store.web.response.CartItemResponse;
 import com.mohaymen.store.web.response.CartResponse;
-
 import java.math.BigDecimal;
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -115,7 +113,8 @@ public class CartService implements ICartService {
     }
 
     private void recalculate(Cart cart) {
-        BigDecimal total = cart.getItems().stream().map(CartItem::getTotalPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal total =
+                cart.getItems().stream().map(CartItem::getTotalPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
         cart.setTotalAmount(total);
     }
 
@@ -132,116 +131,4 @@ public class CartService implements ICartService {
 
         return new CartResponse(cart.getId(), cart.getTotalAmount(), items);
     }
-
-    //    @Transactional
-    //    public Cart addProduct(Long customerId, Long productId, int quantity) {
-    //
-    //        Cart cart = getOrCreateCart(customerId);
-    //
-    //        Product product = productRepository.findById(productId)
-    //                .orElseThrow();
-    //
-    //        CartItem item = cart.findItem(productId);
-    //
-    //        if (item == null) {
-    //
-    //            item = new CartItem();
-    //
-    //            item.setProduct(product);
-    //            item.setQuantity(quantity);
-    //            item.setUnitPrice(product.getPrice());
-    //
-    //            cart.addItem(item);
-    //
-    //        } else {
-    //
-    //            item.setQuantity(item.getQuantity() + quantity);
-    //
-    //        }
-    //
-    //        item.setTotalPrice(
-    //                item.getUnitPrice()
-    //                        .multiply(BigDecimal.valueOf(item.getQuantity()))
-    //        );
-    //
-    //        recalculateCart(cart);
-    //
-    //        return cartRepository.save(cart);
-    //    }
-    //
-    //    @Transactional
-    //    public Cart saveCart(SaveCartRequest request) {
-    //
-    //        Cart cart = cartRepository.findByCustomerId(request.getCustomerId())
-    //                .orElseGet(() -> {
-    //                    Cart c = new Cart();
-    //                    c.setCustomerId(request.getCustomerId());
-    //                    c.setCreatedAt(LocalDateTime.now());
-    //                    return c;
-    //                });
-    //
-    //        cart.getItems().clear();
-    //
-    //        BigDecimal total = BigDecimal.ZERO;
-    //
-    //        for (CartItemRequest itemRequest : request.getItems()) {
-    //
-    //            Product product = productRepository.findById(itemRequest.getProductId())
-    //                    .orElseThrow(() -> new RuntimeException("Product not found"));
-    //
-    //            CartItem item = new CartItem();
-    //
-    //            item.setCart(cart);
-    //            item.setProduct(product);
-    //            item.setQuantity(itemRequest.getQuantity());
-    //            item.setUnitPrice(product.getPrice());
-    //
-    //            BigDecimal lineTotal = product.getPrice().multiply(BigDecimal.valueOf(itemRequest.getQuantity()));
-    //
-    //            item.setTotalPrice(lineTotal);
-    //
-    //            cart.getItems().add(item);
-    //
-    //            total = total.add(lineTotal);
-    //        }
-    //
-    //        cart.setTotalAmount(total);
-    //        cart.setUpdatedAt(LocalDateTime.now());
-    //
-    //        return cartRepository.save(cart);
-    //    }
-    //
-    //    @Transactional
-    //    public Order checkout(Long customerId) {
-    //
-    //        Cart cart = cartRepository.findByCustomerId(customerId)
-    //                .orElseThrow();
-    //
-    //        for (CartItem item : cart.getItems()) {
-    //
-    //            ProductInventory inventory =
-    //                    inventoryRepository.findByProductId(item.getProduct().getId());
-    //
-    //            long available =
-    //                    inventory.getQuantity() - inventory.getReservedQuantity();
-    //
-    //            if (available < item.getQuantity()) {
-    //                throw new BusinessException("Not enough stock");
-    //            }
-    //
-    //            inventory.setReservedQuantity(
-    //                    inventory.getReservedQuantity() + item.getQuantity());
-    //        }
-    //
-    //        Order order = createOrder(cart);
-    //
-    //        orderRepository.save(order);
-    //
-    //        cart.getItems().clear();
-    //
-    //        cart.setTotalAmount(BigDecimal.ZERO);
-    //
-    //        return order;
-    //    }
-
 }

@@ -176,3 +176,11 @@ volumes:
 
 #  container network
 #  docker inspect <conyainer-name> | grep NetworkMode
+
+
+#  kafka bash
+#  docker exec -it mohaymen-shopping-Kafka-1
+#  kafka-topics   --bootstrap-server localhost:9092   --list
+#  kafka-console-consumer   --bootstrap-server localhost:9092   --topic topic<refund_completed>   --from-beginning
+#  with key -> kafka-console-consumer.sh   --bootstrap-server localhost:9092   --topic refund_completed   --from-beginning   --property print.key=true   --property key.separator=" : "
+#  with partition and offset -> kafka-console-consumer   --bootstrap-server localhost:9092   --topic refund_completed   --from-beginning   --property print.partition=true   --property print.offset=true   --property print.key=true

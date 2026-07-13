@@ -12,6 +12,7 @@ import com.mohaymen.payment.model.PaymentStatus;
 import com.mohaymen.payment.repository.PaymentRepository;
 import com.mohaymen.payment.service.IPaymentKafkaProducer;
 import com.mohaymen.payment.service.IPaymentService;
+import com.mohaymen.payment.web.ApplicationProperties;
 import com.mohaymen.payment.web.response.PaymentResult;
 import com.mohaymen.payment.web.response.RefundResult;
 import java.math.BigDecimal;
@@ -19,6 +20,10 @@ import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,6 +37,7 @@ public class PaymentService implements IPaymentService {
 
     private final PaymentRepository paymentRepository;
     private final IPaymentKafkaProducer producer;
+    private final ApplicationProperties properties;
 
     @Override
     public PaymentResult pay(String orderNumber, BigDecimal amount, String scenario) {
@@ -108,5 +114,13 @@ public class PaymentService implements IPaymentService {
     @Override
     public RefundResult doRefund(String transactionId, BigDecimal amount) {
         return new RefundResult(true, transactionId, amount);
+    }
+
+    @Override
+    public Page<Payment> getPayments(int pageNo) {
+        Sort sort = Sort.by("id").ascending();
+        pageNo = pageNo <= 1 ? 0 : pageNo - 1;
+        Pageable pageable = PageRequest.of(pageNo, properties.pageSize(), sort);
+        return paymentRepository.findAll(pageable);
     }
 }

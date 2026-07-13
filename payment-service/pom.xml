@@ -16,6 +16,7 @@
     <java.version>21</java.version>
     <spring-cloud.version>2025.1.2</spring-cloud.version>
     <spotless-maven-plugin.version>3.8.0</spotless-maven-plugin.version>
+    <mapstruct-version>1.6.3</mapstruct-version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -137,6 +138,19 @@
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+      <version>${mapstruct-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct-processor</artifactId>
+      <version>${mapstruct-version}</version>
+      <scope>provided</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -160,6 +174,11 @@
                 <path>
                   <groupId>org.projectlombok</groupId>
                   <artifactId>lombok</artifactId>
+                </path>
+                <path>
+                  <groupId>org.mapstruct</groupId>
+                  <artifactId>mapstruct-processor</artifactId>
+                  <version>${mapstruct-version}</version>
                 </path>
                 <path>
                   <groupId>org.springframework.boot</groupId>
