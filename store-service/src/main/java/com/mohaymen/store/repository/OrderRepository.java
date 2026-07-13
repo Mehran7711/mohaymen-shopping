@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created on: 7/1/26
  */
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    List<Order> findByCustomerId(Long customerId);
+    List<Order> findByCustomerIdOrderByIdDesc(Long customerId);
 
     List<Order> findByStatusAndCreatedAtBefore(OrderStatus status, LocalDateTime createdAt);
 }

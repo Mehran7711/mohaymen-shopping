@@ -7,7 +7,7 @@ import com.mohaymen.store.web.response.OrderResponse;
 import java.util.List;
 
 public interface IOrderService {
-    OrderResponse checkout(Long customerId, String scenario) throws JsonProcessingException;
+    OrderResponse checkout(Long customerId, String scenario);
 
     List<Order> getOrder(Long customerId);
 }

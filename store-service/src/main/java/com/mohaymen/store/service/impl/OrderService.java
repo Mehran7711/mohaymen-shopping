@@ -146,7 +146,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> getOrder(Long customerId) {
-        return orderRepository.findByCustomerId(customerId);
+        return orderRepository.findByCustomerIdOrderByIdDesc(customerId);
     }
 
     private Cart loadCart(Long customerId) {

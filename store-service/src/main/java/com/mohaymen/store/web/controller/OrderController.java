@@ -20,7 +20,7 @@ public class OrderController {
     private final OrderMapper orderMapper;
 
     @PostMapping("/checkout")
-    public ResponseEntity<OrderResponse> checkout(@RequestParam Long customerId, @RequestParam String scenario) throws JsonProcessingException {
+    public ResponseEntity<OrderResponse> checkout(@RequestParam Long customerId, @RequestParam String scenario) {
         return ResponseEntity.ok(orderService.checkout(customerId, scenario));
     }
 
