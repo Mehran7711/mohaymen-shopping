@@ -4,7 +4,7 @@ import com.mohaymen.store.model.*;
 import com.mohaymen.store.repository.CartRepository;
 import com.mohaymen.store.repository.ProductRepository;
 import com.mohaymen.store.service.ICartService;
-import com.mohaymen.store.web.ApplicationProperties;
+import com.mohaymen.store.web.ApplicationWebProperties;
 import com.mohaymen.store.web.mapper.CartMapper;
 import com.mohaymen.store.web.request.CartItemRequest;
 import com.mohaymen.store.web.response.CartItemResponse;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CartService implements ICartService {
     private final CartRepository cartRepository;
     private ProductRepository productRepository;
-    private final ApplicationProperties properties;
+    private final ApplicationWebProperties properties;
     private final CartMapper cartMapper;
 
     @Override

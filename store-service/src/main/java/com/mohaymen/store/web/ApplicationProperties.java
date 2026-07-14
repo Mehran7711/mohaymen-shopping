@@ -10,5 +10,6 @@ import org.springframework.validation.annotation.Validated;
  * Created on: 7/1/26
  */
 @Validated
-@ConfigurationProperties(prefix = "store.web")
-public record ApplicationProperties(@DefaultValue("10") @Min(1) int pageSize) {}
+@ConfigurationProperties(prefix = "store")
+public record ApplicationProperties(String paymentServiceUrl) {
+}

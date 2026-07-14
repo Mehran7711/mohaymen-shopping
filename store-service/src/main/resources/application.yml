@@ -65,10 +65,9 @@ management:
       mode: full
 
 store:
+  payment-service-url: http://payment-service:8082
   web:
     pageSize: 10
-  timeToLiveSeconds: 3600
-  maxEntries: 100
 
 logging:
   level:

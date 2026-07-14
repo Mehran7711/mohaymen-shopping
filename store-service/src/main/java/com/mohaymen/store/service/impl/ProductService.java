@@ -2,7 +2,7 @@ package com.mohaymen.store.service.impl;
 
 import com.mohaymen.store.repository.ProductRepository;
 import com.mohaymen.store.service.IProductService;
-import com.mohaymen.store.web.ApplicationProperties;
+import com.mohaymen.store.web.ApplicationWebProperties;
 import com.mohaymen.store.web.mapper.ProductMapper;
 import com.mohaymen.store.web.response.PageResult;
 import com.mohaymen.store.web.response.ProductDto;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
-    private final ApplicationProperties properties;
+    private final ApplicationWebProperties properties;
     private final ProductMapper productMapper;
 
     public PageResult<ProductDto> getProducts(int pageNo) {
