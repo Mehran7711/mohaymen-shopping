@@ -3,14 +3,11 @@ package com.mohaymen.store.service.impl;
 import com.mohaymen.store.model.*;
 import com.mohaymen.store.repository.OrderRepository;
 import com.mohaymen.store.repository.OutboxRepository;
-import com.mohaymen.store.repository.ProductInventoryRepository;
 import com.mohaymen.store.service.ICompensateService;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.mohaymen.store.service.IInventoryService;
 import com.mohaymen.store.service.IOrderPaymentService;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -38,21 +35,22 @@ public class CompensateService implements ICompensateService {
     public void releaseExpiredReservations() {
 
         log.info("Starting compensation service...");
-//        LocalDateTime threshold = LocalDateTime.now().minusMinutes(15);
-//
-//        List<Order> expiredOrders = orderRepository.findByStatusAndCreatedAtBefore(OrderStatus.AWAITING_PAYMENT, threshold);
-//
-//        for (Order order : expiredOrders) {
-//            order.setStatus(OrderStatus.CANCELED);
-//
-//            for (OrderItem item : order.getItems()) {
-//                inventoryService.releaseReservation(item.getProduct(), item.getQuantity());
-//            }
-//        }
+        //        LocalDateTime threshold = LocalDateTime.now().minusMinutes(15);
+        //
+        //        List<Order> expiredOrders =
+        // orderRepository.findByStatusAndCreatedAtBefore(OrderStatus.AWAITING_PAYMENT, threshold);
+        //
+        //        for (Order order : expiredOrders) {
+        //            order.setStatus(OrderStatus.CANCELED);
+        //
+        //            for (OrderItem item : order.getItems()) {
+        //                inventoryService.releaseReservation(item.getProduct(), item.getQuantity());
+        //            }
+        //        }
     }
 
-//    @Scheduled(fixedDelay = 5000)
-//    @Scheduled(cron = "0 0 2 * * *")
+    //    @Scheduled(fixedDelay = 5000)
+    //    @Scheduled(cron = "0 0 2 * * *")
     @Transactional
     public void outboxPublisher() {
         log.info("Starting compensation service *** outboxPublisher");

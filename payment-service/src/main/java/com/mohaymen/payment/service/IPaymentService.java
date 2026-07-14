@@ -6,10 +6,8 @@ import com.mohaymen.payment.model.Payment;
 import com.mohaymen.payment.web.filter.PaymentFilter;
 import com.mohaymen.payment.web.response.PaymentResult;
 import com.mohaymen.payment.web.response.RefundResult;
-
 import java.math.BigDecimal;
 import java.util.List;
-
 import org.springframework.data.domain.Page;
 
 public interface IPaymentService {

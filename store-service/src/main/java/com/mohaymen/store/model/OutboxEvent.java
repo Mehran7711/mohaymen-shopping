@@ -1,17 +1,15 @@
 package com.mohaymen.store.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 
 /**
  * Author: Mehran
  * Created on: 7/13/26
  */
-
 @Entity
 @Table(name = "outbox_events")
 @Getter

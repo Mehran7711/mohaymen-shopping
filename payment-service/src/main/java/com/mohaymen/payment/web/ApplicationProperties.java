@@ -3,7 +3,6 @@ package com.mohaymen.payment.web;
 import jakarta.validation.constraints.Min;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 /**

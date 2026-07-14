@@ -30,10 +30,10 @@ public class OrderCreatedConsumer {
 
     /*  using Outbox Pattern     */
 
-//    @KafkaListener(topics = KafkaTopics.ORDER_CREATED, groupId = "payment-service")
-//    public void consume(String payload) {
-//        OrderCreatedEvent event = objectMapper.readValue(payload, OrderCreatedEvent.class);
-//        log.info("Received order event {}", event);
-//        paymentService.processPayment(event);
-//    }
+    //    @KafkaListener(topics = KafkaTopics.ORDER_CREATED, groupId = "payment-service")
+    //    public void consume(String payload) {
+    //        OrderCreatedEvent event = objectMapper.readValue(payload, OrderCreatedEvent.class);
+    //        log.info("Received order event {}", event);
+    //        paymentService.processPayment(event);
+    //    }
 }

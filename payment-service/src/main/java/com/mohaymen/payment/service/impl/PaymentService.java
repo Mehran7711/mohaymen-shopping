@@ -17,19 +17,16 @@ import com.mohaymen.payment.web.ApplicationProperties;
 import com.mohaymen.payment.web.filter.PaymentFilter;
 import com.mohaymen.payment.web.response.PaymentResult;
 import com.mohaymen.payment.web.response.RefundResult;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -134,6 +131,14 @@ public class PaymentService implements IPaymentService {
 
     @Override
     public List<Payment> getPaymentList(PaymentFilter filter) {
+        log.info("Fetching payment List");
+//        sleep(6);
         return paymentRepository.findAll(PaymentSpecification.build(filter));
+    }
+
+    void sleep(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000);
+        } catch (InterruptedException ex) { }
     }
 }

@@ -2,9 +2,8 @@ package com.mohaymen.payment.web.mapper;
 
 import com.mohaymen.payment.model.Payment;
 import com.mohaymen.payment.web.response.PaymentApiResult;
-import org.mapstruct.Mapper;
-
 import java.util.List;
+import org.mapstruct.Mapper;
 
 /**
  * Author: Mehran

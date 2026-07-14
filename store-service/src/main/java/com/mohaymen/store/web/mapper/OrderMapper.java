@@ -4,10 +4,9 @@ import com.mohaymen.store.model.Order;
 import com.mohaymen.store.model.OrderItem;
 import com.mohaymen.store.web.response.OrderItemResponse;
 import com.mohaymen.store.web.response.OrderResponse;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 /**
  * Author: Mehran
@@ -17,6 +16,7 @@ import java.util.List;
 public interface OrderMapper {
 
     OrderResponse toDto(Order order);
+
     List<OrderResponse> toDto(List<Order> orders);
 
     Order toEntity(OrderResponse dto);
