@@ -132,13 +132,14 @@ public class PaymentService implements IPaymentService {
     @Override
     public List<Payment> getPaymentList(PaymentFilter filter) {
         log.info("Fetching payment List");
-//        sleep(6);
+        //        sleep(6);
         return paymentRepository.findAll(PaymentSpecification.build(filter));
     }
 
     void sleep(int seconds) {
         try {
             Thread.sleep(seconds * 1000);
-        } catch (InterruptedException ex) { }
+        } catch (InterruptedException ex) {
+        }
     }
 }

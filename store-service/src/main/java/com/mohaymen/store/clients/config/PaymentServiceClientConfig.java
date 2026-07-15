@@ -1,12 +1,11 @@
 package com.mohaymen.store.clients.config;
 
 import com.mohaymen.store.web.ApplicationProperties;
+import java.time.Duration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
-
-import java.time.Duration;
 
 /**
  * Author: Mehran
@@ -28,17 +27,16 @@ public class PaymentServiceClientConfig {
                 .build();
     }
 
-
-//    @Bean
-//    RestClient restClient(RestClient.Builder builder, ApplicationProperties properties) {
-//        ClientHttpRequestFactory requestFactory = ClientHttpRequestFactoryBuilder.simple()
-//                .withCustomizer(customizer -> {
-//                    customizer.setConnectTimeout(Duration.ofSeconds(5));
-//                    customizer.setReadTimeout(Duration.ofSeconds(5));
-//                })
-//                .build();
-//        return builder.baseUrl(properties.catalogServiceUrl())
-//                .requestFactory(requestFactory)
-//                .build();
-//    }
+    //    @Bean
+    //    RestClient restClient(RestClient.Builder builder, ApplicationProperties properties) {
+    //        ClientHttpRequestFactory requestFactory = ClientHttpRequestFactoryBuilder.simple()
+    //                .withCustomizer(customizer -> {
+    //                    customizer.setConnectTimeout(Duration.ofSeconds(5));
+    //                    customizer.setReadTimeout(Duration.ofSeconds(5));
+    //                })
+    //                .build();
+    //        return builder.baseUrl(properties.catalogServiceUrl())
+    //                .requestFactory(requestFactory)
+    //                .build();
+    //    }
 }

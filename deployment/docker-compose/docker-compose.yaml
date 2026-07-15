@@ -19,6 +19,25 @@ services:
       retries: 30
       start_period: 120s
 
+
+  api-gateway:
+    build:
+      context: ../..
+      dockerfile: api-gateway/Dockerfile
+    image: api-gateway:2.0
+    container_name: api-gateway
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - STORE_SERVICE_URL=http://store-service:8081
+      - PAYMENT_SERVICE_URL=http://payment-service:8082
+    ports:
+      - "8989:8989"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
   store-service:
     build:
       context: ../..
@@ -27,6 +46,7 @@ services:
     container_name: store-service
     environment:
       - SPRING_PROFILES_ACTIVE=dev
+      - STORE_PAYMENT_SERVICE_URL=http://api-gateway:8989/payment
       - DB_URL=jdbc:oracle:thin:@//store-db:1521/XE
       - DB_USERNAME=STORE
       - DB_PASSWORD=123
@@ -44,6 +64,7 @@ services:
       resources:
         limits:
           memory: 700m
+
   payment-service:
     build:
       context: ../..

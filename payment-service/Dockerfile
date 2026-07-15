@@ -7,6 +7,7 @@ COPY pom.xml .
 COPY store-events/pom.xml store-events/
 COPY store-service/pom.xml store-service/
 COPY payment-service/pom.xml payment-service/
+COPY api-gateway/pom.xml api-gateway/
 
 RUN --mount=type=cache,target=/root/.m2 \
     mvn -pl payment-service -am dependency:go-offline -DskipTests
@@ -14,6 +15,7 @@ RUN --mount=type=cache,target=/root/.m2 \
 COPY store-events store-events
 COPY store-service store-service
 COPY payment-service payment-service
+COPY api-gateway api-gateway
 
 RUN --mount=type=cache,target=/root/.m2 \
     mvn -pl payment-service -am package -DskipTests

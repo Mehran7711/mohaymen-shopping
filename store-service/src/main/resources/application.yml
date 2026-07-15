@@ -65,7 +65,7 @@ management:
       mode: full
 
 store:
-  payment-service-url: http://payment-service:8082
+  payment-service-url: ${STORE_PAYMENT_SERVICE_URL:http://api-gateway:8989/payment}
   web:
     pageSize: 10
 
