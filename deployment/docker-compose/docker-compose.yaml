@@ -52,6 +52,7 @@ services:
       - DB_PASSWORD=123
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - oauth2.server_url=http://keycloak:9191
     ports:
       - "8081:8081"
     restart: unless-stopped
@@ -125,6 +126,34 @@ services:
       retries: 5
       start_period: 5s
 
+  keycloak:
+    build:
+      context: ./
+      dockerfile: keycloak/Dockerfile
+    image: keycloak-oracle
+    container_name: keycloak
+    ports:
+      - "9191:9191"
+    environment:
+      KC_DB: oracle
+      KC_DB_URL: jdbc:oracle:thin:@//store-db:1521/XE
+      KC_DB_USERNAME: KEYCLOAK
+      KC_DB_PASSWORD: 123
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin123
+    depends_on:
+      store-db:
+        condition: service_healthy
+    command: [ 'start-dev', '--import-realm',  '--http-port=9191' ]
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+      - ./keycloak:/opt/keycloak/data/import
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2gb
+
   redisinsight:
     image: docker.arvancloud.ir/redis/redisinsight:latest
     container_name: redisinsight
@@ -153,6 +182,7 @@ services:
 volumes:
   oracle-data:
   redis-data:
+  keycloak-data:
 
 #  docker build -t store-service:1.0 .
 #  docker compose up -d --build  form recreate image and update changes on image
@@ -205,3 +235,15 @@ volumes:
 #  kafka-console-consumer   --bootstrap-server localhost:9092   --topic topic<refund_completed>   --from-beginning
 #  with key -> kafka-console-consumer.sh   --bootstrap-server localhost:9092   --topic refund_completed   --from-beginning   --property print.key=true   --property key.separator=" : "
 #  with partition and offset -> kafka-console-consumer   --bootstrap-server localhost:9092   --topic refund_completed   --from-beginning   --property print.partition=true   --property print.offset=true   --property print.key=true
+
+
+# docker exec -it store-db sqlplus system/oracle@//localhost:1521/XE
+# SELECT username FROM dba_users WHERE username = 'KEYCLOAK';
+
+
+# error HTTPS Requires in login
+#  cd /opt/keycloak/bin/ in docker container od Keycloak
+# run :
+#  ./kcadm.sh config credentials --server http://x.x.x.x:8080 --realm master --user admin
+#
+#  ./kcadm.sh update realms/master -s sslRequired=NONE

@@ -1,4 +1,9 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${realm.url}
   data:
     redis:
       host: ${REDIS_HOST:localhost}
@@ -33,8 +38,6 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
 
-
-
   application:
     name: store-service
   flyway:
@@ -48,6 +51,16 @@ spring:
     username: ${DB_USERNAME:STORE}
     password: ${DB_PASSWORD:123}
     driver-class-name: oracle.jdbc.OracleDriver
+
+oauth2:
+  server_url: http://localhost:9191
+
+realm:
+  url: ${oauth2.server_url}/realms/store
+
+swagger:
+  api-gateway-url: http://api-gateway:8989/store
+
 
 server:
   port: 8081

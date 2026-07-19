@@ -1,9 +1,13 @@
 package com.mohaymen.store.web.controller;
 
 import com.mohaymen.store.service.IOrderService;
+import com.mohaymen.store.service.ISecurityService;
 import com.mohaymen.store.web.mapper.OrderMapper;
 import com.mohaymen.store.web.response.OrderResponse;
+
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/order")
 @Slf4j
 @RequiredArgsConstructor
+@SecurityRequirement(name = "security_auth")
 public class OrderController {
     private final IOrderService orderService;
     private final OrderMapper orderMapper;
+    private final ISecurityService securityService;
 
     @PostMapping("/checkout")
     public ResponseEntity<OrderResponse> checkout(@RequestParam Long customerId, @RequestParam String scenario) {
@@ -24,6 +30,8 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getOrder(@RequestParam Long customerId) {
+        String userName = securityService.getLoginUserName();
+        log.info("userName: {}", userName);
         return ResponseEntity.ok(orderMapper.toDto(orderService.getOrder(customerId)));
     }
 }
