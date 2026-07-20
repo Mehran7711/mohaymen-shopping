@@ -47,7 +47,7 @@ CREATE TABLE product_inventory (
 CREATE TABLE orders (
                         id NUMBER(19) DEFAULT order_id_seq.NEXTVAL NOT NULL,
                         order_number VARCHAR2(50) NOT NULL,
-                        customer_id NUMBER(19) NOT NULL,
+                        customer_id VARCHAR2(200) NOT NULL,
 
                         status VARCHAR2(30) DEFAULT 'CREATED' NOT NULL,
 
@@ -84,7 +84,7 @@ CREATE TABLE cart (
                       id NUMBER(19) DEFAULT cart_id_seq.NEXTVAL NOT NULL,
                       version NUMBER(19) DEFAULT 0 NOT NULL,
 
-                      customer_id NUMBER(19) NOT NULL,
+                      customer_id VARCHAR2(200) NOT NULL,
 
                       total_amount NUMBER(19,2) DEFAULT 0 NOT NULL,
 

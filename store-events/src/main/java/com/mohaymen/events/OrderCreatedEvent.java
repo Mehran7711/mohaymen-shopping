@@ -14,11 +14,11 @@ public class OrderCreatedEvent extends BaseEvent {
 
     private String orderNumber;
 
-    private Long customerId;
+    private String customerId;
 
     private BigDecimal amount;
 
-    public OrderCreatedEvent(Long orderId, String orderNumber, Long customerId, BigDecimal amount, String scenario) {
+    public OrderCreatedEvent(Long orderId, String orderNumber, String customerId, BigDecimal amount, String scenario) {
 
         super(EventType.ORDER_CREATED, scenario);
 

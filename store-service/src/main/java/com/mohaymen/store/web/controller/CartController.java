@@ -31,15 +31,15 @@ public class CartController {
     }
 
     @DeleteMapping("/items/{productId}")
-    public ResponseEntity<Void> removeProduct(@PathVariable Long productId, @RequestParam Long customerId) {
+    public ResponseEntity<Void> removeProduct(@PathVariable Long productId) {
 
-        cartService.removeProduct(customerId, productId);
+        cartService.removeProduct(productId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public ResponseEntity<CartResponse> getCart(@RequestParam Long customerId) {
+    public ResponseEntity<CartResponse> getCart() {
 
-        return ResponseEntity.ok(cartService.getCart(customerId));
+        return ResponseEntity.ok(cartService.getCart());
     }
 }

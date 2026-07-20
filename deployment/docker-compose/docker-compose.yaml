@@ -47,6 +47,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - STORE_PAYMENT_SERVICE_URL=http://api-gateway:8989/payment
+      - KEYCLOAK_ADMIN_URL=http://keycloak:9191
       - DB_URL=jdbc:oracle:thin:@//store-db:1521/XE
       - DB_USERNAME=STORE
       - DB_PASSWORD=123

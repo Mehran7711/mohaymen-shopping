@@ -5,7 +5,7 @@ import com.mohaymen.store.web.response.OrderResponse;
 import java.util.List;
 
 public interface IOrderService {
-    OrderResponse checkout(Long customerId, String scenario);
+    OrderResponse checkout(String scenario);
 
-    List<Order> getOrder(Long customerId);
+    List<Order> getOrder();
 }

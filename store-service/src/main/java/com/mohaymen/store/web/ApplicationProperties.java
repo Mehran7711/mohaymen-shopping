@@ -9,4 +9,4 @@ import org.springframework.validation.annotation.Validated;
  */
 @Validated
 @ConfigurationProperties(prefix = "store")
-public record ApplicationProperties(String paymentServiceUrl) {}
+public record ApplicationProperties(String paymentServiceUrl, String keycloakAdminUrl) {}

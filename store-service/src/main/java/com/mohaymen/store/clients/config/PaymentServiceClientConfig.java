@@ -14,7 +14,7 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class PaymentServiceClientConfig {
     @Bean
-    RestClient restClient(ApplicationProperties properties) {
+    RestClient paymentRestClient(ApplicationProperties properties) {
 
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
 
@@ -27,16 +27,16 @@ public class PaymentServiceClientConfig {
                 .build();
     }
 
-    //    @Bean
-    //    RestClient restClient(RestClient.Builder builder, ApplicationProperties properties) {
-    //        ClientHttpRequestFactory requestFactory = ClientHttpRequestFactoryBuilder.simple()
-    //                .withCustomizer(customizer -> {
-    //                    customizer.setConnectTimeout(Duration.ofSeconds(5));
-    //                    customizer.setReadTimeout(Duration.ofSeconds(5));
-    //                })
-    //                .build();
-    //        return builder.baseUrl(properties.catalogServiceUrl())
-    //                .requestFactory(requestFactory)
-    //                .build();
-    //    }
+    @Bean
+    public RestClient keycloakRestClient(ApplicationProperties properties) {
+
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(Duration.ofSeconds(5));
+        factory.setReadTimeout(Duration.ofSeconds(5));
+
+        return RestClient.builder()
+                .baseUrl(properties.keycloakAdminUrl())
+                .requestFactory(factory)
+                .build();
+    }
 }

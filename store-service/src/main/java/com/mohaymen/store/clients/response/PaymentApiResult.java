@@ -7,4 +7,4 @@ import java.math.BigDecimal;
  * Created on: 7/13/26
  */
 public record PaymentApiResult(
-        Long orderId, String orderNumber, Long customerId, BigDecimal amount, String transactionId) {}
+        Long orderId, String orderNumber, String customerId, BigDecimal amount, String transactionId) {}

@@ -1,5 +1,6 @@
 package com.mohaymen.store.web.controller;
 
+import com.mohaymen.store.model.UserInfo;
 import com.mohaymen.store.service.IOrderService;
 import com.mohaymen.store.service.ISecurityService;
 import com.mohaymen.store.web.mapper.OrderMapper;
@@ -24,14 +25,15 @@ public class OrderController {
     private final ISecurityService securityService;
 
     @PostMapping("/checkout")
-    public ResponseEntity<OrderResponse> checkout(@RequestParam Long customerId, @RequestParam String scenario) {
-        return ResponseEntity.ok(orderService.checkout(customerId, scenario));
+    public ResponseEntity<OrderResponse> checkout(@RequestParam String scenario) {
+        return ResponseEntity.ok(orderService.checkout(scenario));
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderResponse>> getOrder(@RequestParam Long customerId) {
-        String userName = securityService.getLoginUserName();
-        log.info("userName: {}", userName);
-        return ResponseEntity.ok(orderMapper.toDto(orderService.getOrder(customerId)));
+    public ResponseEntity<List<OrderResponse>> getOrder() {
+        String userId = securityService.getLoginUserId();
+        UserInfo userInfo = securityService.getCurrentUser(userId);
+        log.info("userInfo: {}", userInfo);
+        return ResponseEntity.ok(orderMapper.toDto(orderService.getOrder()));
     }
 }

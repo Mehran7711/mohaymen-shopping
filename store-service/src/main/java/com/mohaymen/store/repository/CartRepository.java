@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created on: 7/1/26
  */
 public interface CartRepository extends JpaRepository<Cart, Long> {
-    Optional<Cart> findByCustomerId(Long customerId);
+    Optional<Cart> findByCustomerId(String customerId);
 }

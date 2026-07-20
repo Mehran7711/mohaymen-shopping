@@ -9,7 +9,7 @@ CREATE TABLE payments (
                           order_id NUMBER(19) NOT NULL,
                           order_number VARCHAR2(50) NOT NULL,
 
-                          customer_id NUMBER(19) NOT NULL,
+                          customer_id VARCHAR2(200) NOT NULL,
 
                           amount NUMBER(19,2) NOT NULL,
 

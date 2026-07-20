@@ -30,7 +30,7 @@ public class Payment {
 
     private String orderNumber;
 
-    private Long customerId;
+    private String customerId;
 
     private BigDecimal amount;
 

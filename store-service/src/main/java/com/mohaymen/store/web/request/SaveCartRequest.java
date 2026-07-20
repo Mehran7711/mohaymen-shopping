@@ -12,6 +12,5 @@ import lombok.Setter;
 @Setter
 public class SaveCartRequest {
 
-    private Long customerId;
     private List<CartItemRequest> items;
 }

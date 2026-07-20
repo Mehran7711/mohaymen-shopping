@@ -9,6 +9,7 @@ import com.mohaymen.store.repository.OutboxRepository;
 import com.mohaymen.store.service.IInventoryService;
 import com.mohaymen.store.service.IKafkaProducerService;
 import com.mohaymen.store.service.IOrderService;
+import com.mohaymen.store.service.ISecurityService;
 import com.mohaymen.store.web.mapper.OrderMapper;
 import com.mohaymen.store.web.response.OrderResponse;
 import java.math.BigDecimal;
@@ -38,6 +39,7 @@ public class OrderService implements IOrderService {
     private final IKafkaProducerService kafkaProducerService;
     private final IInventoryService inventoryService;
     private final OutboxRepository outboxRepository;
+    private final ISecurityService securityService;
 
     private String generateOrderNumber() {
         return "ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
@@ -94,7 +96,8 @@ public class OrderService implements IOrderService {
     //    }
 
     @Transactional
-    public OrderResponse checkout(Long customerId, String scenario) {
+    public OrderResponse checkout(String scenario) {
+        String customerId = securityService.getLoginUserId();
 
         Cart cart = loadCart(customerId);
 
@@ -141,11 +144,12 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Order> getOrder(Long customerId) {
+    public List<Order> getOrder() {
+        String customerId = securityService.getLoginUserId();
         return orderRepository.findByCustomerIdOrderByIdDesc(customerId);
     }
 
-    private Cart loadCart(Long customerId) {
+    private Cart loadCart(String customerId) {
         return cartRepository.findByCustomerId(customerId).orElseThrow(() -> new RuntimeException("Cart not found"));
     }
 
@@ -168,7 +172,7 @@ public class OrderService implements IOrderService {
         return orderItem;
     }
 
-    private Order createOrder(Long customerId) {
+    private Order createOrder(String customerId) {
         return Order.builder()
                 .orderNumber(generateOrderNumber())
                 .status(OrderStatus.PENDING)

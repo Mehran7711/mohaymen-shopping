@@ -79,6 +79,7 @@ management:
 
 store:
   payment-service-url: ${STORE_PAYMENT_SERVICE_URL:http://api-gateway:8989/payment}
+  keycloak-admin-url: ${KEYCLOAK_ADMIN_URL:http://localhost:9191}
   web:
     pageSize: 10
 

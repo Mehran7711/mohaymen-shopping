@@ -4,13 +4,16 @@ import com.mohaymen.store.model.*;
 import com.mohaymen.store.repository.CartRepository;
 import com.mohaymen.store.repository.ProductRepository;
 import com.mohaymen.store.service.ICartService;
+import com.mohaymen.store.service.ISecurityService;
 import com.mohaymen.store.web.ApplicationWebProperties;
 import com.mohaymen.store.web.mapper.CartMapper;
 import com.mohaymen.store.web.request.CartItemRequest;
 import com.mohaymen.store.web.response.CartItemResponse;
 import com.mohaymen.store.web.response.CartResponse;
+
 import java.math.BigDecimal;
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,11 +31,13 @@ public class CartService implements ICartService {
     private ProductRepository productRepository;
     private final ApplicationWebProperties properties;
     private final CartMapper cartMapper;
+    private final ISecurityService securityService;
 
     @Override
     public CartResponse addProduct(CartItemRequest request) {
 
-        Cart cart = getOrCreateCart(request.getCustomerId());
+        String customerId = securityService.getLoginUserId();
+        Cart cart = getOrCreateCart(customerId);
 
         Product product = productRepository.findById(request.getProductId()).orElseThrow();
 
@@ -60,8 +65,8 @@ public class CartService implements ICartService {
 
     @Override
     public CartResponse updateQuantity(Long productId, CartItemRequest request) {
-
-        Cart cart = getCartEntity(request.getCustomerId());
+        String customerId = securityService.getLoginUserId();
+        Cart cart = getCartEntity(customerId);
 
         CartItem item = cart.getItems().stream()
                 .filter(i -> i.getProduct().getId().equals(productId))
@@ -78,8 +83,8 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public void removeProduct(Long customerId, Long productId) {
-
+    public void removeProduct(Long productId) {
+        String customerId = securityService.getLoginUserId();
         Cart cart = getCartEntity(customerId);
 
         cart.getItems().removeIf(i -> i.getProduct().getId().equals(productId));
@@ -91,12 +96,12 @@ public class CartService implements ICartService {
 
     @Override
     @Transactional(readOnly = true)
-    public CartResponse getCart(Long customerId) {
-
+    public CartResponse getCart() {
+        String customerId = securityService.getLoginUserId();
         return map(getCartEntity(customerId));
     }
 
-    private Cart getOrCreateCart(Long customerId) {
+    private Cart getOrCreateCart(String customerId) {
 
         return cartRepository.findByCustomerId(customerId).orElseGet(() -> {
             Cart cart = new Cart();
@@ -107,7 +112,7 @@ public class CartService implements ICartService {
         });
     }
 
-    private Cart getCartEntity(Long customerId) {
+    private Cart getCartEntity(String customerId) {
 
         return cartRepository.findByCustomerId(customerId).orElseThrow(() -> new RuntimeException("Cart not found"));
     }

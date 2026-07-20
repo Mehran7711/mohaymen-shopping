@@ -31,7 +31,7 @@ public class Cart {
     private Long version;
 
     @Column(name = "customer_id", nullable = false, unique = true)
-    private Long customerId;
+    private String customerId;
 
     @Column(name = "total_amount", nullable = false)
     private BigDecimal totalAmount = BigDecimal.ZERO;
