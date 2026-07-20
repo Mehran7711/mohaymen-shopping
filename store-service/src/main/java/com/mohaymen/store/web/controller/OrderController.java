@@ -35,5 +35,6 @@ public class OrderController {
         UserInfo userInfo = securityService.getCurrentUser(userId);
         log.info("userInfo: {}", userInfo);
         return ResponseEntity.ok(orderMapper.toDto(orderService.getOrder(), securityService));
+
     }
 }
