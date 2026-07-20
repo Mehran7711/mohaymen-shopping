@@ -3,6 +3,7 @@ package com.mohaymen.store.service.impl;
 import com.mohaymen.store.model.UserInfo;
 import com.mohaymen.store.service.IKeycloakService;
 import com.mohaymen.store.web.response.TokenResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.time.Instant;
  * Author: Mehran
  * Created on: 7/20/26
  */
+@Slf4j
 @Service
 public class KeycloakService implements IKeycloakService {
 
@@ -27,6 +29,7 @@ public class KeycloakService implements IKeycloakService {
 
     public UserInfo getUser(String id) {
 
+        log.info("getUser using keycloak admin api, userId: {}", id);
         String token = getAccessToken();
 
         return restClient.get()

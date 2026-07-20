@@ -32,6 +32,7 @@ public class RedisConfig {
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
+        cacheConfigurations.put("users", redisCacheConfiguration().entryTtl(Duration.ofMinutes(60)));
         cacheConfigurations.put("products", redisCacheConfiguration().entryTtl(Duration.ofMinutes(10)));
         cacheConfigurations.put("sessions", redisCacheConfiguration().entryTtl(Duration.ofMinutes(5)));
 
