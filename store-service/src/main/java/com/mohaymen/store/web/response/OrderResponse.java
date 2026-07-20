@@ -1,5 +1,7 @@
 package com.mohaymen.store.web.response;
 
+import com.mohaymen.store.model.UserInfo;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
 public record OrderResponse(
         Long id,
         String orderNumber,
-        String customerId,
+        UserInfo customer,
         String status,
         BigDecimal totalAmount,
         List<OrderItemResponse> items) {}

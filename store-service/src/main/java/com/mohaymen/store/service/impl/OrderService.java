@@ -131,7 +131,7 @@ public class OrderService implements IOrderService {
         clearCart(cart);
         log.info("cart has been cleared. order: {} ", order.getId());
 
-        return orderMapper.toDto(order);
+        return orderMapper.toDto(order, securityService);
     }
 
     private void publishOrderCreated(Order order, String scenario) {

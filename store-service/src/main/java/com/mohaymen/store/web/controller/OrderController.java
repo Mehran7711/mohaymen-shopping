@@ -34,6 +34,6 @@ public class OrderController {
         String userId = securityService.getLoginUserId();
         UserInfo userInfo = securityService.getCurrentUser(userId);
         log.info("userInfo: {}", userInfo);
-        return ResponseEntity.ok(orderMapper.toDto(orderService.getOrder()));
+        return ResponseEntity.ok(orderMapper.toDto(orderService.getOrder(), securityService));
     }
 }
