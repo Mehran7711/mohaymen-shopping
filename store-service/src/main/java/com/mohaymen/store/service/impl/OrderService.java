@@ -45,6 +45,8 @@ public class OrderService implements IOrderService {
         return "ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
     }
 
+    // TODO OUTBOX_PATTERN
+
     //    @Transactional
     //    public OrderResponse checkout(Long customerId, String scenario) {
     //
@@ -135,9 +137,16 @@ public class OrderService implements IOrderService {
     }
 
     private void publishOrderCreated(Order order, String scenario) {
+        UserInfo userInfo = securityService.getCurrentUser(securityService.getLoginUserId());
 
         OrderCreatedEvent event = new OrderCreatedEvent(
-                order.getId(), order.getOrderNumber(), order.getCustomerId(), order.getTotalAmount(), scenario);
+                order.getId(),
+                order.getOrderNumber(),
+                order.getCustomerId(),
+                order.getTotalAmount(),
+                userInfo.firstName() + ' ' + userInfo.lastName(),
+                userInfo.email(),
+                scenario);
 
         kafkaProducerService.publish(
                 KafkaTopics.ORDER_CREATED, event.getOrderId().toString(), event);

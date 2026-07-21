@@ -25,6 +25,6 @@ RUN --mount=type=cache,target=/root/.m2 \
 
 FROM docker.arvancloud.ir/eclipse-temurin:21-jre
 
-COPY --from=builder /app/store-service/target/*.jar app.jar
+COPY --from=builder /app/notification-service/target/*.jar app.jar
 
 ENTRYPOINT ["java","-jar","/app.jar"]

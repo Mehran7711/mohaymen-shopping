@@ -17,7 +17,14 @@ public class OrderCreatedEvent extends BaseEvent {
     private String email;
     private BigDecimal amount;
 
-    public OrderCreatedEvent(Long orderId, String orderNumber, String customerId, BigDecimal amount, String scenario) {
+    public OrderCreatedEvent(
+            Long orderId,
+            String orderNumber,
+            String customerId,
+            BigDecimal amount,
+            String customerName,
+            String email,
+            String scenario) {
 
         super(EventType.ORDER_CREATED, scenario);
 
@@ -25,5 +32,7 @@ public class OrderCreatedEvent extends BaseEvent {
         this.orderNumber = orderNumber;
         this.customerId = customerId;
         this.amount = amount;
+        this.customerName = customerName;
+        this.email = email;
     }
 }

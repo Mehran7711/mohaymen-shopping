@@ -17,6 +17,8 @@ public class RefundCompletedEvent extends BaseEvent {
 
     private Long orderId;
     private String refundTransactionId;
+    private String customerName;
+    private String email;
 
     public RefundCompletedEvent(Long orderId, String refundTransactionId, String scenario) {
         super(EventType.REFUND_COMPLETED, scenario);

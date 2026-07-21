@@ -3,6 +3,7 @@ package com.mohaymen.norification.service.impl;
 import com.mohaymen.events.OrderCreatedEvent;
 import com.mohaymen.events.PaymentFailedEvent;
 import com.mohaymen.events.PaymentSucceededEvent;
+import com.mohaymen.events.refund.RefundCompletedEvent;
 import com.mohaymen.norification.service.INotificationService;
 import com.mohaymen.norification.web.ApplicationProperties;
 import jakarta.mail.internet.MimeMessage;
@@ -23,17 +24,17 @@ public class NotificationService implements INotificationService {
     public void sendOrderCreatedNotification(OrderCreatedEvent event) {
         String message =
                 """
-                ===================================================
-                Order Created Notification
-                ----------------------------------------------------
-                Dear %s,
-                Your order with orderNumber: %s has been created successfully.
+                        ===================================================
+                        Order Created Notification
+                        ----------------------------------------------------
+                        Dear %s,
+                        Your order with orderNumber: %s has been created successfully.
 
-                Thanks,
-                Mehran Team
-                ===================================================
-                """
-                        .formatted(event.getCustomerId(), event.getOrderNumber());
+                        Thanks,
+                        Mehran Team
+                        ===================================================
+                        """
+                        .formatted(event.getCustomerName(), event.getOrderNumber());
         log.info("\n{}", message);
         sendEmail(event.getEmail(), "Order Created Notification", message);
     }
@@ -41,17 +42,17 @@ public class NotificationService implements INotificationService {
     public void sendOrderCancelledNotification(PaymentFailedEvent event) {
         String message =
                 """
-                ===================================================
-                Order Cancelled Notification
-                ----------------------------------------------------
-                Dear %s,
-                Your order with orderNumber: %s has been cancelled.
-                Reason: %s
+                        ===================================================
+                        Order Cancelled Notification
+                        ----------------------------------------------------
+                        Dear %s,
+                        Your order with orderNumber: %s has been cancelled.
+                        Reason: %s
 
-                Thanks,
-                BookStore Team
-                ===================================================
-                """
+                        Thanks,
+                        BookStore Team
+                        ===================================================
+                        """
                         .formatted(event.getCustomerName(), event.getOrderId(), event.getReason());
         log.info("\n{}", message);
         sendEmail(event.getEmail(), "Order Cancelled Notification", message);
@@ -61,19 +62,38 @@ public class NotificationService implements INotificationService {
     public void sendOrderSuccessfulNotification(PaymentSucceededEvent event) {
         String message =
                 """
-                ===================================================
-                Order Created Notification
-                ----------------------------------------------------
-                Dear %s,
-                Your order with orderNumber: %s has been created successfully.
+                        ===================================================
+                        Order Created Notification
+                        ----------------------------------------------------
+                        Dear %s,
+                        Your payment with orderNumber: %s has been completed successfully.
 
-                Thanks,
-                Mehran Team
-                ===================================================
-                """
+                        Thanks,
+                        Mehran Team
+                        ===================================================
+                        """
                         .formatted(event.getCustomerName(), event.getOrderId());
         log.info("\n{}", message);
-        sendEmail(event.getEmail(), "Order Created Notification", message);
+        sendEmail(event.getEmail(), "payment completed Notification", message);
+    }
+
+    @Override
+    public void sendOrderRefundNotification(RefundCompletedEvent event) {
+        String message =
+                """
+                        ===================================================
+                        Order Created Notification
+                        ----------------------------------------------------
+                        Dear %s,
+                        Your payment with orderNumber: %s has been Refunded successfully.
+
+                        Thanks,
+                        Mehran Team
+                        ===================================================
+                        """
+                        .formatted(event.getCustomerName(), event.getOrderId());
+        log.info("\n{}", message);
+        sendEmail(event.getEmail(), "payment Refund Notification", message);
     }
 
     private void sendEmail(String recipient, String subject, String content) {

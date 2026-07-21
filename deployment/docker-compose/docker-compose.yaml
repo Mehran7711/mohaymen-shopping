@@ -106,6 +106,8 @@ services:
       - DB_PASSWORD=123
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - MAIL_HOST=mailhog
+      - MAIL_PORT=1025
     ports:
       - "8084:8084"
     restart: unless-stopped
@@ -204,6 +206,12 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  mailhog:
+    image: docker.arvancloud.ir/mailhog/mailhog:v1.0.1
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
 
 
 volumes:
