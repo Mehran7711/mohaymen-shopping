@@ -8,8 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Author: Mehran
  * Created on: 7/15/26
  */
-
-
 @Configuration
 class WebMvcConfig implements WebMvcConfigurer {
 

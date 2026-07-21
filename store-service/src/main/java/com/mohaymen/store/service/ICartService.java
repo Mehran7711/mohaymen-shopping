@@ -9,7 +9,7 @@ public interface ICartService {
 
     CartResponse updateQuantity(Long productId, CartItemRequest request);
 
-    void removeProduct( Long productId);
+    void removeProduct(Long productId);
 
     CartResponse getCart();
 }

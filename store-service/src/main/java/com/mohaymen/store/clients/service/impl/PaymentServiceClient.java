@@ -5,11 +5,8 @@ import com.mohaymen.store.clients.response.PaymentApiResult;
 import com.mohaymen.store.clients.service.IPaymentServiceClient;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
-
 import java.util.Collections;
 import java.util.List;
-
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
@@ -42,8 +39,7 @@ public class PaymentServiceClient implements IPaymentServiceClient {
                     .uri("/api/payments/search")
                     .body(filter)
                     .retrieve()
-                    .body(new ParameterizedTypeReference<>() {
-                    });
+                    .body(new ParameterizedTypeReference<>() {});
         } catch (Exception ex) {
             log.error("Error while fetching payment filter {}", filter, ex);
             throw new RuntimeException(ex);

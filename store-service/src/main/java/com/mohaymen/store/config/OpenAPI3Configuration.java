@@ -1,7 +1,5 @@
 package com.mohaymen.store.config;
 
-
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -21,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
  * Author: Mehran
  * Created on: 7/19/26
  */
-
 @Configuration
 class OpenAPI3Configuration {
 

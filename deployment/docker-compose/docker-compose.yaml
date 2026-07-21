@@ -93,6 +93,32 @@ services:
         limits:
           memory: 700m
 
+  notification-service:
+    build:
+      context: ../..
+      dockerfile: notification-service/Dockerfile
+    image: notification-service:2.0
+    container_name: notification-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DB_URL=jdbc:oracle:thin:@//store-db:1521/XE
+      - DB_USERNAME=NOTIFICATION
+      - DB_PASSWORD=123
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "8084:8084"
+    restart: unless-stopped
+    depends_on:
+      store-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
   zookeeper:
     image: docker.arvancloud.ir/confluentinc/cp-zookeeper:7.5.0
     environment:

@@ -1,7 +1,6 @@
 package com.mohaymen.store.web.response;
 
 import com.mohaymen.store.model.UserInfo;
-
 import java.math.BigDecimal;
 import java.util.List;
 

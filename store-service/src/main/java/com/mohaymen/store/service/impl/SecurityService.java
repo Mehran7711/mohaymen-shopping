@@ -3,7 +3,6 @@ package com.mohaymen.store.service.impl;
 import com.mohaymen.store.model.UserInfo;
 import com.mohaymen.store.service.IKeycloakService;
 import com.mohaymen.store.service.ISecurityService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,8 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
-
-import java.time.Duration;
 
 /**
  * Author: Mehran
@@ -46,7 +43,8 @@ public class SecurityService implements ISecurityService {
 
     @Override
     public String getLoginUserId() {
-        JwtAuthenticationToken authentication = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        JwtAuthenticationToken authentication =
+                (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         assert authentication != null;
         Jwt jwt = (Jwt) authentication.getPrincipal();
         return jwt.getSubject();
@@ -56,15 +54,15 @@ public class SecurityService implements ISecurityService {
     @Cacheable(value = "users", key = "#userId")
     public UserInfo getCurrentUser(String userId) {
         String key = "user:" + userId;
-//        UserInfo cached = (UserInfo) redisTemplate.opsForValue().get(key);
+        //        UserInfo cached = (UserInfo) redisTemplate.opsForValue().get(key);
 
-//        if (cached != null) {
-//            log.info("User fetch from cache: {}", cached);
-//            return cached;
-//        }
+        //        if (cached != null) {
+        //            log.info("User fetch from cache: {}", cached);
+        //            return cached;
+        //        }
 
         UserInfo user = keycloakService.getUser(userId);
-//        redisTemplate.opsForValue().set(key, user, Duration.ofHours(1));
+        //        redisTemplate.opsForValue().set(key, user, Duration.ofHours(1));
         return user;
     }
 }

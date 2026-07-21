@@ -4,9 +4,7 @@ package com.mohaymen.store.web.response;
  * Author: Mehran
  * Created on: 7/20/26
  */
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

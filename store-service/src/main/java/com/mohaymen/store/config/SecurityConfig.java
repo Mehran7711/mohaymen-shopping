@@ -1,6 +1,5 @@
 package com.mohaymen.store.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -15,7 +14,6 @@ import org.springframework.security.web.SecurityFilterChain;
  * Author: Mehran
  * Created on: 7/19/26
  */
-
 @Configuration
 @EnableWebSecurity
 class SecurityConfig {

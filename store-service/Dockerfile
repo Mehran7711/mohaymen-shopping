@@ -7,6 +7,7 @@ COPY pom.xml .
 COPY store-events/pom.xml store-events/
 COPY store-service/pom.xml store-service/
 COPY payment-service/pom.xml payment-service/
+COPY notification-service/pom.xml notification-service/
 COPY api-gateway/pom.xml api-gateway/
 
 RUN --mount=type=cache,target=/root/.m2 \
@@ -15,6 +16,7 @@ RUN --mount=type=cache,target=/root/.m2 \
 COPY store-events store-events
 COPY store-service store-service
 COPY payment-service payment-service
+COPY notification-service notification-service
 COPY api-gateway api-gateway
 
 RUN --mount=type=cache,target=/root/.m2 \

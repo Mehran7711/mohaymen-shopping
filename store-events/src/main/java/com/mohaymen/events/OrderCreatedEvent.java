@@ -11,11 +11,10 @@ import lombok.experimental.SuperBuilder;
 public class OrderCreatedEvent extends BaseEvent {
 
     private Long orderId;
-
     private String orderNumber;
-
     private String customerId;
-
+    private String customerName;
+    private String email;
     private BigDecimal amount;
 
     public OrderCreatedEvent(Long orderId, String orderNumber, String customerId, BigDecimal amount, String scenario) {

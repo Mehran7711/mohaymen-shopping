@@ -14,8 +14,9 @@ import lombok.experimental.SuperBuilder;
 public class PaymentFailedEvent extends BaseEvent {
 
     private Long orderId;
-
     private String reason;
+    private String customerName;
+    private String email;
 
     public PaymentFailedEvent(Long orderId, String reason, String scenario) {
 

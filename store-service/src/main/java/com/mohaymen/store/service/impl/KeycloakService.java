@@ -3,13 +3,12 @@ package com.mohaymen.store.service.impl;
 import com.mohaymen.store.model.UserInfo;
 import com.mohaymen.store.service.IKeycloakService;
 import com.mohaymen.store.web.response.TokenResponse;
+import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-
-import java.time.Instant;
 
 /**
  * Author: Mehran
@@ -32,7 +31,8 @@ public class KeycloakService implements IKeycloakService {
         log.info("getUser using keycloak admin api, userId: {}", id);
         String token = getAccessToken();
 
-        return restClient.get()
+        return restClient
+                .get()
                 .uri("/admin/realms/store/users/{id}", id)
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
@@ -50,9 +50,9 @@ public class KeycloakService implements IKeycloakService {
             return;
         }
 
-
         // Get new token from Keycloak
-        TokenResponse tokenResponse = restClient.post()
+        TokenResponse tokenResponse = restClient
+                .post()
                 .uri("/realms/master/protocol/openid-connect/token")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body("client_id=admin-cli&username=admin&password=admin123&grant_type=password")

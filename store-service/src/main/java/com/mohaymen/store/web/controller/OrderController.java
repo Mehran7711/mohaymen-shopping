@@ -5,10 +5,8 @@ import com.mohaymen.store.service.IOrderService;
 import com.mohaymen.store.service.ISecurityService;
 import com.mohaymen.store.web.mapper.OrderMapper;
 import com.mohaymen.store.web.response.OrderResponse;
-
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +33,5 @@ public class OrderController {
         UserInfo userInfo = securityService.getCurrentUser(userId);
         log.info("userInfo: {}", userInfo);
         return ResponseEntity.ok(orderMapper.toDto(orderService.getOrder(), securityService));
-
     }
 }

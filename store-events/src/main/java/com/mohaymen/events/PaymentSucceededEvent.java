@@ -11,10 +11,10 @@ import lombok.experimental.SuperBuilder;
 public class PaymentSucceededEvent extends BaseEvent {
 
     private Long orderId;
-
     private String transactionId;
-
     private BigDecimal amount;
+    private String customerName;
+    private String email;
 
     public PaymentSucceededEvent(Long orderId, String transactionId, BigDecimal amount, String scenario) {
 

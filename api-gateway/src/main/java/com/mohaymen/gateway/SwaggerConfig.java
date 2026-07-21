@@ -3,11 +3,9 @@ package com.mohaymen.gateway;
 import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_URL;
 
 import jakarta.annotation.PostConstruct;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.springdoc.core.properties.AbstractSwaggerUiConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springframework.cloud.gateway.route.RouteDefinition;
@@ -18,8 +16,6 @@ import org.springframework.context.annotation.Configuration;
  * Author: Mehran
  * Created on: 7/14/26
  */
-
-
 @Configuration
 class SwaggerConfig {
     private final RouteDefinitionLocator locator;
