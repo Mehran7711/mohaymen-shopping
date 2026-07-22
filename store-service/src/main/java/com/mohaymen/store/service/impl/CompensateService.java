@@ -30,8 +30,8 @@ public class CompensateService implements ICompensateService {
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private final IOrderPaymentService orderPaymentService;
 
-    @Scheduled(fixedDelay = 60000)
-    @Transactional
+//    @Scheduled(fixedDelay = 60000)
+//    @Transactional
     public void releaseExpiredReservations() {
 
         log.info("Starting compensation service...");

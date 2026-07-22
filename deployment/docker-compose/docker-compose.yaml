@@ -173,7 +173,7 @@ services:
     depends_on:
       store-db:
         condition: service_healthy
-    command: [ 'start-dev', '--import-realm',  '--http-port=9191' ]
+#    command: [ 'start-dev', '--import-realm',  '--http-port=9191' ]
     volumes:
       - keycloak-data:/opt/keycloak/data
       - ./keycloak:/opt/keycloak/data/import
