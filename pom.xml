@@ -13,6 +13,7 @@
     <module>store-events</module>
     <module>api-gateway</module>
     <module>notification-service</module>
+    <module>store-webapp</module>
   </modules>
 
   <properties>
