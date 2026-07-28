@@ -1,5 +1,37 @@
 spring:
   application:
     name: store-webapp
+
+  security:
+    oauth2:
+      client:
+        registration:
+          store-webapp:
+            client-id: store_client
+            client-secret: G2OpSKR5OB0Amp0C0vHo2pNZSx3WgBycHKCJpLJgNgvfq1qo2v1NCcTPMUWNTv33ycak7aJREM3mZxRun7rp1y
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/store-webapp"
+        provider:
+          store-webapp:
+            issuer-uri: ${realm.url}
+#            authorization-uri: ${REALM_URL}/protocol/openid-connect/auth
+#            token-uri: ${REALM_URL}/protocol/openid-connect/token
+#            jwk-set-uri: ${REALM_URL}/protocol/openid-connect/certs
+#            user-info-uri: ${REALM_URL}/protocol/openid-connect/userinfo
+
+
+
+oauth2:
+  server_url: http://localhost:9191
+
+realm:
+  url: ${oauth2.server_url}/realms/store
+
+gateway:
+  url: http://localhost:8989
 server:
   port: 8080
+

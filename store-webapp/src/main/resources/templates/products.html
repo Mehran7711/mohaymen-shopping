@@ -7,16 +7,13 @@
 <body>
 <div layout:fragment="content">
     <div th:x-data="|initData('${pageNo}')|">
-        <div th:replace="~{fragments/pagination :: pagination}"> </div>
+        <div th:replace="~{fragments/pagination :: pagination}"></div>
         <div class="row row-cols-1 row-cols-md-5">
             <template x-for="product in products.data">
                 <div class="col mb-3">
                     <div class="card h-100 product">
 
-                        <img :src="product.imageUrl"
-                             class="card-img-top"
-                             height="300" width="200"
-                        />
+                        <img :src="product.imageUrl" class="card-img-top" height="300" width="200" alt=""/>
 
                         <div class="card-body">
                             <h5 class="card-title"
@@ -26,9 +23,10 @@
                             <p class="card-text"
                                data-toggle="tooltip"
                                data-placement="top"
-                               x-text="'Price: $'+product.price"
+                               x-text="'قیمت: $'+product.price"
                             >product.price</p>
                         </div>
+
                         <div class="card-footer" style="background: transparent; border-top: 0;">
                             <div class="d-grid gap-2">
                                 <button class="btn btn-primary" @click="addToCart(product)">

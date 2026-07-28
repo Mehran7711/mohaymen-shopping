@@ -14,8 +14,8 @@ document.addEventListener('alpine:init', () => {
                 this.products = resp;
             });
         },
-        // addToCart(product) {
-        //     addProductToCart(product)
-        // }
+        addToCart(product) {
+            addProductToCart(product)
+        }
     }))
 });

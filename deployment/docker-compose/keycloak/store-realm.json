@@ -689,7 +689,7 @@
     "alwaysDisplayInConsole" : false,
     "clientAuthenticatorType" : "client-secret",
     "secret" : "G2OpSKR5OB0Amp0C0vHo2pNZSx3WgBycHKCJpLJgNgvfq1qo2v1NCcTPMUWNTv33ycak7aJREM3mZxRun7rp1y",
-    "redirectUris" : [ "http://localhost:8080/login/oauth2/code/*", "http://localhost:8989/swagger-ui/oauth2-redirect.html" ],
+    "redirectUris" : [ "http://localhost:8080/login/oauth2/code/store-webapp", "http://localhost:8989/swagger-ui/oauth2-redirect.html" ],
     "webOrigins" : [ "http://localhost:8080", "http://localhost:8989" ],
     "notBefore" : 0,
     "bearerOnly" : false,
