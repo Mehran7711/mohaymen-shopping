@@ -14,4 +14,6 @@ public interface ISecurityClientService {
     RestClient.RequestHeadersSpec<?> get(Authentication authentication, String uri);
 
     RestClient.RequestBodySpec post(Authentication authentication, String uri);
+
+    RestClient.RequestBodySpec put(Authentication authentication, String uri);
 }

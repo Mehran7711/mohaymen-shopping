@@ -18,16 +18,16 @@ document.addEventListener('alpine:init', () => {
         },
 
         init() {
-            updateCartItemCount();
-            this.loadCart();
+            updateCartItemCount().then(r => console.log());
+            this.loadCart().then(r => console.log());
+            // this.cart.totalAmount = getCartTotal();
+        },
+        async loadCart() {
+            this.cart = await getCart();
             this.cart.totalAmount = getCartTotal();
         },
-        loadCart() {
-            this.cart = getCart()
-        },
-        updateItemQuantity(code, quantity) {
-            updateProductQuantity(code, quantity);
-            this.loadCart();
+        async updateItemQuantity(id, quantity) {
+            this.cart = await updateProductQuantity(id, quantity).then(r => console.log("updateProductQuantity successful!"));
             this.cart.totalAmount = getCartTotal();
         },
         removeCart() {

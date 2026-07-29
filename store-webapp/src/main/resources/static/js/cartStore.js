@@ -11,7 +11,13 @@ const STORE_STATE_KEY = "STORE_STATE";
 
 async function getCart() {
 
-    const response = await fetch("http://localhost:8989/store/api/cart");
+    console.log("entering getCart")
+    const response = await fetch("/cart");
+
+    if (response.status === 401) {
+        window.location.href = "/login-required";
+        return;
+    }
 
     if (!response.ok)
         throw new Error("Cannot load cart");
@@ -65,27 +71,30 @@ async function addProductToCart(product) {
 //     localStorage.setItem(STORE_STATE_KEY, JSON.stringify(cart));
 //     updateCartItemCount();
 // }
-async function updateProductQuantity(cartItemId, quantity) {
+async function updateProductQuantity(productId, quantity) {
 
-    if (quantity <= 0) {
+    // if (quantity <= 0) {
+    //
+    //     return deleteCartItem(cartItemId);
+    // }
 
-        return deleteCartItem(cartItemId);
-    }
+    console.log("enter updateProductQuantity: " + productId + " : " +  quantity)
 
-    await fetch(`/api/cart/items/${cartItemId}`, {
-
+    const response = await fetch("/cart/items/" + productId, {
         method: "PUT",
-
         headers: {
             "Content-Type": "application/json"
         },
-
         body: JSON.stringify({
+            productId: productId,
             quantity: quantity
         })
     });
 
-    updateCartItemCount();
+    console.log("resss : " + response.json());
+    return await response.json();
+
+    // updateCartItemCount();
 }
 
 async function deleteCartItem(cartItemId) {

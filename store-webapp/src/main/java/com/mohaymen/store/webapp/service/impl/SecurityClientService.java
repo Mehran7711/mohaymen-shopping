@@ -63,9 +63,8 @@ public class SecurityClientService implements ISecurityClientService {
                         h.setBearerAuth(accessToken(authentication)));
     }
 
-    public RestClient.RequestBodySpec put(
-            Authentication authentication,
-            String uri) {
+    @Override
+    public RestClient.RequestBodySpec put(Authentication authentication, String uri) {
 
         return restClient.put()
                 .uri(uri)

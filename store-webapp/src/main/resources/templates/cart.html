@@ -25,13 +25,13 @@
                     <tbody>
                     <template x-for="item in cart.items">
                         <tr>
-                            <td x-text="item.name">name</td>
-                            <td x-text="item.price">price</td>
+                            <td x-text="item.productName">name</td>
+                            <td x-text="item.unitPrice">price</td>
                             <td>
                                 <input type="number" min="0" x-model="item.quantity"
-                                       @change="updateItemQuantity(item.code, $event.target.value)"/>
+                                       @change="updateItemQuantity(item.productId, $event.target.value)"/>
                             </td>
-                            <td x-text="item.quantity * item.price">subTotal</td>
+                            <td x-text="item.totalPrice">subTotal</td>
                         </tr>
                     </template>
                     </tbody>

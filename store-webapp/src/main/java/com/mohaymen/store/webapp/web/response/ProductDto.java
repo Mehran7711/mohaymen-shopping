@@ -7,5 +7,5 @@ import java.math.BigDecimal;
  * Created on: 7/28/26
  */
 
-public record ProductDto(String code, String name, String description, String imageUrl, BigDecimal price) {}
+public record ProductDto(Long id, String code, String name, String description, String imageUrl, BigDecimal price) {}
 
