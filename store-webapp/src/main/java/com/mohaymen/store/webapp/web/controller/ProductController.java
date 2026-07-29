@@ -2,17 +2,23 @@ package com.mohaymen.store.webapp.web.controller;
 
 import com.mohaymen.store.webapp.service.IProductService;
 import com.mohaymen.store.webapp.service.impl.ProductService;
+import com.mohaymen.store.webapp.web.response.PageResult;
 import com.mohaymen.store.webapp.web.response.ProductDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+
+import static tools.jackson.databind.type.LogicalType.Map;
 
 @Controller
 class ProductController {
@@ -36,8 +42,10 @@ class ProductController {
         return "products";
     }
 
-    @GetMapping("/getProducts")
-    public List<ProductDto> products(Authentication authentication, @RequestParam(defaultValue = "1") Integer page) {
+    @GetMapping("/api/products")
+    @ResponseBody
+    public PageResult<ProductDto> products(Authentication authentication,
+                                           @RequestParam(defaultValue = "1") Integer page) {
         return productService.loadProducts(authentication, page);
     }
 

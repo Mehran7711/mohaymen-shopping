@@ -9,13 +9,16 @@ document.addEventListener('alpine:init', () => {
             // updateCartItemCount();
         },
         loadProducts(pageNo) {
-            // $.getJSON("http://localhost:8989/store/api/products?page=" + pageNo, (resp) => {
-            //     console.log("Products Resp:", resp)
-            //     this.products = resp;
-            // });
-            $.getJSON("/getProducts?page=" + pageNo, (resp) => {
-                console.log(resp);
-                this.products = resp;
+            $.ajax({
+                url: "/api/products?page=" + pageNo,
+                success: (resp) => {
+                    this.products = resp;
+                },
+                error: (xhr) => {
+                    if (xhr.status === 401) {
+                        alert("You should login.");
+                    }
+                }
             });
         },
         addToCart(product) {

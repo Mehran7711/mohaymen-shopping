@@ -3,6 +3,7 @@ package com.mohaymen.store.webapp.service.impl;
 import com.mohaymen.store.webapp.service.IProductService;
 import com.mohaymen.store.webapp.service.ISecurityClientService;
 import com.mohaymen.store.webapp.web.request.AddCartItemRequest;
+import com.mohaymen.store.webapp.web.response.PageResult;
 import com.mohaymen.store.webapp.web.response.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,11 +28,11 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDto> loadProducts(Authentication authentication, Integer pageNo) {
+    public PageResult<ProductDto> loadProducts(Authentication authentication, Integer pageNo) {
         return clientService
-                .get(authentication, "/store/api/cart/items?page=" + pageNo)
+                .get(authentication, "/store/api/products?page=" + pageNo)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<ProductDto>>() {
+                .body(new ParameterizedTypeReference<PageResult<ProductDto>>() {
                 });
     }
 

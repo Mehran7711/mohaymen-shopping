@@ -25,7 +25,7 @@ spring:
 
 
 oauth2:
-  server_url: http://localhost:9191
+  server_url: http://keycloak:9191
   registrationId: "store-webapp"
 
 realm:
@@ -36,7 +36,7 @@ gateway:
 server:
   port: 8080
 
-logging:
-  level:
-    org.springframework.security: TRACE
-    org.springframework.security.oauth2: TRACE
+#logging:
+#  level:
+#    org.springframework.security: TRACE
+#    org.springframework.security.oauth2: TRACE
