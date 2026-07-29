@@ -33,30 +33,21 @@ async function getCart() {
 
 async function addProductToCart(product) {
 
-    try {
-
-        const response = await fetch("http://localhost:8989/store/api/cart/items", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                productId: product.id,
-                quantity: 1
-            })
-        });
-
-        console.log("response is: " + response);
-        if (!response.ok) {
-            throw new Error("Cannot add product");
+    console.log("enter: " + product.id);
+    $.ajax({
+        url: "/cart/items",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            productId: product.id,
+            quantity: 1
+        }),
+        success: function () {
+            console.log("Added to cart");
         }
+    });
 
-        updateCartItemCount();
 
-    } catch (e) {
-        console.error(e);
-        alert("Cannot add product");
-    }
 }
 
 // const updateProductQuantity = function(code, quantity) {
@@ -96,6 +87,7 @@ async function updateProductQuantity(cartItemId, quantity) {
 
     updateCartItemCount();
 }
+
 async function deleteCartItem(cartItemId) {
 
     await fetch(`/api/cart/items/${cartItemId}`, {
@@ -106,7 +98,7 @@ async function deleteCartItem(cartItemId) {
     updateCartItemCount();
 }
 
-const deleteCart = function() {
+const deleteCart = function () {
     localStorage.removeItem(STORE_STATE_KEY)
     updateCartItemCount();
 }

@@ -53,7 +53,7 @@ spring:
     driver-class-name: oracle.jdbc.OracleDriver
 
 oauth2:
-  server_url: http://localhost:9191
+  server_url: http://keycloak:9191
 
 realm:
   url: ${oauth2.server_url}/realms/store

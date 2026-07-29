@@ -26,6 +26,7 @@ spring:
 
 oauth2:
   server_url: http://localhost:9191
+  registrationId: "store-webapp"
 
 realm:
   url: ${oauth2.server_url}/realms/store
@@ -35,3 +36,7 @@ gateway:
 server:
   port: 8080
 
+logging:
+  level:
+    org.springframework.security: TRACE
+    org.springframework.security.oauth2: TRACE
