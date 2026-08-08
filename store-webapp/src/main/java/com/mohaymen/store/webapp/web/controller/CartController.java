@@ -40,6 +40,7 @@ public class CartController {
     }
 
     @PutMapping("/items/{productId}")
+    @ResponseBody
     public CartResponse updateQuantity(Authentication authentication,
                                                @PathVariable Long productId,
                                                @RequestBody AddCartItemRequest request) {

@@ -20,15 +20,18 @@ document.addEventListener('alpine:init', () => {
         init() {
             updateCartItemCount().then(r => console.log());
             this.loadCart().then(r => console.log());
-            // this.cart.totalAmount = getCartTotal();
         },
         async loadCart() {
             this.cart = await getCart();
-            this.cart.totalAmount = getCartTotal();
         },
         async updateItemQuantity(id, quantity) {
-            this.cart = await updateProductQuantity(id, quantity).then(r => console.log("updateProductQuantity successful!"));
-            this.cart.totalAmount = getCartTotal();
+            try {
+                this.cart = await updateProductQuantity(id, quantity);
+                console.log("updateProductQuantity successful!");
+                await updateCartItemCount();
+            } catch (error) {
+                console.error("Update quantity failed:", error);
+            }
         },
         removeCart() {
             deleteCart();

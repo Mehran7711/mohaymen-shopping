@@ -6,7 +6,7 @@ document.addEventListener('alpine:init', () => {
         },
         init() {
             this.loadProducts(this.pageNo);
-            // updateCartItemCount();
+            updateCartItemCount();
         },
         loadProducts(pageNo) {
             $.ajax({
@@ -22,7 +22,7 @@ document.addEventListener('alpine:init', () => {
             });
         },
         addToCart(product) {
-            addProductToCart(product).then(r => console.log("Result is: " + r));
+           addProductToCart(product);
         }
     }))
 });

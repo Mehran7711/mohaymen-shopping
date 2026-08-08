@@ -50,6 +50,7 @@ async function addProductToCart(product) {
         }),
         success: function () {
             console.log("Added to cart");
+            updateCartItemCount();
         }
     });
 
@@ -91,8 +92,17 @@ async function updateProductQuantity(productId, quantity) {
         })
     });
 
-    console.log("resss : " + response.json());
-    return await response.json();
+
+    if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+    }
+
+    const cart = await response.json();
+
+    console.log("response:", cart);
+
+    return cart;
+
 
     // updateCartItemCount();
 }
