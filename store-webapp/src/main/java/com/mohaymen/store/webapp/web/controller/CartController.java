@@ -42,9 +42,16 @@ public class CartController {
     @PutMapping("/items/{productId}")
     @ResponseBody
     public CartResponse updateQuantity(Authentication authentication,
-                                               @PathVariable Long productId,
-                                               @RequestBody AddCartItemRequest request) {
+                                       @PathVariable Long productId,
+                                       @RequestBody AddCartItemRequest request) {
         return cartService.updateQuantity(authentication, productId, request);
 
+    }
+
+    @DeleteMapping("/items/{productId}")
+    public ResponseEntity<Void> deleteItem(Authentication authentication, @PathVariable Long productId) {
+
+        cartService.deleteItem(authentication, productId);
+        return ResponseEntity.noContent().build();
     }
 }

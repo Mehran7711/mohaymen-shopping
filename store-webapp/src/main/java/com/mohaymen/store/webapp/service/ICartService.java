@@ -10,4 +10,7 @@ public interface ICartService {
     CartResponse updateQuantity(Authentication authentication,
                                 Long productId,
                                 AddCartItemRequest request);
+
+    void deleteItem(Authentication authentication,
+                            Long productId);
 }

@@ -3,26 +3,48 @@ document.addEventListener('alpine:init', () => {
         cart: {items: [], totalAmount: 0},
         orderForm: {
             customer: {
-                name: "Mehran",
-                email: "mehran@gmail.com",
-                phone: "999999999999"
+                name: "",
+                email: "",
+                phone: ""
             },
             deliveryAddress: {
-                addressLine1: "Motahari",
-                addressLine2: "Larestan",
-                city: "Tehran",
-                state: "Tehran",
-                zipCode: "500072",
-                country: "Iran"
+                addressLine1: "",
+                addressLine2: "",
+                city: "",
+                state: "",
+                zipCode: "",
+                country: ""
             }
         },
 
-        init() {
-            updateCartItemCount().then(r => console.log());
-            this.loadCart().then(r => console.log());
+        async init() {
+            await this.loadCurrentUser();
+            await this.loadCart();
+            await updateCartItemCount();
         },
         async loadCart() {
             this.cart = await getCart();
+        },
+        async loadCurrentUser() {
+            try {
+                const response = await fetch("/user/current-user");
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const user = await response.json();
+
+                console.log("user: " + user.phone);
+                this.orderForm.customer = {
+                    name: user.firstName + ' ' + user.lastName,
+                    email: user.email,
+                    phone: user.phone
+                };
+
+            } catch (error) {
+                console.error("Cannot load current user:", error);
+            }
         },
         async updateItemQuantity(id, quantity) {
             try {
@@ -36,26 +58,28 @@ document.addEventListener('alpine:init', () => {
         removeCart() {
             deleteCart();
         },
-        createOrder() {
-            let order = Object.assign({}, this.orderForm, {items: this.cart.items});
+        async createOrder() {
+            // let order = Object.assign({}, this.orderForm, {items: this.cart.items});
             //console.log("Order ", order);
 
-            $.ajax({
-                url: 'http://localhost:8989/store/api/order/checkout',
-                type: "POST",
-                dataType: "json",
-                contentType: "application/json",
-                data: JSON.stringify(order),
-                success: (resp) => {
-                    //console.log("Order Resp:", resp)
-                    this.removeCart();
-                    alert("Order placed successfully")
-                    // window.location = "/orders/" + resp.orderNumber;
-                }, error: (err) => {
-                    console.log("Order Creation Error:", err)
-                    alert("Order creation failed")
+            try {
+                const response = await fetch(
+                    "/order/checkout?scenario=PAYMENT_SUCCESS",
+                    {
+                        method: "POST"
+                    }
+                );
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
                 }
-            });
+                const order = await response.json();
+                console.log("Order created:", order);
+                alert("Order placed successfully");
+
+            } catch (error) {
+                console.error("Order creation failed:", error);
+                alert("Order creation failed");
+            }
         },
     }))
 });

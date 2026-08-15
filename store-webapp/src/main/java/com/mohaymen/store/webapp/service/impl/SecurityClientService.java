@@ -45,7 +45,6 @@ public class SecurityClientService implements ISecurityClientService {
     public RestClient.RequestHeadersSpec<?> get(
             Authentication authentication,
             String uri) {
-        log.info("Token: {}", accessToken(authentication));
         return restClient.get()
                 .uri(uri)
                 .headers(h ->
@@ -55,7 +54,6 @@ public class SecurityClientService implements ISecurityClientService {
     @Override
     public RestClient.RequestBodySpec post(Authentication authentication, String uri) {
 
-        log.info("Token: {}", accessToken(authentication));
 
         return restClient.post()
                 .uri(uri)
@@ -72,9 +70,8 @@ public class SecurityClientService implements ISecurityClientService {
                         h.setBearerAuth(accessToken(authentication)));
     }
 
-    public RestClient.RequestHeadersSpec<?> delete(
-            Authentication authentication,
-            String uri) {
+    @Override
+    public RestClient.RequestHeadersSpec<?> delete(Authentication authentication, String uri) {
 
         return restClient.delete()
                 .uri(uri)

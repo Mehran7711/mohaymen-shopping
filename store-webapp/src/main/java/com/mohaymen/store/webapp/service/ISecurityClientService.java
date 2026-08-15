@@ -16,4 +16,6 @@ public interface ISecurityClientService {
     RestClient.RequestBodySpec post(Authentication authentication, String uri);
 
     RestClient.RequestBodySpec put(Authentication authentication, String uri);
+
+    RestClient.RequestHeadersSpec<?> delete(Authentication authentication, String uri);
 }

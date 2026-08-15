@@ -74,12 +74,12 @@ async function addProductToCart(product) {
 // }
 async function updateProductQuantity(productId, quantity) {
 
-    // if (quantity <= 0) {
-    //
-    //     return deleteCartItem(cartItemId);
-    // }
+    if (quantity <= 0) {
 
-    console.log("enter updateProductQuantity: " + productId + " : " +  quantity)
+        return deleteCartItem(productId);
+    }
+
+    console.log("enter updateProductQuantity: " + productId + " : " + quantity)
 
     const response = await fetch("/cart/items/" + productId, {
         method: "PUT",
@@ -107,14 +107,17 @@ async function updateProductQuantity(productId, quantity) {
     // updateCartItemCount();
 }
 
-async function deleteCartItem(cartItemId) {
+async function deleteCartItem(productId) {
 
-    await fetch(`/api/cart/items/${cartItemId}`, {
-
+    const response = await fetch("/cart/items/" + productId, {
         method: "DELETE"
     });
 
-    updateCartItemCount();
+    if (!response.ok) {
+        throw new Error(`Delete failed: HTTP ${response.status}`);
+    }
+
+    return await getCart();
 }
 
 const deleteCart = function () {

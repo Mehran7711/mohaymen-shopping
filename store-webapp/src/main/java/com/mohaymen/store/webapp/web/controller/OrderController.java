@@ -1,14 +1,22 @@
 package com.mohaymen.store.webapp.web.controller;
 
+import com.mohaymen.store.webapp.service.IOrderService;
+import com.mohaymen.store.webapp.web.response.OrderResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/order")
+@RequiredArgsConstructor
 class OrderController {
     private static final Logger log = LoggerFactory.getLogger(OrderController.class);
-//    private final OrderServiceClient orderServiceClient;
+    private final IOrderService orderService;
 //    private final SecurityHelper securityHelper;
 //
 //    OrderController(OrderServiceClient orderServiceClient, SecurityHelper securityHelper) {
@@ -21,18 +29,18 @@ class OrderController {
 //        return "cart";
 //    }
 
-//    @PostMapping("/api/orders")
+    //    @PostMapping("/api/orders")
 //    @ResponseBody
 //    OrderConfirmationDTO createOrder(@Valid @RequestBody CreateOrderRequest orderRequest) {
 //        log.info("Creating order: {}", orderRequest);
 //        return orderServiceClient.createOrder(getHeaders(), orderRequest);
 //    }
 //
-//    @GetMapping("/orders/{orderNumber}")
-//    String showOrderDetails(@PathVariable String orderNumber, Model model) {
-//        model.addAttribute("orderNumber", orderNumber);
-//        return "order_details";
-//    }
+    @GetMapping("/orders/{orderNumber}")
+    String showOrderDetails(@PathVariable String orderNumber, Model model) {
+        model.addAttribute("orderNumber", orderNumber);
+        return "order_details";
+    }
 //
 //    @GetMapping("/api/orders/{orderNumber}")
 //    @ResponseBody
@@ -57,4 +65,11 @@ class OrderController {
 //        String accessToken = securityHelper.getAccessToken();
 //        return Map.of("Authorization", "Bearer " + accessToken);
 //    }
+
+    @PostMapping("/checkout")
+    @ResponseBody
+    OrderResponse checkout(Authentication authentication, @Valid @RequestParam String scenario) {
+        log.info("Creating order: {}", scenario);
+        return orderService.checkout(authentication, scenario);
+    }
 }

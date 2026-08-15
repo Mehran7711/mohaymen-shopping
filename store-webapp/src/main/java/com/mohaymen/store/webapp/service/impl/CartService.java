@@ -36,4 +36,12 @@ public class CartService implements ICartService {
                 .retrieve()
                 .body(CartResponse.class);
     }
+
+    @Override
+    public void deleteItem(Authentication authentication, Long productId) {
+        clientService
+                .delete(authentication, "/store/api/cart/items/" + productId)
+                .retrieve()
+                .toBodilessEntity();
+    }
 }
