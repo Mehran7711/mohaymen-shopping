@@ -36,18 +36,20 @@ class OrderController {
 //        return orderServiceClient.createOrder(getHeaders(), orderRequest);
 //    }
 //
-    @GetMapping("/orders/{orderNumber}")
+    @GetMapping("/load/{orderNumber}")
     String showOrderDetails(@PathVariable String orderNumber, Model model) {
         model.addAttribute("orderNumber", orderNumber);
+        model.addAttribute("shouldUpdateCartCount", true);
         return "order_details";
     }
-//
-//    @GetMapping("/api/orders/{orderNumber}")
-//    @ResponseBody
-//    OrderDTO getOrder(@PathVariable String orderNumber) {
-//        log.info("Fetching order details for orderNumber: {}", orderNumber);
-//        return orderServiceClient.getOrder(getHeaders(), orderNumber);
-//    }
+
+    //
+    @GetMapping("/get/{orderNumber}")
+    @ResponseBody
+    OrderResponse getOrder(Authentication authentication, @PathVariable String orderNumber) {
+        log.info("Fetching order details for orderNumber: {}", orderNumber);
+        return orderService.getOrder(authentication, orderNumber);
+    }
 //
 //    @GetMapping("/orders")
 //    String showOrders() {

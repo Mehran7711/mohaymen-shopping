@@ -74,7 +74,7 @@ document.addEventListener('alpine:init', () => {
                 }
                 const order = await response.json();
                 console.log("Order created:", order);
-                alert("Order placed successfully");
+                window.location = "/order/load/" + order.orderNumber
 
             } catch (error) {
                 console.error("Order creation failed:", error);

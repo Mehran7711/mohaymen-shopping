@@ -9,4 +9,6 @@ public interface IOrderService {
 
     OrderResponse checkout(Authentication authentication, String scenario);
 
+    OrderResponse getOrder(Authentication authentication, String orderNumber);
+
 }

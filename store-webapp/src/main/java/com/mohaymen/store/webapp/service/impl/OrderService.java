@@ -24,4 +24,12 @@ public class OrderService implements IOrderService {
                 .retrieve()
                 .body(OrderResponse.class);
     }
+
+    @Override
+    public OrderResponse getOrder(Authentication authentication, String orderNumber) {
+        return clientService
+                .get(authentication, "/store/api/order/" + orderNumber)
+                .retrieve()
+                .body(OrderResponse.class);
+    }
 }
