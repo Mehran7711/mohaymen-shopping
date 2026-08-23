@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/order")
 @RequiredArgsConstructor
@@ -39,7 +41,6 @@ class OrderController {
     @GetMapping("/load/{orderNumber}")
     String showOrderDetails(@PathVariable String orderNumber, Model model) {
         model.addAttribute("orderNumber", orderNumber);
-        model.addAttribute("shouldUpdateCartCount", true);
         return "order_details";
     }
 
@@ -50,18 +51,20 @@ class OrderController {
         log.info("Fetching order details for orderNumber: {}", orderNumber);
         return orderService.getOrder(authentication, orderNumber);
     }
-//
-//    @GetMapping("/orders")
-//    String showOrders() {
-//        return "orders";
-//    }
-//
-//    @GetMapping("/api/orders")
-//    @ResponseBody
-//    List<OrderSummary> getOrders() {
-//        log.info("Fetching orders");
-//        return orderServiceClient.getOrders(getHeaders());
-//    }
+
+    //
+    @GetMapping("/orders")
+    String showOrders() {
+        return "orders";
+    }
+
+    //
+    @GetMapping("/all")
+    @ResponseBody
+    List<OrderResponse> getOrders(Authentication authentication) {
+        log.info("Fetching orders");
+        return orderService.getAllOrders(authentication);
+    }
 //
 //    private Map<String, ?> getHeaders() {
 //        String accessToken = securityHelper.getAccessToken();

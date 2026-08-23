@@ -70,6 +70,7 @@ document.addEventListener('alpine:init', () => {
                     }
                 );
                 if (!response.ok) {
+                    console.log("not OK")
                     throw new Error(`HTTP ${response.status}`);
                 }
                 const order = await response.json();

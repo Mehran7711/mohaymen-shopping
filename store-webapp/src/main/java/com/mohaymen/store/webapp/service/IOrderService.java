@@ -5,10 +5,14 @@ import com.mohaymen.store.webapp.web.response.CartResponse;
 import com.mohaymen.store.webapp.web.response.OrderResponse;
 import org.springframework.security.core.Authentication;
 
+import java.util.List;
+
 public interface IOrderService {
 
     OrderResponse checkout(Authentication authentication, String scenario);
 
     OrderResponse getOrder(Authentication authentication, String orderNumber);
+
+    List<OrderResponse> getAllOrders(Authentication authentication);
 
 }

@@ -7,8 +7,11 @@ import com.mohaymen.store.webapp.web.request.AddCartItemRequest;
 import com.mohaymen.store.webapp.web.response.CartResponse;
 import com.mohaymen.store.webapp.web.response.OrderResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +34,14 @@ public class OrderService implements IOrderService {
                 .get(authentication, "/store/api/order/" + orderNumber)
                 .retrieve()
                 .body(OrderResponse.class);
+    }
+
+    @Override
+    public List<OrderResponse> getAllOrders(Authentication authentication) {
+        return clientService
+                .get(authentication, "/store/api/order")
+                .retrieve()
+                .body(new ParameterizedTypeReference<List<OrderResponse>>() {
+                });
     }
 }
