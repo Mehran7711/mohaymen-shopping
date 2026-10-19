@@ -54,6 +54,9 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - oauth2.server_url=http://keycloak:9191
+      - oauth2.browser_url=http://localhost:9192
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:9192/realms/store
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:9191/realms/store/protocol/openid-connect/certs
     ports:
       - "8081:8081"
     restart: unless-stopped
@@ -88,6 +91,27 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  store-webapp:
+    build:
+      context: ../..
+      dockerfile: store-webapp/Dockerfile
+    image: store-webapp:2.0
+    container_name: store-webapp
+    environment:
+      - GATEWAY_URL=http://api-gateway:8989
+      - OAUTH2_SERVER_URL=http://keycloak:9191
+      - OAUTH2_BROWSER_URL=http://localhost:9192
+    ports:
+      - "8085:8080"
+    restart: unless-stopped
+    depends_on:
+      - api-gateway
+      - keycloak
     deploy:
       resources:
         limits:
@@ -162,7 +186,7 @@ services:
     image: keycloak-oracle
     container_name: keycloak
     ports:
-      - "9191:9191"
+      - "9192:9191"
     environment:
       KC_DB: oracle
       KC_DB_URL: jdbc:oracle:thin:@//store-db:1521/XE
@@ -170,6 +194,9 @@ services:
       KC_DB_PASSWORD: 123
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin123
+      KC_HOSTNAME: http://localhost:9192
+      KC_HOSTNAME_STRICT: "false"
+      KC_HTTP_ENABLED: "true"
     depends_on:
       store-db:
         condition: service_healthy

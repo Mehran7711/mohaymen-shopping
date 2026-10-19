@@ -3,7 +3,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${realm.url}
+          issuer-uri: ${oauth2.issuer_url}
+          jwk-set-uri: ${oauth2.server_url}/realms/store/protocol/openid-connect/certs
   data:
     redis:
       host: ${REDIS_HOST:localhost}
@@ -54,9 +55,11 @@ spring:
 
 oauth2:
   server_url: http://keycloak:9191
+  browser_url: http://localhost:9192
+  issuer_url: ${oauth2.browser_url}/realms/store
 
 realm:
-  url: ${oauth2.server_url}/realms/store
+  url: ${oauth2.issuer_url}
 
 swagger:
   api-gateway-url: http://api-gateway:8989/store

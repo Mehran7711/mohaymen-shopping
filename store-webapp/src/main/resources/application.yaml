@@ -16,16 +16,17 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/store-webapp"
         provider:
           store-webapp:
-            issuer-uri: ${realm.url}
-#            authorization-uri: ${REALM_URL}/protocol/openid-connect/auth
-#            token-uri: ${REALM_URL}/protocol/openid-connect/token
-#            jwk-set-uri: ${REALM_URL}/protocol/openid-connect/certs
-#            user-info-uri: ${REALM_URL}/protocol/openid-connect/userinfo
+            authorization-uri: ${oauth2.browser_url}/realms/store/protocol/openid-connect/auth
+            token-uri: ${oauth2.server_url}/realms/store/protocol/openid-connect/token
+            jwk-set-uri: ${oauth2.server_url}/realms/store/protocol/openid-connect/certs
+            user-info-uri: ${oauth2.server_url}/realms/store/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
 
 
 
 oauth2:
   server_url: http://keycloak:9191
+  browser_url: http://localhost:9192
   registrationId: "store-webapp"
 
 realm:

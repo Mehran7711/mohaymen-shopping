@@ -8,7 +8,8 @@ COPY keycloak/init.sh /opt/keycloak/init.sh
 
 
 RUN /opt/keycloak/bin/kc.sh build --db=oracle
-RUN chmod +x /opt/keycloak/entrypoint.sh \
+RUN sed -i 's/\r$//' /opt/keycloak/entrypoint.sh /opt/keycloak/init.sh \
+    && chmod +x /opt/keycloak/entrypoint.sh \
     && chmod +x /opt/keycloak/init.sh
 
 USER keycloak
