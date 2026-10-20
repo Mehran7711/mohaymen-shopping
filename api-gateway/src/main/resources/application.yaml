@@ -25,22 +25,32 @@ spring:
           routes:
             - id: store-service
               uri: ${STORE_SERVICE_URL:http://localhost:8081}
+              order: 0
               predicates:
                 - Path=/store/**
               filters:
                 - RewritePath=/store/?(?<segment>.*), /${segment}
             - id: payment-service
               uri: ${PAYMENT_SERVICE_URL:http://localhost:8082}
+              order: 1
               predicates:
                 - Path=/payment/**
               filters:
                 - RewritePath=/payment/?(?<segment>.*), /${segment}
             - id: openapi
               uri: http://localhost:${server.port}
+              order: 2
               predicates:
                 - Path=/v3/api-docs/**
               filters:
                 - RewritePath=/v3/api-docs/?(?<segment>.*), /${segment}/v3/api-docs
+            - id: store-webapp
+              uri: ${WEBAPP_SERVICE_URL:http://localhost:8080}
+              order: 100
+              predicates:
+                - Path=/**
+              filters:
+                - PreserveHostHeader
           discovery:
             locator:
               enabled: true

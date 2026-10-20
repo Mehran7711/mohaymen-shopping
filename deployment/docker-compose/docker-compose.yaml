@@ -30,8 +30,12 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - STORE_SERVICE_URL=http://store-service:8081
       - PAYMENT_SERVICE_URL=http://payment-service:8082
+      - WEBAPP_SERVICE_URL=http://store-webapp:8080
+      - SPRING_CONFIG_ADDITIONAL_LOCATION=optional:file:/config/application.yaml
     ports:
       - "8989:8989"
+    volumes:
+      - ../../api-gateway/src/main/resources/application.yaml:/config/application.yaml:ro
     restart: unless-stopped
     deploy:
       resources:
@@ -106,8 +110,7 @@ services:
       - GATEWAY_URL=http://api-gateway:8989
       - OAUTH2_SERVER_URL=http://keycloak:9191
       - OAUTH2_BROWSER_URL=http://localhost:9192
-    ports:
-      - "8085:8080"
+      - SERVER_FORWARD_HEADERS_STRATEGY=framework
     restart: unless-stopped
     depends_on:
       - api-gateway
