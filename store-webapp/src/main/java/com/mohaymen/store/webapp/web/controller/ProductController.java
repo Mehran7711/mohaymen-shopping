@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestClientResponseException;
 
 import java.util.List;
 
@@ -44,9 +45,16 @@ class ProductController {
 
     @GetMapping("/api/products")
     @ResponseBody
-    public PageResult<ProductDto> products(Authentication authentication,
-                                           @RequestParam(defaultValue = "1") Integer page) {
-        return productService.loadProducts(authentication, page);
+    public ResponseEntity<PageResult<ProductDto>> products(Authentication authentication,
+                                                           @RequestParam(defaultValue = "1") Integer page) {
+        try {
+            return ResponseEntity.ok(productService.loadProducts(authentication, page));
+        } catch (RestClientResponseException ex) {
+            if (ex.getStatusCode().isSameCodeAs(HttpStatus.TOO_MANY_REQUESTS)) {
+                return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
+            }
+            throw ex;
+        }
     }
 
 }

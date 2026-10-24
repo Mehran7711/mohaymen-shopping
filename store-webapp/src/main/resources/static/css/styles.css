@@ -1,3 +1,7 @@
 #app {
     padding-top: 90px;
 }
+
+[x-cloak] {
+    display: none !important;
+}

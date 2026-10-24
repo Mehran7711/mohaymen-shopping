@@ -31,6 +31,8 @@ services:
       - STORE_SERVICE_URL=http://store-service:8081
       - PAYMENT_SERVICE_URL=http://payment-service:8082
       - WEBAPP_SERVICE_URL=http://store-webapp:8080
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
       - SPRING_CONFIG_ADDITIONAL_LOCATION=optional:file:/config/application.yaml
     ports:
       - "8989:8989"

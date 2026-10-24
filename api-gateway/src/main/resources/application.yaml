@@ -18,11 +18,27 @@ management:
 spring:
   application:
     name: api-gateway
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
   cloud:
     gateway:
       server:
         webflux:
           routes:
+            - id: store-products
+              uri: ${STORE_SERVICE_URL:http://localhost:8081}
+              order: -1
+              predicates:
+                - Path=/store/api/products
+                - Method=GET
+              filters:
+                - name: ProductCooldown
+                  args:
+                    limit: 11
+                    windowSeconds: 10
+                - RewritePath=/store/?(?<segment>.*), /${segment}
             - id: store-service
               uri: ${STORE_SERVICE_URL:http://localhost:8081}
               order: 0

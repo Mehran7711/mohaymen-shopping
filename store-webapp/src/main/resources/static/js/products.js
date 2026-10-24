@@ -4,11 +4,13 @@ document.addEventListener('alpine:init', () => {
         products: {
             data: []
         },
+        rateLimited: false,
         init() {
             this.loadProducts(this.pageNo);
             updateCartItemCount();
         },
         loadProducts(pageNo) {
+            this.rateLimited = false;
             $.ajax({
                 url: "/api/products?page=" + pageNo,
                 success: (resp) => {
@@ -17,6 +19,10 @@ document.addEventListener('alpine:init', () => {
                 error: (xhr) => {
                     if (xhr.status === 401) {
                         alert("You should login.");
+                    }
+                    if (xhr.status === 429) {
+                        this.rateLimited = true;
+                        this.products = { data: [] };
                     }
                 }
             });
