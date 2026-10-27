@@ -20,6 +20,8 @@ global:
   mailHost: mailhog
   mailPort: "1025"
   gatewayUrl: http://api-gateway:8989
+  imagePullSecrets:
+    - name: ghcr-pull
 
 api-gateway:
   service:

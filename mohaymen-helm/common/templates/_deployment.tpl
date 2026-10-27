@@ -16,6 +16,11 @@ spec:
       labels:
         {{- include "mohaymen.podLabels" (dict "ctx" . "name" .Values.appLabel) | nindent 8 }}
     spec:
+      {{- $global := .Values.global | default dict }}
+      {{- with (.Values.imagePullSecrets | default $global.imagePullSecrets) }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Values.appLabel }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
