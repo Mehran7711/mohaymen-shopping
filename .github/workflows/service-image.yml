@@ -10,6 +10,7 @@ on:
       - store-webapp/**
       - store-events/**
       - pom.xml
+      - .github/workflows/service-image.yml
 
 permissions:
   contents: write
@@ -39,6 +40,7 @@ jobs:
       - name: Build changed services
         env:
           DOCKER_BUILDKIT: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           owner="$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')"
@@ -50,7 +52,7 @@ jobs:
           fi
 
           selected=""
-          if printf '%s\n' "${files}" | grep -Eq '^(pom\.xml$|store-events/)'; then
+          if printf '%s\n' "${files}" | grep -Eq '^(pom\.xml$|store-events/|\.github/workflows/service-image\.yml$)'; then
             selected="${services}"
           else
             for service in ${services}; do
