@@ -1,0 +1,184 @@
+name: Service image
+
+on:
+  push:
+    paths:
+      - api-gateway/**
+      - store-service/**
+      - payment-service/**
+      - notification-service/**
+      - store-webapp/**
+      - store-events/**
+      - pom.xml
+
+permissions:
+  contents: write
+  packages: write
+
+concurrency:
+  group: service-images-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build changed services
+        env:
+          DOCKER_BUILDKIT: "1"
+        run: |
+          set -euo pipefail
+          owner="$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')"
+          services="api-gateway store-service payment-service notification-service store-webapp"
+          if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+            files="$(git diff --name-only HEAD~1 HEAD)"
+          else
+            files="$(git ls-tree -r --name-only HEAD)"
+          fi
+
+          selected=""
+          if printf '%s\n' "${files}" | grep -Eq '^(pom\.xml$|store-events/)'; then
+            selected="${services}"
+          else
+            for service in ${services}; do
+              if printf '%s\n' "${files}" | grep -q "^${service}/"; then
+                selected="${selected} ${service}"
+              fi
+            done
+          fi
+
+          mkdir -p "${RUNNER_TEMP}"
+          : > "${RUNNER_TEMP}/built.txt"
+          for service in ${selected}; do
+            tag="r$(openssl rand -hex 4)"
+            image="ghcr.io/${owner}/${service}"
+            echo "Building ${image}:${tag} and ${image}:latest"
+            docker build \
+              --build-arg MAVEN_IMAGE=maven:3.9.11-eclipse-temurin-21 \
+              -f "${service}/Dockerfile" \
+              -t "${image}:${tag}" \
+              -t "${image}:latest" \
+              .
+            docker push "${image}:${tag}"
+            docker push "${image}:latest"
+            echo "${service} ${image} ${tag}" >> "${RUNNER_TEMP}/built.txt"
+            curl -sS -X PUT \
+              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/user/packages/container/${service}/visibility" \
+              -d '{"visibility":"public"}' \
+              || echo "Package ${service} is still private. Set it to public once in GitHub Packages."
+          done
+
+          if [ ! -s "${RUNNER_TEMP}/built.txt" ]; then
+            echo "No service image to build."
+            exit 0
+          fi
+
+          python3 - "${RUNNER_TEMP}/built.txt" <<'PY'
+          import pathlib, sys
+          built = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8").splitlines()
+
+          def newline_of(text):
+              return "\r\n" if "\r\n" in text else "\n"
+
+          def write(path, text, newline):
+              text = text.replace("\r\n", "\n").replace("\r", "\n")
+              if not text.endswith("\n"):
+                  text += "\n"
+              path.write_text(text.replace("\n", newline), encoding="utf-8")
+
+          def replace_image_block(text, indent, repository, tag):
+              lines = text.splitlines()
+              out = []
+              i = 0
+              found = False
+              while i < len(lines):
+                  if lines[i] == f"{indent}image:":
+                      found = True
+                      out.append(lines[i])
+                      out.append(f"{indent}  repository: {repository}")
+                      out.append(f"{indent}  tag: \"{tag}\"")
+                      i += 1
+                      while i < len(lines) and (lines[i].startswith(indent + "  ") or lines[i].strip() == ""):
+                          if lines[i].strip() == "":
+                              break
+                          i += 1
+                      continue
+                  out.append(lines[i])
+                  i += 1
+              return "\n".join(out) + "\n", found
+
+          def upsert_platform(text, service, repository, tag):
+              lines = text.splitlines()
+              header = f"{service}:"
+              if header not in lines:
+                  extra = f"\n{service}:\n  image:\n    repository: {repository}\n    tag: \"{tag}\"\n"
+                  if not text.endswith("\n"):
+                      text += "\n"
+                  return text + extra
+              out = []
+              i = 0
+              while i < len(lines):
+                  out.append(lines[i])
+                  if lines[i] == header:
+                      i += 1
+                      block = []
+                      while i < len(lines) and not (lines[i] and not lines[i].startswith(" ")):
+                          block.append(lines[i])
+                          i += 1
+                      body = "\n".join(block) + ("\n" if block else "")
+                      replaced, found = replace_image_block(body, "  ", repository, tag)
+                      if found:
+                          out.extend(replaced.splitlines())
+                      else:
+                          out.append("  image:")
+                          out.append(f"    repository: {repository}")
+                          out.append(f"    tag: \"{tag}\"")
+                          out.extend(block)
+                      continue
+                  i += 1
+              return "\n".join(out) + "\n"
+
+          for row in built:
+              service, repository, tag = row.split()
+              service_path = pathlib.Path("mohaymen-helm/services") / service / "values.yaml"
+              current = service_path.read_text(encoding="utf-8")
+              updated, found = replace_image_block(current, "", repository, tag)
+              if not found:
+                  raise SystemExit(f"image block missing in {service_path}")
+              write(service_path, updated, newline_of(current))
+
+              platform_path = pathlib.Path("mohaymen-helm/platform/values.yaml")
+              platform = platform_path.read_text(encoding="utf-8")
+              write(platform_path, upsert_platform(platform, service, repository, tag), newline_of(platform))
+          PY
+
+      - name: Commit the image tag the chart uses
+        run: |
+          set -euo pipefail
+          if [ ! -s "${RUNNER_TEMP}/built.txt" ]; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mohaymen-helm/services/*/values.yaml mohaymen-helm/platform/values.yaml
+          if git diff --cached --quiet; then
+            echo "Chart tags already match."
+            exit 0
+          fi
+          git commit -m "chore: use new service image tags [skip ci]"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

@@ -1,4 +1,5 @@
-FROM docker.arvancloud.ir/maven:3.9.11-eclipse-temurin-21 AS builder
+ARG MAVEN_IMAGE=docker.arvancloud.ir/maven:3.9.11-eclipse-temurin-21
+FROM ${MAVEN_IMAGE} AS builder
 
 WORKDIR /app
 
@@ -40,7 +41,7 @@ RUN --mount=type=cache,target=/root/.m2 \
     done
 
 
-FROM docker.arvancloud.ir/maven:3.9.11-eclipse-temurin-21
+FROM ${MAVEN_IMAGE}
 
 COPY --from=builder /app/notification-service/target/*.jar app.jar
 
