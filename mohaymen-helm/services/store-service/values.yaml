@@ -1,0 +1,37 @@
+deploymentName: store-service
+serviceName: store-service
+appLabel: store-service
+
+replicaCount: 1
+
+image:
+  repository: store-service
+  tag: "2.0"
+
+containerPort: 8081
+
+service:
+  type: ClusterIP
+  port: 8081
+
+redis:
+  enabled: true
+kafka:
+  enabled: true
+database:
+  enabled: true
+  username: STORE
+oauth:
+  enabled: true
+jwt:
+  enabled: true
+paymentClient:
+  enabled: true
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 384Mi
+  limits:
+    cpu: "1"
+    memory: 700Mi

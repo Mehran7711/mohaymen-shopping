@@ -1,0 +1,16 @@
+{{- $global := .Values.global | default dict -}}
+{{- if $global.externalHost }}
+{{- range $name := $global.externalServices }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  namespace: {{ include "mohaymen.namespace" $ }}
+  labels:
+    {{- include "mohaymen.commonLabels" $ | nindent 4 }}
+spec:
+  type: ExternalName
+  externalName: {{ $global.externalHost }}
+{{- end }}
+{{- end }}

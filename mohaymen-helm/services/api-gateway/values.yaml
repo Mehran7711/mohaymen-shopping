@@ -1,0 +1,32 @@
+deploymentName: api-gateway
+serviceName: api-gateway
+appLabel: api-gateway
+
+replicaCount: 1
+
+image:
+  repository: api-gateway
+  tag: "2.0"
+
+containerPort: 8989
+hostPort: 8989
+
+service:
+  type: LoadBalancer
+  port: 8989
+
+redis:
+  enabled: true
+
+env:
+  STORE_SERVICE_URL: http://store-service:8081
+  PAYMENT_SERVICE_URL: http://payment-service:8082
+  WEBAPP_SERVICE_URL: http://store-webapp:8080
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 384Mi
+  limits:
+    cpu: "1"
+    memory: 700Mi

@@ -1,11 +1,11 @@
 apiVersion: v2
-name: Store
-description: Store microservice
+name: api-gateway
+description: API gateway
 type: application
 version: 0.1.0
-appVersion: "s14"
+appVersion: "2.0"
 
 dependencies:
   - name: common
     version: 0.1.0
-    repository: "file://../../common"
+    repository: file://../../common

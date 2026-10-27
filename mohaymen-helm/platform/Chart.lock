@@ -1,0 +1,21 @@
+dependencies:
+- name: common
+  repository: file://../common
+  version: 0.1.0
+- name: api-gateway
+  repository: file://../services/api-gateway
+  version: 0.1.0
+- name: store-service
+  repository: file://../services/store-service
+  version: 0.1.0
+- name: payment-service
+  repository: file://../services/payment-service
+  version: 0.1.0
+- name: notification-service
+  repository: file://../services/notification-service
+  version: 0.1.0
+- name: store-webapp
+  repository: file://../services/store-webapp
+  version: 0.1.0
+digest: sha256:5604499d7b5aeb1552bd8b8543e306c621e235c6d2c06aff20b2a49a686c563d
+generated: "2026-10-26T09:42:12.1285838+03:30"

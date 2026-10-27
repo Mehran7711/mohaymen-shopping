@@ -1,0 +1,30 @@
+deploymentName: store-webapp
+serviceName: store-webapp
+appLabel: store-webapp
+
+replicaCount: 1
+
+image:
+  repository: store-webapp
+  tag: "2.0"
+
+containerPort: 8080
+
+service:
+  type: ClusterIP
+  port: 8080
+
+profile:
+  enabled: false
+oauth:
+  enabled: true
+gateway:
+  enabled: true
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 384Mi
+  limits:
+    cpu: "1"
+    memory: 700Mi

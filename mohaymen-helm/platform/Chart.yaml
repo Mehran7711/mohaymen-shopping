@@ -1,0 +1,26 @@
+apiVersion: v2
+name: platform
+description: Mohaymen services
+type: application
+version: 0.1.0
+appVersion: "2.0"
+
+dependencies:
+  - name: common
+    version: 0.1.0
+    repository: file://../common
+  - name: api-gateway
+    version: 0.1.0
+    repository: file://../services/api-gateway
+  - name: store-service
+    version: 0.1.0
+    repository: file://../services/store-service
+  - name: payment-service
+    version: 0.1.0
+    repository: file://../services/payment-service
+  - name: notification-service
+    version: 0.1.0
+    repository: file://../services/notification-service
+  - name: store-webapp
+    version: 0.1.0
+    repository: file://../services/store-webapp

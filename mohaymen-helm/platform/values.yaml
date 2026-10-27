@@ -1,0 +1,33 @@
+global:
+  namespace: mohaymen
+  partOf: mohaymen
+  configMapName: mohaymen-config
+  springProfilesActive: dev
+  redisHost: redis
+  redisPort: "6379"
+  kafkaBroker: kafka:9092
+  databaseHost: store-db
+  externalHost: host.docker.internal
+  externalServices:
+    - store-db
+    - redis
+    - kafka
+    - mailhog
+  keycloakServerUrl: http://host.docker.internal:9192
+  keycloakBrowserUrl: http://localhost:9192
+  issuerUri: http://localhost:9192/realms/store
+  jwkSetUri: http://host.docker.internal:9192/realms/store/protocol/openid-connect/certs
+  mailHost: mailhog
+  mailPort: "1025"
+  gatewayUrl: http://api-gateway:8989
+
+api-gateway:
+  service:
+    type: LoadBalancer
+  hostPort: 8989
+  probes:
+    path: /actuator/health/liveness
+
+notification-service:
+  probes:
+    path: /actuator/health/liveness
