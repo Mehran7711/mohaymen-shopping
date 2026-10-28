@@ -44,3 +44,8 @@ store-service:
       memory: 1536Mi
   env:
     JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=70.0"
+
+store-webapp:
+  image:
+    repository: ghcr.io/mehran7711/store-webapp
+    tag: "r202c3836"

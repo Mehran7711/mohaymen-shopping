@@ -5,8 +5,8 @@ appLabel: store-webapp
 replicaCount: 1
 
 image:
-  repository: store-webapp
-  tag: "2.0"
+  repository: ghcr.io/mehran7711/store-webapp
+  tag: "r202c3836"
 
 containerPort: 8080
 
