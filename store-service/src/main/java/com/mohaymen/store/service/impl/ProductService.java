@@ -1,6 +1,7 @@
 package com.mohaymen.store.service.impl;
 
 import com.mohaymen.store.repository.ProductRepository;
+import com.mohaymen.store.service.IInventoryService;
 import com.mohaymen.store.service.IProductService;
 import com.mohaymen.store.web.ApplicationWebProperties;
 import com.mohaymen.store.web.mapper.ProductMapper;
@@ -27,12 +28,23 @@ public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final ApplicationWebProperties properties;
     private final ProductMapper productMapper;
+    private final IInventoryService inventoryService;
 
     public PageResult<ProductDto> getProducts(int pageNo) {
         Sort sort = Sort.by("name").ascending();
         pageNo = pageNo <= 1 ? 0 : pageNo - 1;
         Pageable pageable = PageRequest.of(pageNo, properties.pageSize(), sort);
-        Page<ProductDto> productsPage = productRepository.findAll(pageable).map(productMapper::toDto);
+        Page<ProductDto> productsPage = productRepository.findAll(pageable).map(product -> {
+            ProductDto dto = productMapper.toDto(product);
+            return new ProductDto(
+                    dto.id(),
+                    dto.code(),
+                    dto.name(),
+                    dto.description(),
+                    dto.imageUrl(),
+                    dto.price(),
+                    inventoryService.getAvailableStock(product.getId()));
+        });
 
         return new PageResult<>(
                 productsPage.getContent(),
