@@ -33,3 +33,14 @@ api-gateway:
 notification-service:
   probes:
     path: /actuator/health/liveness
+
+store-service:
+  resources:
+    requests:
+      cpu: 250m
+      memory: 768Mi
+    limits:
+      cpu: "1"
+      memory: 1536Mi
+  env:
+    JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=70.0"

@@ -28,10 +28,13 @@ jwt:
 paymentClient:
   enabled: true
 
+env:
+  JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=70.0"
+
 resources:
   requests:
     cpu: 250m
-    memory: 384Mi
+    memory: 768Mi
   limits:
     cpu: "1"
-    memory: 700Mi
+    memory: 1536Mi
