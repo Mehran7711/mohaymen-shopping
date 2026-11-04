@@ -7,7 +7,9 @@ import com.mohaymen.store.web.ApplicationWebProperties;
 import com.mohaymen.store.web.mapper.ProductMapper;
 import com.mohaymen.store.web.response.PageResult;
 import com.mohaymen.store.web.response.ProductDto;
+
 import java.util.Optional;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,17 +36,7 @@ public class ProductService implements IProductService {
         Sort sort = Sort.by("name").ascending();
         pageNo = pageNo <= 1 ? 0 : pageNo - 1;
         Pageable pageable = PageRequest.of(pageNo, properties.pageSize(), sort);
-        Page<ProductDto> productsPage = productRepository.findAll(pageable).map(product -> {
-            ProductDto dto = productMapper.toDto(product);
-            return new ProductDto(
-                    dto.id(),
-                    dto.code(),
-                    dto.name(),
-                    dto.description(),
-                    dto.imageUrl(),
-                    dto.price(),
-                    inventoryService.getAvailableStock(product.getId()));
-        });
+        Page<ProductDto> productsPage = productRepository.findAll(pageable).map(product -> productMapper.toDto(product, inventoryService));
 
         return new PageResult<>(
                 productsPage.getContent(),
@@ -60,6 +52,6 @@ public class ProductService implements IProductService {
     @Cacheable(value = "products", key = "#code")
     public Optional<ProductDto> getProductByCode(String code) {
         log.info("Fetching from database...");
-        return productRepository.findByCode(code).map(productMapper::toDto);
+        return productRepository.findByCode(code).map(product -> productMapper.toDto(product, inventoryService));
     }
 }
