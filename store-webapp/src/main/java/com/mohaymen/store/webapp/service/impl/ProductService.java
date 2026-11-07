@@ -10,8 +10,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class ProductService implements IProductService {
@@ -32,8 +30,6 @@ public class ProductService implements IProductService {
         return clientService
                 .get(authentication, "/store/api/products?page=" + pageNo)
                 .retrieve()
-                .body(new ParameterizedTypeReference<PageResult<ProductDto>>() {
-                });
+                .body(new ParameterizedTypeReference<PageResult<ProductDto>>() {});
     }
-
 }

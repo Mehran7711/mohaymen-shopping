@@ -28,25 +28,15 @@ class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(c -> c.requestMatchers(
-                                "/js/*",
-                                "/css/*",
-                                "/images/*",
-                                "/error",
-                                "/webjars/**",
-                                "/",
-                                "/actuator/**",
-                                "/api/**")
+                                "/js/*", "/css/*", "/images/*", "/error", "/webjars/**", "/", "/actuator/**", "/api/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
                 .cors(CorsConfigurer::disable)
                 .csrf(CsrfConfigurer::disable)
-                .exceptionHandling(ex -> ex
-                        .defaultAuthenticationEntryPointFor(
-                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
-                                request -> request.getRequestURI().startsWith("/api/")
-                        )
-                )
+                .exceptionHandling(ex -> ex.defaultAuthenticationEntryPointFor(
+                        new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+                        request -> request.getRequestURI().startsWith("/api/")))
                 .oauth2Login(Customizer.withDefaults())
                 .logout(logout -> logout.clearAuthentication(true)
                         .invalidateHttpSession(true)
@@ -56,7 +46,8 @@ class SecurityConfig {
 
     private LogoutSuccessHandler oidcLogoutSuccessHandler() {
         return (request, response, authentication) -> {
-            String baseUrl = UriComponentsBuilder.fromUriString(request.getRequestURL().toString())
+            String baseUrl = UriComponentsBuilder.fromUriString(
+                            request.getRequestURL().toString())
                     .replacePath(request.getContextPath())
                     .replaceQuery(null)
                     .build()

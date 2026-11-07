@@ -1,24 +1,19 @@
 package com.mohaymen.store.webapp.service.impl;
 
-import com.mohaymen.store.webapp.service.ICartService;
 import com.mohaymen.store.webapp.service.IOrderService;
 import com.mohaymen.store.webapp.service.ISecurityClientService;
-import com.mohaymen.store.webapp.web.request.AddCartItemRequest;
-import com.mohaymen.store.webapp.web.response.CartResponse;
 import com.mohaymen.store.webapp.web.response.OrderResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService implements IOrderService {
 
     private final ISecurityClientService clientService;
-
 
     @Override
     public OrderResponse checkout(Authentication authentication, String scenario) {
@@ -41,7 +36,6 @@ public class OrderService implements IOrderService {
         return clientService
                 .get(authentication, "/store/api/order")
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<OrderResponse>>() {
-                });
+                .body(new ParameterizedTypeReference<List<OrderResponse>>() {});
     }
 }

@@ -17,12 +17,10 @@ import com.mohaymen.payment.web.ApplicationProperties;
 import com.mohaymen.payment.web.filter.PaymentFilter;
 import com.mohaymen.payment.web.response.PaymentResult;
 import com.mohaymen.payment.web.response.RefundResult;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -94,7 +92,8 @@ public class PaymentService implements IPaymentService {
             producer.publish(
                     KafkaTopics.PAYMENT_FAILED,
                     event.getOrderId().toString(),
-                    new PaymentFailedEvent(event.getOrderId(),
+                    new PaymentFailedEvent(
+                            event.getOrderId(),
                             result.reason(),
                             event.getCustomerName(),
                             event.getEmail(),

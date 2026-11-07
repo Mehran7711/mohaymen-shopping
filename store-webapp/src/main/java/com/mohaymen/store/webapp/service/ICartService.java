@@ -7,10 +7,7 @@ import org.springframework.security.core.Authentication;
 public interface ICartService {
     CartResponse getCart(Authentication authentication);
 
-    CartResponse updateQuantity(Authentication authentication,
-                                Long productId,
-                                AddCartItemRequest request);
+    CartResponse updateQuantity(Authentication authentication, Long productId, AddCartItemRequest request);
 
-    void deleteItem(Authentication authentication,
-                            Long productId);
+    void deleteItem(Authentication authentication, Long productId);
 }

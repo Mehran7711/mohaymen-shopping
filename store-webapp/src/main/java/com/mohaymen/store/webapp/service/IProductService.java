@@ -5,9 +5,8 @@ import com.mohaymen.store.webapp.web.response.PageResult;
 import com.mohaymen.store.webapp.web.response.ProductDto;
 import org.springframework.security.core.Authentication;
 
-import java.util.List;
-
 public interface IProductService {
     void addProduct(Authentication authentication, AddCartItemRequest request);
+
     PageResult<ProductDto> loadProducts(Authentication authentication, Integer pageNo);
 }

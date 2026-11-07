@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
  * Author: Mehran
  * Created on: 7/28/26
  */
-
 @Controller
 @RequestMapping("/cart")
 @RequiredArgsConstructor
@@ -41,11 +40,9 @@ public class CartController {
 
     @PutMapping("/items/{productId}")
     @ResponseBody
-    public CartResponse updateQuantity(Authentication authentication,
-                                       @PathVariable Long productId,
-                                       @RequestBody AddCartItemRequest request) {
+    public CartResponse updateQuantity(
+            Authentication authentication, @PathVariable Long productId, @RequestBody AddCartItemRequest request) {
         return cartService.updateQuantity(authentication, productId, request);
-
     }
 
     @DeleteMapping("/items/{productId}")

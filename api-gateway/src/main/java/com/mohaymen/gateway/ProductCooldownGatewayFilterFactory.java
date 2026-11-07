@@ -11,13 +11,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-class ProductCooldownGatewayFilterFactory extends AbstractGatewayFilterFactory<ProductCooldownGatewayFilterFactory.Config> {
+class ProductCooldownGatewayFilterFactory
+        extends AbstractGatewayFilterFactory<ProductCooldownGatewayFilterFactory.Config> {
 
     private static final DefaultRedisScript<List> SCRIPT = new DefaultRedisScript<>();
 
     static {
         SCRIPT.setResultType(List.class);
-        SCRIPT.setScriptText("""
+        SCRIPT.setScriptText(
+                """
                 local key = KEYS[1]
                 local now = tonumber(ARGV[1])
                 local window = tonumber(ARGV[2])

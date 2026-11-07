@@ -7,7 +7,6 @@ import org.springframework.web.client.RestClient;
  * Author: Mehran
  * Created on: 7/28/26
  */
-
 public interface ISecurityClientService {
     String accessToken(Authentication authentication);
 

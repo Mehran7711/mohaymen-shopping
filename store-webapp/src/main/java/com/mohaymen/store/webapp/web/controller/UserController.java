@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Author: Mehran
  * Created on: 8/8/26
  */
-
 @Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor

@@ -22,8 +22,8 @@ public class OrderCreatedConsumer {
     @KafkaListener(topics = KafkaTopics.ORDER_CREATED, groupId = "notification-service")
     public void consume(OrderCreatedEvent event) {
 
-//        log.info("Received order event in notification-service: {}", event);
-//        notificationService.sendOrderCreatedNotification(event);
+        //        log.info("Received order event in notification-service: {}", event);
+        //        notificationService.sendOrderCreatedNotification(event);
 
         try {
             log.info("Received order event in notification-service: {}", event);

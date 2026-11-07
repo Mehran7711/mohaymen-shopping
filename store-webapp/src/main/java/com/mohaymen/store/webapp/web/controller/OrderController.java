@@ -3,6 +3,7 @@ package com.mohaymen.store.webapp.web.controller;
 import com.mohaymen.store.webapp.service.IOrderService;
 import com.mohaymen.store.webapp.web.response.OrderResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,33 +12,31 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/order")
 @RequiredArgsConstructor
 class OrderController {
     private static final Logger log = LoggerFactory.getLogger(OrderController.class);
     private final IOrderService orderService;
-//    private final SecurityHelper securityHelper;
-//
-//    OrderController(OrderServiceClient orderServiceClient, SecurityHelper securityHelper) {
-//        this.orderServiceClient = orderServiceClient;
-//        this.securityHelper = securityHelper;
-//    }
+    //    private final SecurityHelper securityHelper;
+    //
+    //    OrderController(OrderServiceClient orderServiceClient, SecurityHelper securityHelper) {
+    //        this.orderServiceClient = orderServiceClient;
+    //        this.securityHelper = securityHelper;
+    //    }
 
-//    @GetMapping("/cart")
-//    String cart() {
-//        return "cart";
-//    }
+    //    @GetMapping("/cart")
+    //    String cart() {
+    //        return "cart";
+    //    }
 
     //    @PostMapping("/api/orders")
-//    @ResponseBody
-//    OrderConfirmationDTO createOrder(@Valid @RequestBody CreateOrderRequest orderRequest) {
-//        log.info("Creating order: {}", orderRequest);
-//        return orderServiceClient.createOrder(getHeaders(), orderRequest);
-//    }
-//
+    //    @ResponseBody
+    //    OrderConfirmationDTO createOrder(@Valid @RequestBody CreateOrderRequest orderRequest) {
+    //        log.info("Creating order: {}", orderRequest);
+    //        return orderServiceClient.createOrder(getHeaders(), orderRequest);
+    //    }
+    //
     @GetMapping("/load/{orderNumber}")
     String showOrderDetails(@PathVariable String orderNumber, Model model) {
         model.addAttribute("orderNumber", orderNumber);
@@ -65,11 +64,11 @@ class OrderController {
         log.info("Fetching orders");
         return orderService.getAllOrders(authentication);
     }
-//
-//    private Map<String, ?> getHeaders() {
-//        String accessToken = securityHelper.getAccessToken();
-//        return Map.of("Authorization", "Bearer " + accessToken);
-//    }
+    //
+    //    private Map<String, ?> getHeaders() {
+    //        String accessToken = securityHelper.getAccessToken();
+    //        return Map.of("Authorization", "Bearer " + accessToken);
+    //    }
 
     @PostMapping("/checkout")
     @ResponseBody

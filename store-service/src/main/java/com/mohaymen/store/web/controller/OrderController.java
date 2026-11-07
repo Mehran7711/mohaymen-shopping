@@ -6,9 +6,7 @@ import com.mohaymen.store.service.ISecurityService;
 import com.mohaymen.store.web.mapper.OrderMapper;
 import com.mohaymen.store.web.response.OrderResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +34,6 @@ public class OrderController {
         log.info("userInfo: {}", userInfo);
         return ResponseEntity.ok(orderMapper.toDto(orderService.getOrder(), securityService));
     }
-
 
     @GetMapping("/{orderNumber}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable String orderNumber) {

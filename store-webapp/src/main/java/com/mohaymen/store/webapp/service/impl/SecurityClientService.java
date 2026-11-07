@@ -14,7 +14,6 @@ import org.springframework.web.client.RestClient;
  * Author: Mehran
  * Created on: 7/28/26
  */
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -29,9 +28,7 @@ public class SecurityClientService implements ISecurityClientService {
     @Override
     public String accessToken(Authentication authentication) {
         OAuth2AuthorizedClient client =
-                authorizedClientService.loadAuthorizedClient(
-                        registrationId,
-                        authentication.getName());
+                authorizedClientService.loadAuthorizedClient(registrationId, authentication.getName());
 
         if (client == null) {
             throw new RuntimeException("OAuth2AuthorizedClient not found");
@@ -40,42 +37,26 @@ public class SecurityClientService implements ISecurityClientService {
         return client.getAccessToken().getTokenValue();
     }
 
-
     @Override
-    public RestClient.RequestHeadersSpec<?> get(
-            Authentication authentication,
-            String uri) {
-        return restClient.get()
-                .uri(uri)
-                .headers(h ->
-                        h.setBearerAuth(accessToken(authentication)));
+    public RestClient.RequestHeadersSpec<?> get(Authentication authentication, String uri) {
+        return restClient.get().uri(uri).headers(h -> h.setBearerAuth(accessToken(authentication)));
     }
 
     @Override
     public RestClient.RequestBodySpec post(Authentication authentication, String uri) {
 
-
-        return restClient.post()
-                .uri(uri)
-                .headers(h ->
-                        h.setBearerAuth(accessToken(authentication)));
+        return restClient.post().uri(uri).headers(h -> h.setBearerAuth(accessToken(authentication)));
     }
 
     @Override
     public RestClient.RequestBodySpec put(Authentication authentication, String uri) {
 
-        return restClient.put()
-                .uri(uri)
-                .headers(h ->
-                        h.setBearerAuth(accessToken(authentication)));
+        return restClient.put().uri(uri).headers(h -> h.setBearerAuth(accessToken(authentication)));
     }
 
     @Override
     public RestClient.RequestHeadersSpec<?> delete(Authentication authentication, String uri) {
 
-        return restClient.delete()
-                .uri(uri)
-                .headers(h ->
-                        h.setBearerAuth(accessToken(authentication)));
+        return restClient.delete().uri(uri).headers(h -> h.setBearerAuth(accessToken(authentication)));
     }
 }

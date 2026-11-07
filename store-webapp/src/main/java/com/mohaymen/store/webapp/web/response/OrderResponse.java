@@ -13,5 +13,4 @@ public record OrderResponse(
         String status,
         BigDecimal totalAmount,
         UserInfo customer,
-        List<OrderItemResponse> items) {
-}
+        List<OrderItemResponse> items) {}

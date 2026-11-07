@@ -4,7 +4,6 @@ package com.mohaymen.events;
  * Author: Mehran
  * Created on: 7/8/26
  */
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -19,11 +18,7 @@ public class PaymentFailedEvent extends BaseEvent {
     private String customerName;
     private String email;
 
-    public PaymentFailedEvent(Long orderId,
-                              String reason,
-                              String customerName,
-                              String email,
-                              String scenario) {
+    public PaymentFailedEvent(Long orderId, String reason, String customerName, String email, String scenario) {
 
         super(EventType.PAYMENT_FAILED, scenario);
 

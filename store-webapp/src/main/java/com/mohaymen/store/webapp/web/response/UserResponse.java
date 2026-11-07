@@ -6,7 +6,6 @@ import java.util.List;
  * Author: Mehran
  * Created on: 8/8/26
  */
-
 public record UserResponse(
         String id,
         String username,
@@ -16,6 +15,4 @@ public record UserResponse(
         String fullName,
         String phone,
         boolean emailVerified,
-        List<String> roles
-) {
-}
+        List<String> roles) {}

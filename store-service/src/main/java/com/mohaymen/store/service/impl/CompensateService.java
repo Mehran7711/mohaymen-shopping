@@ -11,7 +11,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +29,8 @@ public class CompensateService implements ICompensateService {
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private final IOrderPaymentService orderPaymentService;
 
-//    @Scheduled(fixedDelay = 60000)
-//    @Transactional
+    //    @Scheduled(fixedDelay = 60000)
+    //    @Transactional
     public void releaseExpiredReservations() {
 
         log.info("Starting compensation service...");
