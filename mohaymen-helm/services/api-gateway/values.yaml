@@ -5,8 +5,8 @@ appLabel: api-gateway
 replicaCount: 1
 
 image:
-  repository: api-gateway
-  tag: "2.0"
+  repository: ghcr.io/mehran7711/api-gateway
+  tag: "r8eda729b"
 
 containerPort: 8989
 hostPort: 8989

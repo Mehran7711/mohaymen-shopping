@@ -5,8 +5,8 @@ appLabel: store-service
 replicaCount: 1
 
 image:
-  repository: store-service
-  tag: "2.0"
+  repository: ghcr.io/mehran7711/store-service
+  tag: "r4a3054b4"
 
 containerPort: 8081
 

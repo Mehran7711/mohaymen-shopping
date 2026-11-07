@@ -24,6 +24,9 @@ global:
     - name: ghcr-pull
 
 api-gateway:
+  image:
+    repository: ghcr.io/mehran7711/api-gateway
+    tag: "r8eda729b"
   service:
     type: LoadBalancer
   hostPort: 8989
@@ -31,10 +34,16 @@ api-gateway:
     path: /actuator/health/liveness
 
 notification-service:
+  image:
+    repository: ghcr.io/mehran7711/notification-service
+    tag: "r868851e8"
   probes:
     path: /actuator/health/liveness
 
 store-service:
+  image:
+    repository: ghcr.io/mehran7711/store-service
+    tag: "r4a3054b4"
   resources:
     requests:
       cpu: 250m
@@ -48,4 +57,9 @@ store-service:
 store-webapp:
   image:
     repository: ghcr.io/mehran7711/store-webapp
-    tag: "r202c3836"
+    tag: "rad9a48dc"
+
+payment-service:
+  image:
+    repository: ghcr.io/mehran7711/payment-service
+    tag: "redc0a826"

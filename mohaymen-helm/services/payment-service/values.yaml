@@ -5,8 +5,8 @@ appLabel: payment-service
 replicaCount: 1
 
 image:
-  repository: payment-service
-  tag: "2.0"
+  repository: ghcr.io/mehran7711/payment-service
+  tag: "redc0a826"
 
 containerPort: 8082
 

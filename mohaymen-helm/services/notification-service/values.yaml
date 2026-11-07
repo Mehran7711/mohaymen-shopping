@@ -5,8 +5,8 @@ appLabel: notification-service
 replicaCount: 1
 
 image:
-  repository: notification-service
-  tag: "2.0"
+  repository: ghcr.io/mehran7711/notification-service
+  tag: "r868851e8"
 
 containerPort: 8084
 
