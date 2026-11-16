@@ -5,3 +5,48 @@
 [x-cloak] {
     display: none !important;
 }
+
+.order-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding: 16px 18px;
+    border: 1px solid #f3c3bd;
+    border-left: 5px solid #c2410c;
+    border-radius: 12px;
+    background: #fff7f5;
+    color: #7c2d12;
+    box-shadow: 0 10px 24px rgba(194, 65, 12, 0.12);
+}
+
+.order-alert-icon {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #c2410c;
+    color: #fff;
+    font-weight: 700;
+    line-height: 28px;
+    text-align: center;
+}
+
+.order-alert strong {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.order-alert p {
+    margin: 0;
+}
+
+.order-alert-close {
+    margin-left: auto;
+    border: 0;
+    background: transparent;
+    color: #9a3412;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+}

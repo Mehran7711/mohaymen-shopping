@@ -1,6 +1,7 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('initData', () => ({
         cart: {items: [], totalAmount: 0},
+        orderError: "",
         orderForm: {
             customer: {
                 name: "",
@@ -59,9 +60,7 @@ document.addEventListener('alpine:init', () => {
             deleteCart();
         },
         async createOrder() {
-            // let order = Object.assign({}, this.orderForm, {items: this.cart.items});
-            //console.log("Order ", order);
-
+            this.orderError = "";
             try {
                 const response = await fetch(
                     "/order/checkout?scenario=PAYMENT_SUCCESS",
@@ -70,8 +69,8 @@ document.addEventListener('alpine:init', () => {
                     }
                 );
                 if (!response.ok) {
-                    console.log("not OK")
-                    throw new Error(`HTTP ${response.status}`);
+                    this.orderError = await readOrderError(response);
+                    return;
                 }
                 const order = await response.json();
                 console.log("Order created:", order);
@@ -79,8 +78,20 @@ document.addEventListener('alpine:init', () => {
 
             } catch (error) {
                 console.error("Order creation failed:", error);
-                alert("Order creation failed");
+                this.orderError = "Order creation failed";
             }
         },
     }))
 });
+
+async function readOrderError(response) {
+    try {
+        const body = await response.json();
+        if (body && body.message) {
+            return body.message;
+        }
+    } catch (error) {
+        console.error("Could not read the order error", error);
+    }
+    return "Order creation failed";
+}

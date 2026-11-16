@@ -13,6 +13,14 @@
                 <h3>Your cart is empty. <a href="/">Continue shopping</a></h3>
             </div>
             <div x-show="cart.items.length > 0" class="pb-3">
+                <div class="order-alert" role="alert" x-show="orderError" x-cloak>
+                    <div class="order-alert-icon" aria-hidden="true">!</div>
+                    <div>
+                        <strong>Cannot place this order</strong>
+                        <p x-text="orderError"></p>
+                    </div>
+                    <button type="button" class="order-alert-close" @click="orderError = ''" aria-label="Close">×</button>
+                </div>
                 <table class="table">
                     <thead>
                     <tr>
@@ -87,7 +95,7 @@
     </div>
 </div>
 <div layout:fragment="pageScripts">
-    <script src="/js/cart.js"></script>
+    <script src="/js/cart.js?v=stock"></script>
 </div>
 </body>
 </html>
