@@ -8,6 +8,10 @@ metadata:
     {{- include "mohaymen.labels" (dict "ctx" . "name" .Values.appLabel) | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount | default 1 }}
+  {{- if .Values.hostPort }}
+  strategy:
+    type: Recreate
+  {{- end }}
   selector:
     matchLabels:
       app: {{ .Values.appLabel }}
