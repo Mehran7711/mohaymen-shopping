@@ -2,7 +2,6 @@ package com.mohaymen.store.web.mapper;
 
 import com.mohaymen.store.model.Product;
 import com.mohaymen.store.service.IInventoryService;
-import com.mohaymen.store.service.impl.InventoryService;
 import com.mohaymen.store.web.response.ProductDto;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -20,7 +19,7 @@ public interface ProductMapper {
 
     Product toEntity(ProductDto dto);
 
-    default Long getQuantity(Long productId, InventoryService inventoryService) {
+    default Long getQuantity(Long productId, IInventoryService inventoryService) {
         return inventoryService.getAvailableStock(productId);
     }
 }
