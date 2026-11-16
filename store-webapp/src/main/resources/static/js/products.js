@@ -28,7 +28,10 @@ document.addEventListener('alpine:init', () => {
             });
         },
         addToCart(product) {
-           addProductToCart(product);
+            if (!(product.quantity > 0)) {
+                return;
+            }
+            addProductToCart(product);
         }
     }))
 });

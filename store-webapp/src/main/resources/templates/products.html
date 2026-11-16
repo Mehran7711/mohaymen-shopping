@@ -37,7 +37,11 @@
 
                         <div class="card-footer" style="background: transparent; border-top: 0;">
                             <div class="d-grid gap-2">
-                                <button class="btn btn-primary" @click="addToCart(product)">
+                                <button class="btn"
+                                        :class="product.quantity > 0 ? 'btn-primary' : 'btn-secondary'"
+                                        :disabled="!(product.quantity > 0)"
+                                        @click="addToCart(product)"
+                                        x-text="product.quantity > 0 ? 'Add to Cart' : 'Out of stock'">
                                     Add to Cart
                                 </button>
                             </div>
@@ -49,7 +53,7 @@
     </div>
 </div>
 <div layout:fragment="pageScripts">
-    <script src="/js/products.js"></script>
+    <script src="/js/products.js?v=stock0"></script>
 </div>
 </body>
 </html>
