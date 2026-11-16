@@ -43,7 +43,7 @@ notification-service:
 store-service:
   image:
     repository: ghcr.io/mehran7711/store-service
-    tag: "r4a3054b4"
+    tag: "rf6e3724f"
   resources:
     requests:
       cpu: 250m
