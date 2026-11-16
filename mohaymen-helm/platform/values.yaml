@@ -57,7 +57,7 @@ store-service:
 store-webapp:
   image:
     repository: ghcr.io/mehran7711/store-webapp
-    tag: "rad9a48dc"
+    tag: "racf6c63b"
 
 payment-service:
   image:

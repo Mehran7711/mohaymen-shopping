@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/mehran7711/store-webapp
-  tag: "rad9a48dc"
+  tag: "racf6c63b"
 
 containerPort: 8080
 
