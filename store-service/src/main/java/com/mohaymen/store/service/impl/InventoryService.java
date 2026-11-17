@@ -34,6 +34,7 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
+    @Transactional
     public void addStock(Long productId, long quantity) {
         ProductInventory inventory = inventoryRepository
                 .lockByProductId(productId)

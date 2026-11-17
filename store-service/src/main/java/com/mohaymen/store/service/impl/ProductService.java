@@ -48,6 +48,15 @@ public class ProductService implements IProductService {
                 productsPage.hasPrevious());
     }
 
+    @Override
+    public long addStock(Long productId, long quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero");
+        }
+        inventoryService.addStock(productId, quantity);
+        return inventoryService.getAvailableStock(productId);
+    }
+
     @Cacheable(value = "products", key = "#code")
     public Optional<ProductDto> getProductByCode(String code) {
         log.info("Fetching from database...");

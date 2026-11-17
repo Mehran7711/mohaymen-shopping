@@ -3,6 +3,7 @@ package com.mohaymen.store.webapp.service.impl;
 import com.mohaymen.store.webapp.service.IProductService;
 import com.mohaymen.store.webapp.service.ISecurityClientService;
 import com.mohaymen.store.webapp.web.request.AddCartItemRequest;
+import com.mohaymen.store.webapp.web.request.StockRequest;
 import com.mohaymen.store.webapp.web.response.PageResult;
 import com.mohaymen.store.webapp.web.response.ProductDto;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,15 @@ public class ProductService implements IProductService {
                 .body(request)
                 .retrieve()
                 .toBodilessEntity();
+    }
+
+    @Override
+    public long addStock(Authentication authentication, Long productId, StockRequest request) {
+        return clientService
+                .post(authentication, "/store/api/products/" + productId + "/stock")
+                .body(request)
+                .retrieve()
+                .body(Long.class);
     }
 
     @Override

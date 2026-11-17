@@ -44,6 +44,20 @@
                                         x-text="product.quantity > 0 ? 'Add to Cart' : 'Out of stock'">
                                     Add to Cart
                                 </button>
+                                <div class="stock-menu">
+                                    <input type="number"
+                                           min="1"
+                                           class="form-control form-control-sm"
+                                           x-model.number="product.stockAdd"
+                                           placeholder="1"
+                                           aria-label="Quantity to add"/>
+                                    <button type="button"
+                                            class="btn btn-outline-success btn-sm"
+                                            @click="increaseStock(product)">
+                                        Add stock
+                                    </button>
+                                </div>
+                                <p class="stock-note" x-show="product.stockMessage" x-text="product.stockMessage"></p>
                             </div>
                         </div>
                     </div>
@@ -53,7 +67,7 @@
     </div>
 </div>
 <div layout:fragment="pageScripts">
-    <script src="/js/products.js?v=stock0"></script>
+    <script src="/js/products.js?v=addstock"></script>
 </div>
 </body>
 </html>

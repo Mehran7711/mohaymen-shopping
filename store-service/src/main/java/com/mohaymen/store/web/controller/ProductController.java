@@ -2,6 +2,7 @@ package com.mohaymen.store.web.controller;
 
 import com.mohaymen.store.exception.ProductNotFoundException;
 import com.mohaymen.store.service.IProductService;
+import com.mohaymen.store.web.request.StockRequest;
 import com.mohaymen.store.web.response.PageResult;
 import com.mohaymen.store.web.response.ProductDto;
 import org.slf4j.Logger;
@@ -9,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +30,12 @@ class ProductController {
     PageResult<ProductDto> getProducts(@RequestParam(name = "page", defaultValue = "1") int pageNo) {
         log.info("Fetching products for page: {}", pageNo);
         return iProductService.getProducts(pageNo);
+    }
+
+    @PostMapping("/{id}/stock")
+    long addStock(@PathVariable Long id, @RequestBody StockRequest request) {
+        log.info("Adding {} to stock of product {}", request.quantity(), id);
+        return iProductService.addStock(id, request.quantity());
     }
 
     @GetMapping("/{code}")

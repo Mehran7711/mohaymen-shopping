@@ -1,6 +1,7 @@
 package com.mohaymen.store.webapp.web.controller;
 
 import com.mohaymen.store.webapp.service.IProductService;
+import com.mohaymen.store.webapp.web.request.StockRequest;
 import com.mohaymen.store.webapp.web.response.PageResult;
 import com.mohaymen.store.webapp.web.response.ProductDto;
 import org.slf4j.Logger;
@@ -11,6 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestClientResponseException;
@@ -48,5 +52,15 @@ class ProductController {
             }
             throw ex;
         }
+    }
+
+    @PostMapping("/api/products/{id}/stock")
+    @ResponseBody
+    public ResponseEntity<Long> addStock(
+            Authentication authentication, @PathVariable Long id, @RequestBody StockRequest request) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(productService.addStock(authentication, id, request));
     }
 }

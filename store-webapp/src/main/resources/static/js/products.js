@@ -32,6 +32,32 @@ document.addEventListener('alpine:init', () => {
                 return;
             }
             addProductToCart(product);
+        },
+        increaseStock(product) {
+            const amount = Number(product.stockAdd || 1);
+            if (!(amount > 0)) {
+                product.stockMessage = "Enter a quantity greater than zero";
+                return;
+            }
+            product.stockMessage = "";
+            $.ajax({
+                url: "/api/products/" + product.id + "/stock",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ quantity: amount }),
+                success: (available) => {
+                    product.quantity = Number(available);
+                    product.stockAdd = "";
+                    product.stockMessage = "Stock is now " + product.quantity;
+                },
+                error: (xhr) => {
+                    if (xhr.status === 401) {
+                        product.stockMessage = "You should login.";
+                        return;
+                    }
+                    product.stockMessage = "Could not add stock";
+                }
+            });
         }
     }))
 });
