@@ -6,7 +6,8 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/mehran7711/api-gateway
-  tag: "r8eda729b"
+  tag: latest
+  pullPolicy: Always
 
 containerPort: 8989
 hostPort: 8989

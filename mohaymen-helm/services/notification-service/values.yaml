@@ -6,7 +6,8 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/mehran7711/notification-service
-  tag: "r868851e8"
+  tag: latest
+  pullPolicy: Always
 
 containerPort: 8084
 
