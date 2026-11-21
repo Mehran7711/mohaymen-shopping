@@ -19,6 +19,12 @@ spec:
     metadata:
       labels:
         {{- include "mohaymen.podLabels" (dict "ctx" . "name" .Values.appLabel) | nindent 8 }}
+      {{- if .Values.containerPort }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "{{ .Values.containerPort }}"
+      {{- end }}
     spec:
       {{- $global := .Values.global | default dict }}
       {{- with (.Values.imagePullSecrets | default $global.imagePullSecrets) }}
