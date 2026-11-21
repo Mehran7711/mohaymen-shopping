@@ -45,6 +45,7 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+      observability: prometheus
 
 #logging:
 #  level:

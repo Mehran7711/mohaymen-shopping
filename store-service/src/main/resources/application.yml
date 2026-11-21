@@ -79,6 +79,7 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+      observability: prometheus
   info:
     git:
       mode: full

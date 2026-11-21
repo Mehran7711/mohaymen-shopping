@@ -40,6 +40,7 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+      observability: prometheus
 
 payment:
   web:
