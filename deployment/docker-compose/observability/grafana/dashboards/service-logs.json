@@ -42,7 +42,7 @@
         {
           "refId": "A",
           "datasource": { "type": "loki", "uid": "loki" },
-          "expr": "{platform=\"docker\", service_name=~\"$service\"}"
+          "expr": "{service_name=~\"$service\"}"
         }
       ]
     }

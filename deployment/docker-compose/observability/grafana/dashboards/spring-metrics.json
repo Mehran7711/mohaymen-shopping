@@ -25,7 +25,7 @@
     {
       "id": 1,
       "type": "stat",
-      "title": "Targets up",
+      "title": "Scrape status (1 = metrics, 0 = no /actuator/prometheus)",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
       "targets": [
